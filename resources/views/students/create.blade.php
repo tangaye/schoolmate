@@ -37,6 +37,7 @@
 					
 				</div>
 				<div class="panel-body">
+                    <!-- start of form -->
 					<form action="/students" method="POST">
 						{{csrf_field()}}
                     	<!-- personal information -->  
@@ -210,6 +211,7 @@
                             </div>
                         </div>
 					</form>
+                    <!-- /. close of form -->
 				</div>
 			</div>
 			<!-- /. close of panel div -->
@@ -220,7 +222,6 @@
 
 
 @section('page-scripts')
-    <script src="{{ asset ("/bower_components/AdminLTE/plugins/bootbox/bootbox.min.js") }}"></script>
     <script src="{{ asset ("/bower_components/AdminLTE/plugins/datepicker/bootstrap-datepicker.js") }}"></script>
     <script src="{{ asset ("/bower_components/AdminLTE/plugins/input-mask/jquery.inputmask.js") }}"></script>
 

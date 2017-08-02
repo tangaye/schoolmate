@@ -181,7 +181,7 @@
                                     <span class="input-group-addon">
                                         <i class="fa fa-phone"></i>
                                     </span>
-                                    <input type="" name="phone" class="form-control" value="{{$student->phone}}">
+                                    <input type="" data-inputmask='"mask": "(9999) 999-999"' data-mask name="phone" class="form-control" value="{{$student->phone}}">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
