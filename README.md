@@ -11,7 +11,7 @@ SchoolMate helps Secondary(High) school to easily store, retrieve and manage stu
 ### Installation && Usage###
 
 ```sh
-$ git clone <the project into a specify directory>
+$ git clone git@github.com:nathansiafa/SchoolMate.git
 $ cd into <the directory you clone the project>
 $ composer install
 $ create a database on your local server and specify the name and password in .env
