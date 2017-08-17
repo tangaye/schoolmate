@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Student;
 use App\Grade;
+use App\User;
+use App\Guardian;
+
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -11,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 class StudentsController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +24,7 @@ class StudentsController extends Controller
     {
         //
         $students = Student::with('grade')->get();
-        
+
         return view('students.home', compact('students'));
     }
 
@@ -31,9 +35,17 @@ class StudentsController extends Controller
      */
     public function create()
     {
-        //
+        //pass guardians to be assigned to students
+        $guardians = \DB::table('guardians')
+            ->join('users', 'users.id', '=', 'guardians.user_id')
+            ->select('users.surname', 'users.first_name', 'guardians.id')
+            ->where('users.type', '\App\Guardian')
+            ->get();
+
         $grades = Grade::all();
-        return view('students.create', compact('grades'));
+        //$guardians = User::where('type', '\App\Guardian')->get();
+       
+        return view('students.create', compact('grades', 'guardians'));
     }
 
     /**
@@ -45,7 +57,7 @@ class StudentsController extends Controller
     public function store(Request $request)
     {
         //
-         // make validation
+         // validation rules
         $rules = [
             'first_name' => 'bail|required|max:50|min:1|regex:/^[a-z ,.\'-]+$/i',
             'middle_name' => 'bail|nullable|max:50|regex:/^[a-z ,.\'-]+$/i',
@@ -55,47 +67,46 @@ class StudentsController extends Controller
             'address' => 'bail|required|regex:/^[a-z ,.\'-]+$/i',
             'phone' => 'nullable',
             'county' => 'nullable',
-            'country' => 'required',
+            'country' => 'required|regex:/^[a-z ,.\'-]+$/i',
             'last_grade' => 'nullable',
             'last_school' => 'nullable',
             'religion' => 'nullable',
             'student_type' => 'required',
-            'grade_id' => 'required'
+            'grade_id' => 'required|numeric',
+            'guardian_id' => 'required|numeric'
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        //validate and return errors
+        $this->validate(request(), $rules);
 
-        if ($validator->fails ()) {
-            return back()->withInput();
-        } else {
-            // create a student
-            $student = Student::create(request([
-                'first_name',
-                'middle_name',
-                'surname',
-                'date_of_birth',
-                'gender',
-                'address',
-                'phone',
-                'county',
-                'country',
-                'religion',
-                'student_type',
-                'last_school',
-                'last_grade',
-                'grade_id'
-            ]));
+        // create a student
+        $student = Student::create(request([
+            'first_name',
+            'middle_name',
+            'surname',
+            'date_of_birth',
+            'gender',
+            'address',
+            'phone',
+            'county',
+            'country',
+            'religion',
+            'student_type',
+            'last_school',
+            'last_grade',
+            'grade_id',
+            'guardian_id'
+        ]));
 
-            // get the student id and generate a unique code for the student
-            $student->student_code = str_pad($student->id, 4, '0', STR_PAD_LEFT);
-            // save
-            $student->save();
+        // get the student id and generate a unique code for the student
+        $student->student_code = str_pad($student->id, 4, '0', STR_PAD_LEFT);
+        // save
+        $student->save();
 
-            // send a message to the session that greets/ thank user
-            session()->flash('message', $student->first_name." ".$student->surname);
+        // send a message to the session that greets/ thank user
+        session()->flash('message', $student->first_name." ".$student->surname);
 
-            return back();
-        }
+        return back();
             
     }
 
@@ -110,10 +121,19 @@ class StudentsController extends Controller
         //
         $student = Student::findOrfail($id);
 
+        //dd($student->guardian->user->address);
+
         //pass all grades
         $grades =  Grade::all();
 
-        return view('students.edit', compact('student', 'grades'));
+        //pass guardians to be assigned to students
+        $guardians = \DB::table('guardians')
+            ->join('users', 'users.id', '=', 'guardians.user_id')
+            ->select('users.surname', 'users.first_name', 'guardians.id')
+            ->where('users.type', '\App\Guardian')
+            ->get();
+
+        return view('students.edit', compact('student', 'grades', 'guardians'));
     }
 
     /**
@@ -126,7 +146,7 @@ class StudentsController extends Controller
     public function update(Request $request, $id)
     {
         //
-        // make validation
+        // validation rules
         $rules = [
             'first_name' => 'bail|required|max:50|min:1|regex:/^[a-z ,.\'-]+$/i',
             'middle_name' => 'bail|nullable|max:50|regex:/^[a-z ,.\'-]+$/i',
@@ -136,45 +156,44 @@ class StudentsController extends Controller
             'address' => 'bail|required|regex:/^[a-z ,.\'-]+$/i',
             'phone' => 'nullable',
             'county' => 'nullable',
-            'country' => 'required',
+            'country' => 'required|regex:/^[a-z ,.\'-]+$/i',
             'last_grade' => 'nullable',
             'last_school' => 'nullable',
             'religion' => 'nullable',
             'student_type' => 'required',
-            'grade_id' => 'required'
+            'grade_id' => 'required|numeric',
+            'guardian_id' => 'required||numeric'
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        //validate and return errors
+        $this->validate(request(), $rules);
 
-        if ($validator->fails ()) {
-            return back()->withInput();
-        } else {
-            // find student
-            $student = Student::findOrFail($id);
+        // find student
+        $student = Student::findOrFail($id);
 
-            //update student record
-            $student->update(request([
-                'first_name',
-                'middle_name',
-                'surname',
-                'date_of_birth',
-                'gender',
-                'address',
-                'phone',
-                'county',
-                'country',
-                'religion',
-                'student_type',
-                'last_school',
-                'last_grade',
-                'grade_id'
-            ]));
+        //update student record
+        $student->update(request([
+            'first_name',
+            'middle_name',
+            'surname',
+            'date_of_birth',
+            'gender',
+            'address',
+            'phone',
+            'county',
+            'country',
+            'religion',
+            'student_type',
+            'last_school',
+            'last_grade',
+            'grade_id',
+            'guardian_id'
+        ]));
 
-            // send a message to the session that greets/ thank user
-            session()->flash('message', $student->first_name." ".$student->surname);
+        // send a message to the session that greets/ thank user
+        session()->flash('message', $student->first_name." ".$student->surname);
 
-            return redirect('/students');
-        }
+        return redirect('/students');
     }
 
     /**

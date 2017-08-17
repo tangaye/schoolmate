@@ -23,14 +23,14 @@
 	<div class="row">
 		<div class="col-md-12">
 
-			<div class="panel panel-primary">
+			<div class="panel panel-default">
 				<!-- Default panel contents -->
 				<div class="panel-heading">
 					<div class="container-fluid">
 						<span class="panel-title">Students</span>
 						<!-- button that triggers modal -->
 						<a role="button" title="New student" data-toggle="title" href="/students/create" class="pull-right" id="add-student">
-							<span class="badge"><i class="fa fa-plus"></i> </span>
+							<span class="badge label-primary"><i class="fa fa-pencil"></i> </span>
 						</a>
 					</div>
 					
@@ -108,13 +108,14 @@
 		    // row to be deleted
 		    var row = $(this).parent("td").parent("tr");
 
-			var message = "student";
+			var message = "You'll not be able to retrieve this student!";
 
 			var route = "/students/delete/"+id;
 
+			var item = "student";
 
-			swal_delete(message, route, row);
-			
+
+			swal_delete(message, item, route, row);
 		});	
 	</script>
 

@@ -9,8 +9,6 @@
 @section('page-css')
 	<!-- Animate css -->
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
-
-	\
 @endsection
 
 @section('page-header', 'Scores')

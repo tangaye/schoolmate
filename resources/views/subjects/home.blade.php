@@ -30,14 +30,14 @@
 	<div class="row">
 		<div class="col-md-12">
 
-			<div class="panel panel-primary">
+			<div class="panel panel-default">
 				<!-- Default panel contents -->
 				<div class="panel-heading">
 					<div class="container-fluid">
 						<span class="panel-title">Subjects</span>
 						<!-- button that triggers modal -->
 						<a role="button" class="pull-right" id="add-subject">
-							<span class="badge"><i class="fa fa-plus"></i> </span>
+							<span class="badge label-primary"><i class="fa fa-pencil"></i> </span>
 						</a>
 					</div>
 					

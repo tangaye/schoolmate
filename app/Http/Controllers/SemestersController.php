@@ -8,6 +8,7 @@ use App\Semester;
 
 class SemestersController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *
