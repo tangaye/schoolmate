@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +30,13 @@ class AppServiceProvider extends ServiceProvider
             $view->with(compact('types', 'counties', 'genders', 'religions'));
         });
 
+        view()->composer('guardian-dashboard', function ($view){
+            
+            $guardians = \App\Guardian::with('student')->where('guardians.id', Auth::user()->data->id)->get();
+
+            //dd($guardians);
+            $view->with(compact('guardians'));
+        });
 
         
     }

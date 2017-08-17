@@ -30,6 +30,7 @@ class CreateStudentsTable extends Migration
             $table->string('last_school')->nullable();
             $table->integer('last_grade')->unsigned()->nullable();
             $table->integer('grade_id')->unsigned()->nullable();
+            $table->integer('guardian_id')->unsigned()->nullable();
             $table->timestamps();
 
             $table->foreign('grade_id')
@@ -42,6 +43,13 @@ class CreateStudentsTable extends Migration
               ->references('id')
               ->on('grades')
               ->onDelete('restrict')
+              ->onUpdate('cascade');
+
+            // when a guardian is deleted this relation should be set to null
+            $table->foreign('guardian_id')
+              ->references('id')
+              ->on('guardians')
+              ->onDelete('set null')
               ->onUpdate('cascade');
 
             $table->index('student_code');

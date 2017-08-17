@@ -24,8 +24,8 @@
 	<!-- grades modal form end -->
 
 	<div class="row">
-		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-			<div class="box box-primary collapsed-box box-solid">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="box box-default collapsed-box">
 				<div class="box-header with-border">
 	              	<h3 class="box-title">Semesters</h3>
 

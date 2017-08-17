@@ -49,9 +49,6 @@
 @endsection
 
 @section('page-scripts')
-
-	<script src="{{ asset ("/bower_components/AdminLTE/plugins/bootbox/bootbox.min.js") }}"></script>
-	<script src="{{ asset ("/js/app.js") }}"></script>
 	<script type="text/javascript">
 
 		$(document).ready(function() {

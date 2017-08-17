@@ -3,10 +3,10 @@
 require('bootstrap-notify');
 
 // swal alert function to delete records
-window.swal_delete = function(message, route, row) {
+window.swal_delete = function(message, item, route, row) {
     swal({
       title: "Are you sure?",
-      text: "You will not be able to recover this "+message,
+      text: message,
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",
@@ -32,7 +32,7 @@ window.swal_delete = function(message, route, row) {
             swal("Oops...", "Something Went Wrong .... Please contact administrator :)", "error");
         });
       } else {
-        swal("Cancelled", message+" is safe :)", "error");
+        swal("Cancelled", item+" is safe :)", "error");
       }
     });
 }
@@ -53,6 +53,26 @@ window.notify = function(message) {
             enter: 'animated fadeInRight',
             exit: 'animated fadeOutRight'
         },
+        template:
+            '<div data-notify="container" role="alert" class="col-xs-11 col-sm-2 alert alert-{0}" style="margin: 15px 0 15px 0; width: 250px;">\
+                <button type="button" class="close" data-notify="dismiss" style="top:7px;">\
+                    <span aria-hidden="true">×</span>\
+                    <span class="sr-only">Close</span>\
+                </button>\
+                <span data-notify="icon"></span>\
+                <span data-notify="message" style="padding-right:15px">{2}</span>\
+            </div>'
+    });
+}
+
+// function that displays notification
+window.welcome = function(message) {
+    // body...
+    $.notify({
+        icon: 'glyphicon glyphicon-gift',
+        message: message
+    },{
+        offset: 50,
         template:
             '<div data-notify="container" role="alert" class="col-xs-11 col-sm-2 alert alert-{0}" style="margin: 15px 0 15px 0; width: 250px;">\
                 <button type="button" class="close" data-notify="dismiss" style="top:7px;">\

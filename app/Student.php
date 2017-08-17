@@ -26,7 +26,8 @@ class Student extends Model
     	'student_type',
     	'last_school',
     	'last_grade',
-    	'grade_id'
+    	'grade_id',
+        'guardian_id'
     ];
 
 
@@ -102,6 +103,14 @@ class Student extends Model
     {
     	return $this->belongsTo(Grade::class);
     }
+
+    // relationship between student and guardian
+    // a student belongs to a single guardian
+    public function guardian()
+    {
+        return $this->belongsTo(Guardian::class);
+    }
+    
 
     public function score()
     {

@@ -10,6 +10,7 @@ use App\Semester;
 
 class TermsController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *

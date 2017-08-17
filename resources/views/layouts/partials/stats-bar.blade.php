@@ -1,18 +1,4 @@
-@extends('layouts.master')
-
-@section('page-title', 'Dashboard')
-
-@section('page-header', 'Dashboard')
-
-@section('page-description', 'Control Panel')
-
-@section('breadcrumb')
-	<li><a href="#"><i class="fa fa-dashboard"></i> Home </a></li>
-    <li class="active">Dashboard</li>
-@endsection
-
-@section('content')
-<!-- Small boxes (Stat box) -->
+ <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -90,18 +76,3 @@
         <!-- right col -->
       </div>
       <!-- /.row (main row) -->
-@endsection
-
-
-@section('page-scripts')
-
-	<!-- jQuery UI 1.11.4 -->
-<script src="{{asset("/bower_components/AdminLTE/plugins/jQueryUI/jquery-ui.min.js")}}"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button);
-</script>
-
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{asset("/bower_components/AdminLTE/plugins/dist/js/pages/dashboard.js")}}"></script>
-@endsection

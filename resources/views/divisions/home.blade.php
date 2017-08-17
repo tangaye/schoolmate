@@ -24,8 +24,8 @@
 	<!-- division modal form end -->
 
 	<div class="row">
-		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-			<div class="box box-primary collapsed-box box-solid">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="box box-default collapsed-box">
 				<div class="box-header with-border">
 	              	<h3 class="box-title">Divisions</h3>
 
@@ -38,8 +38,12 @@
 					<form action="" method="POST" class="form-inline" role="form" id="divisions-form">
 						<p class="name-error text-danger hidden"></p>
 						<div class="form-group">
-							<label for="name">Name: </label>
-							<input type="text" name="name" id="name" class="form-control" placeholder="Enter division name">
+							<div class="input-group margin">
+								<input type="text" name="name" id="name" class="form-control" placeholder="Enter division name">
+				                <span class="input-group-btn">
+				                    <button type="submit" id="add-semester" class="btn btn-info btn-flat form-control">Save</button>
+				                </span>
+				             </div>
 						</div>
 						<button type="submit" id="add-division" class="btn btn-success form-control">Save</button>
 					</form>

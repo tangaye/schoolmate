@@ -14,6 +14,7 @@ use App\Semester;
 
 class ScoresController extends Controller
 {
+    
     /**
      * Display a form to retrieve terms/period tables.
      *
@@ -30,30 +31,11 @@ class ScoresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function scoreTerm(Request $request)
+    public function scoreTerm(Request $request, Score $score)
     {
        $term = Term::findOrFail($request->term_id);
 
-       $students = \DB::table('scores')
-            ->join('subjects', 'subjects.id', '=', 'scores.subject_id')
-            ->join('terms', 'terms.id', '=', 'scores.term_id')
-            ->join('grades', 'grades.id', '=', 'scores.grade_id')
-            ->join('students', 'students.id', '=', 'scores.student_id')
-            ->select(
-                'subjects.name as subject', 
-                'grades.name as grade', 
-                'students.surname', 
-                'students.first_name', 
-                'terms.name as term', 
-                'scores.id as score_id',
-                'scores.student_id', 
-                'scores.grade_id',
-                'scores.subject_id',
-                'scores.term_id',  
-                'score'
-            )
-            ->where('scores.term_id', $term->id)
-            ->get();
+       $students = $score->termTables($term->id);
 
         return \View::make('partials.term-table')->with(array(
             'students'=>$students
@@ -181,39 +163,10 @@ class ScoresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function findTerm(Request $request)
+    public function findTerm(Request $request, Score $score)
     {
         //
-
-        
-        $student = Student::findOrFail($request->student_code);
-
-        $name = $request->name;
-
-        $term = Term::findOrFail($request->term_id);
-
-        $date = Score::date();
-
-        $scores = \DB::table('scores')
-            ->join('subjects', 'subjects.id', '=', 'scores.subject_id')
-            ->join('terms', 'terms.id', '=', 'scores.term_id')
-            ->join('grades', 'grades.id', '=', 'scores.grade_id')
-            ->join('students', 'students.id', '=', 'scores.student_id')
-            ->select('subjects.name as subject', 'score')
-            ->where('scores.student_id', $student->id)
-            ->where('scores.term_id', $term->id)
-            ->get();
-
-        //dd($scores);
-
-        //return view('scores.term-report', compact('terms'));
-
-        return \View::make('partials.term-report')->with(array(
-            'student'=>$student, 
-            'term'=>$term,
-            'date'=>$date,
-            'scores'=>$scores
-        ));
+        return $score->termReport($request->term_id, $request->student_code);
     }
 
     /**
@@ -229,55 +182,9 @@ class ScoresController extends Controller
         return view('scores.semester', compact('semesters'));
     }
 
-    public function findSemester(Request $request)
+    public function findSemester(Request $request, Score $score)
     {
-        //
-
-        $student = Student::findOrFail($request->student_code);
-        $semester = Semester::findOrFail($request->semester_id);
-        $date = Score::date();
-
-        $scores = \DB::table('scores')
-            ->join('subjects', 'subjects.id', '=', 'scores.subject_id')
-            ->join('terms', 'terms.id', '=', 'scores.term_id')
-            ->select('subjects.name as subject', 'terms.name as term', 'score')
-            ->where('scores.student_id', $student->id)
-            ->where('terms.semester_id', $semester->id)
-            ->get();
-
-        $scores = $scores->groupBy('subject')->map(function($item){
-            return $item->keyBy('term')->map(function($item){
-                return $item->score;
-            });
-        }); 
-
-
-        $terms = Term::where('semester_id', $semester->id)->orderBy('name')->pluck('name');
-        
-
-        $scoreTable = [];
-        
-        foreach ($scores->keys() as $subject){
-            $scoreTable[$subject] = [];
-            foreach ($terms as $term){
-                $scoreTable[$subject][$term] = '';
-            }
-        }
-
-        foreach ($scores as $subject => $row){
-            foreach($row as $term => $score){
-                $scoreTable[$subject][$term] = $score;
-            }
-        }
-
-
-        return \View::make('partials.semester-report')->with(array(
-            'student'=>$student, 
-            'terms'=>$terms,
-            'date'=>$date,
-            'semester'=>$semester->name,
-            'scoreTable'=>$scoreTable
-        ));
+        return $score->semesterReport($request->student_code, $request->semester_id);
     }
 
 

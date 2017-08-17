@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class DivisionsController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *

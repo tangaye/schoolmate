@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Validator;
 
 class SubjectsController extends Controller
 {
+
+    
     /**
      * Display a listing of the resource.
      *
