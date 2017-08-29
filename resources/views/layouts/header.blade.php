@@ -1,5 +1,4 @@
-<!-- Main Header -->
-  <header class="main-header">
+<header class="main-header">
 
     <!-- Logo -->
     <a href="index2.html" class="logo">
@@ -113,49 +112,25 @@
               </li>
             </ul>
           </li>
-          <!-- User Account Menu -->
-          @if (Auth::user())
-            <li class="dropdown user user-menu">
-              <!-- Menu Toggle Button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <!-- The user image in the navbar-->
-                <img src="{{ asset("/bower_components/AdminLTE/dist/img/user2-160x160.jpg") }}" class="user-image" alt="User Image"/>
-                <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                <span class="hidden-xs">{{ Auth::user()->user_name }}</span>
-              </a>
-              <ul class="dropdown-menu">
-                <!-- The user image in the menu -->
-                <li class="user-header">
-                  <img src="{{ asset("/bower_components/AdminLTE/dist/img/user2-160x160.jpg") }}" class="img-circle" alt="User Image" />
-                  @if (Auth::user()->type === "\App\Guardian")
-                    <p>
-                      {{ Auth::user()->user_name }} - guardian
-                    </p>
-                  @else
-                    <p>
-                      {{ Auth::user()->user_name }} - {{ Auth::user()->type }}
-                    </p>  
-                  @endif
-                </li>
-                <!-- Menu Footer-->
-                <li class="user-footer">
-                  <div class="pull-left">
-                    <a href="#" class="btn btn-default btn-flat">Profile</a>
-                  </div>
-                  <div class="pull-right">
-                    <a class="btn btn-default btn-flat" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">
-                        Sign out
-                    </a>
 
+          <!-- Authentication Links -->
+           @if (Auth::user())
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                      {{ Auth::user()->user_name }} <span class="caret"></span>
+                  </a>
+
+                  <ul class="dropdown-menu list-group">
+                    <a style="border: none;" class="list-group-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();">
+                        Logout
+                    </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        {{ csrf_field() }}
-                    </form>
-                  </div>
-                </li>
-              </ul>
-            </li>
+                            {{ csrf_field() }}
+                      </form>
+                  </ul>
+              </li>
           @endif
           <!-- Control Sidebar Toggle Button -->
           <li>

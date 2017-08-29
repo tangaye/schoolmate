@@ -19,37 +19,39 @@
 	<div class="row">
         <div class="col-md-3">
 
-            <!-- Profile Image -->
-            <div class="box box-primary">
-                <div class="box-body box-profile">
-                    <img src="{{ asset("/bower_components/AdminLTE/dist/img/user2-160x160.jpg") }}" class="profile-user-img img-responsive img-circle" alt="User profile picture"/>
-
-                    <h3 class="profile-username text-center">{{$user->first_name}} {{$user->surname}}</h3>
-
-                    @if($user->type === '\App\Guardian')
-                        <p class="text-muted text-center">guardian</p>
-                    @endif
-
-                    <ul class="list-group list-group-unbordered">
-                        <li class="list-group-item">
-                          <b>Username</b> <a class="pull-right">{{$user->user_name}}</a>
-                        </li>
-                        <li class="list-group-item">
-                          <b>Email</b> <a class="pull-right">{{$user->email}}</a>
-                        </li>
-                        @if(AutH::user()->hasType('\App\Guardian'))
-                            <li class="list-group-item">
-                              <b>Relationship</b> <a class="pull-right">{{$user->relationship}}</a>
-                            </li>
-                        @endif
-                        <li class="list-group-item">
-                          <b>Date Of Birth</b> <a class="pull-right">{{$user->date_of_birth->toFormattedDateString()}}</a>
-                        </li>
-                    </ul>
+            <div class="box box-widget widget-user-2">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    
+                <div class="widget-user-header bg-yellow">
+                  <h3 style="color: white;">{{$user->first_name}} {{$user->surname}}</h3>
+                  <h5>{{$user->data->relationship}}</h5>
                 </div>
-                <!-- /.box-body -->
+                <div class="box-footer no-padding">
+                  <ul class="nav nav-stacked">
+                    <li>
+                        <a href="javascript:void(0)">Phone
+                            <span class="pull-right badge bg-blue">
+                                {{$user->phone}}
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">Address 
+                            <span class="pull-right badge bg-aqua">
+                                {{$user->address}}
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">Birth Date 
+                            <span class="pull-right badge bg-green">
+                                {{$user->date_of_birth->toFormattedDateString()}}
+                            </span>
+                        </a>
+                    </li>
+                  </ul>
+                </div>
             </div>
-            <!-- /.box -->
 
             <!-- About Me Box -->
             <div class="box box-primary">
@@ -94,7 +96,12 @@
                     <ul class="users-list clearfix">
                         @foreach($guardian->student as $student)
                             <li>
-                              <img src="{{ asset("/bower_components/AdminLTE/dist/img/user2-160x160.jpg") }}" alt="User Image">
+
+                              @if($student->photo)
+                                  <img src="{{ asset("images/".$student->photo) }}" alt="Student photo"/>
+                              @else
+                                  <img src="{{ asset("images/default.png") }}" alt="Student photo"/>
+                              @endif
                               <a class="users-list-name" href="/students/edit/{{$student->id}}">{{$student->first_name}}</a>
                             </li>
                         @endforeach

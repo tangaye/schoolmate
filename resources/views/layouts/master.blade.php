@@ -3,15 +3,16 @@
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
-<html>
+<html lang="{{ app()->getLocale() }}">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SchoolMate | @yield('page-title')</title>
+  <title>{{ config('app.name') }} | @yield('page-title')</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-  @yield('meta')
+  <!-- CSRF Token -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <!-- Bootstrap 3.3.2 -->
   <link href="{{ asset("/css/app.css") }}" rel="stylesheet" type="text/css" />
@@ -25,6 +26,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   -->
   <link href="{{ asset("/bower_components/AdminLTE/dist/css/skins/skin-blue.min.css")}}" rel="stylesheet" type="text/css" />
 
+  <!-- custom page css -->
   @yield('page-css')
 
   <!-- Theme style -->
