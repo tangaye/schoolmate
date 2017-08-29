@@ -6,9 +6,10 @@ SchoolMate helps Secondary(High) school to easily store, retrieve and manage stu
 
 * Built with [Laravel 5.4](https://laravel.com)
 * Live search on Students grades
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Guardian/Parent login
+* Student photo upload
 
-### Installation && Usage###
+### Installation & Usage###
 
 ```sh
 $ git clone git@github.com:nathansiafa/SchoolMate.git
