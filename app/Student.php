@@ -27,6 +27,7 @@ class Student extends Model
     	'last_school',
     	'last_grade',
     	'grade_id',
+        'photo',
         'guardian_id'
     ];
 

@@ -40,7 +40,7 @@
 				</div>
 				<div class="panel-body">
                     <!-- start of form -->
-					<form action="/students" method="POST">
+					<form action="/students" method="POST" enctype="multipart/form-data">
 						{{csrf_field()}}
                     	<!-- personal information -->  
                     	<div class="form-group">
@@ -134,12 +134,14 @@
                                         <option value="{{$value}}">{{$name}}</option>
                                     @endforeach
 								</select>
+
+                                @if ($errors->has('county'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('county') }}</strong>
+                                    </span>
+                                @endif
                             </div>
-                             @if ($errors->has('county'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('county') }}</strong>
-                                </span>
-                            @endif
+                            
 
                             <div class="form-group{{ $errors->has('religion') ? ' has-error' : '' }} col-sm-6">
                             	<label for="religion" class="control-label">Religion</label>
@@ -148,12 +150,13 @@
                                         <option value="{{$value}}">{{$name}}</option>
                                     @endforeach
                             	</select>
+                                @if ($errors->has('religion'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('religion') }}</strong>
+                                    </span>
+                                @endif
                             </div>
-                            @if ($errors->has('religion'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('religion') }}</strong>
-                                </span>
-                            @endif
+                            
                         </div>
 
                         <!-- contact information -->
@@ -263,13 +266,15 @@
 									<option value="Old Student">Old Student</option>
 									<option value="New Student">New Student</option>
 								</select>
+
+                                @if ($errors->has('student_type'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('student_type') }}</strong>
+                                    </span>
+                                @endif
                         	</div>
 
-                            @if ($errors->has('student_type'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('student_type') }}</strong>
-                                </span>
-                            @endif
+                            
                         	<div class="form-group{{ $errors->has('grade_id') ? ' has-error' : '' }} col-sm-6">
                         		<label id="grade" class="control-label">Class</label>
                         		<select name="grade_id" id="grade" class="form-control" required="">
@@ -277,14 +282,33 @@
 										<option value="{{$grade->id}}">{{$grade->name}}</option>
 									@endforeach
 								</select>
+
+                                @if ($errors->has('grade_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('grade_id') }}</strong>
+                                    </span>
+                                @endif
                         	</div>
 
-                            @if ($errors->has('grade_id'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('grade_id') }}</strong>
-                                </span>
-                            @endif
                         </div>	
+
+                        <!-- student photo -->
+                        <div class="row">
+                            <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }} photoWarning col-md-12">
+                                <label class="control-label">Student Photo</label>
+                                <input type="file" class="form-control photo" name="photo">
+
+                                @if ($errors->has('photo'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('photo') }}</strong>
+                                    </span>
+                                @endif
+
+                                <span class="help-block hidden photoWarningMsg">
+                                    <strong class="photoWarningMsg"></strong>
+                                </span>
+                            </div>
+                        </div>
 
                         <!-- school information -->
                         <div class="form-group">
@@ -342,6 +366,30 @@
         });
 
         $("[data-mask]").inputmask();
+
+        // check if student picture is greater than 2mb
+        // If it is avoid upload of such large file by 
+        // removing the image choosen by the user
+        // and display an warning message
+        $('.photo').on('change', function(event) {
+            event.preventDefault();
+            /* Act on the event */
+
+            var PhotoSize = this.files[0].size/1024/1024// in MB
+
+            if (PhotoSize > 2) {
+                $('.photoWarning').addClass('has-warning');
+                $('.photoWarningMsg').removeClass('hidden');
+                $('.photoWarningMsg').html('Please choose an image less than 2mb.');
+                $('.photo').val(null);
+               // $(file).val(''); //for clearing with Jquery
+            } else {
+                $('.photoWarning').removeClass('has-warning');
+                $('.photoWarningMsg').addClass('hidden');
+                $('.photoWarningMsg').html(null);
+            }
+        });
+
     </script>
 
     @if($flash = session('message'))

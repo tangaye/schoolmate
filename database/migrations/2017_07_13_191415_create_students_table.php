@@ -30,6 +30,7 @@ class CreateStudentsTable extends Migration
             $table->string('last_school')->nullable();
             $table->integer('last_grade')->unsigned()->nullable();
             $table->integer('grade_id')->unsigned()->nullable();
+            $table->string('photo')->nullable();
             $table->integer('guardian_id')->unsigned()->nullable();
             $table->timestamps();
 

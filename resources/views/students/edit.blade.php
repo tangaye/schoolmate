@@ -22,7 +22,11 @@
             <!-- Profile Image -->
             <div class="box box-primary">
                 <div class="box-body box-profile">
-                    <img src="{{ asset("/bower_components/AdminLTE/dist/img/user2-160x160.jpg") }}" class="profile-user-img img-responsive img-circle" alt="User profile picture"/>
+                    @if($student->photo)
+                        <img src="{{ asset("images/".$student->photo) }}" class="profile-user-img img-responsive img-circle" alt="User profile picture"/>
+                    @else
+                        <img src="{{ asset("images/default.png") }}" class="profile-user-img img-responsive img-circle" alt="User profile picture"/>
+                    @endif
 
                     <h3 class="profile-username text-center">{{$student->first_name}} {{$student->middle_name}} {{$student->surname}}</h3>
 
@@ -70,7 +74,7 @@
             </div>
             <!-- /.box -->
 
-            <!-- Widget: user widget style 1 -->
+            <!-- Widget: Student guardian -->
               <div class="box box-widget widget-user-2">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 @if($student->guardian)
@@ -122,7 +126,7 @@
 					
 				</div>
 				<div class="panel-body">
-					<form method="POST" action="/students/update/{{$student->id}}">
+					<form method="POST" action="/students/update/{{$student->id}}" enctype="multipart/form-data">
 
 						{{csrf_field()}}
 
@@ -375,6 +379,28 @@
                             @endif
                         </div>  
 
+                        <!-- student photo -->
+
+                        <!-- student photo -->
+                        <div class="row">
+                            <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }} photoWarning col-md-12">
+                                <label class="control-label">Update Student Photo</label>
+                                <input type="file" class="form-control photo" name="photo">
+
+                                @if ($errors->has('photo'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('photo') }}</strong>
+                                    </span>
+                                @endif
+
+                                <span class="help-block hidden photoWarningMsg">
+                                    <strong class="photoWarningMsg"></strong>
+                                </span>
+                            </div>
+                        </div>
+
+
+
                         <!-- school information -->
                         <div class="form-group">
                             <p>
@@ -426,5 +452,28 @@
         });
 
         $("[data-mask]").inputmask();
+
+        // check if student picture is greater than 2mb
+        // If it is avoid upload of such large file by 
+        // removing the image choosen by the user
+        // and display an warning message
+        $('.photo').on('change', function(event) {
+            event.preventDefault();
+            /* Act on the event */
+
+            var PhotoSize = this.files[0].size/1024/1024// in MB
+
+            if (PhotoSize > 2) {
+                $('.photoWarning').addClass('has-warning');
+                $('.photoWarningMsg').removeClass('hidden');
+                $('.photoWarningMsg').html('Please choose an image less than 2mb.');
+                $('.photo').val(null);
+               // $(file).val(''); //for clearing with Jquery
+            } else {
+                $('.photoWarning').removeClass('has-warning');
+                $('.photoWarningMsg').addClass('hidden');
+                $('.photoWarningMsg').html(null);
+            }
+        });
     </script>
 @endsection

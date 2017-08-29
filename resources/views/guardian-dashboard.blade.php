@@ -33,7 +33,11 @@
                       <!-- Add the bg color to the header using any of the bg-* classes -->
                       <div class="widget-user-header bg-aqua-active">
                         <div class="widget-user-image">
-                          <img class="img-circle" src="{{ asset("/bower_components/AdminLTE/dist/img/user2-160x160.jpg") }}" alt="User Avatar">
+                          @if($student->photo)
+                              <img src="{{ asset("images/".$student->photo) }}" class="img-circle" alt="Student photo"/>
+                          @else
+                              <img src="{{ asset("images/default.png") }}" class="img-circle" alt="Student photo"/>
+                          @endif
                         </div>
                         <!-- /.widget-user-image -->
                         <h3 class="widget-user-username">{{$student->first_name}} {{$student->surname}}</h3>

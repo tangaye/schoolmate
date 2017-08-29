@@ -6,6 +6,7 @@ use App\Student;
 use App\Grade;
 use App\User;
 use App\Guardian;
+use Image;
 
 
 use Illuminate\Http\Request;
@@ -73,34 +74,48 @@ class StudentsController extends Controller
             'religion' => 'nullable',
             'student_type' => 'required',
             'grade_id' => 'required|numeric',
+            'photo' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:500000',
             'guardian_id' => 'required|numeric'
         ];
 
         //validate and return errors
         $this->validate(request(), $rules);
 
-        // create a student
-        $student = Student::create(request([
-            'first_name',
-            'middle_name',
-            'surname',
-            'date_of_birth',
-            'gender',
-            'address',
-            'phone',
-            'county',
-            'country',
-            'religion',
-            'student_type',
-            'last_school',
-            'last_grade',
-            'grade_id',
-            'guardian_id'
-        ]));
+        $student = new Student;
+
+        $student->first_name = $request->first_name;
+        $student->middle_name = $request->middle_name;
+        $student->surname = $request->surname;
+        $student->date_of_birth = $request->date_of_birth;
+        $student->gender = $request->gender;
+        $student->address = $request->address;
+        $student->phone = $request->phone;
+        $student->county = $request->county;
+        $student->country = $request->country;
+        $student->religion = $request->religion;
+        $student->student_type = $request->student_type;
+        $student->last_school = $request->last_school;
+        $student->last_grade = $request->last_grade;
+        $student->grade_id = $request->grade_id;
+        $student->guardian_id = $request->guardian_id;
+
+        // if student photo is being uploaded
+        if ($request->hasFile('photo')) {
+
+            $image = $request->file('photo');
+            $ext = $image->guessExtension();
+            $photoName = time().'.'.$ext;
+            $location = public_path('images/' .$photoName);  
+            Image::make($image)->resize(160, 160)->save($location);
+
+            $student->photo = $photoName;
+        } 
+        //save the student
+        $student->save();
 
         // get the student id and generate a unique code for the student
         $student->student_code = str_pad($student->id, 4, '0', STR_PAD_LEFT);
-        // save
+        // and then save again
         $student->save();
 
         // send a message to the session that greets/ thank user
@@ -162,6 +177,7 @@ class StudentsController extends Controller
             'religion' => 'nullable',
             'student_type' => 'required',
             'grade_id' => 'required|numeric',
+            'photo' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2000000',
             'guardian_id' => 'required||numeric'
         ];
 
@@ -171,24 +187,44 @@ class StudentsController extends Controller
         // find student
         $student = Student::findOrFail($id);
 
-        //update student record
-        $student->update(request([
-            'first_name',
-            'middle_name',
-            'surname',
-            'date_of_birth',
-            'gender',
-            'address',
-            'phone',
-            'county',
-            'country',
-            'religion',
-            'student_type',
-            'last_school',
-            'last_grade',
-            'grade_id',
-            'guardian_id'
-        ]));
+        $student->first_name = $request->first_name;
+        $student->middle_name = $request->middle_name;
+        $student->surname = $request->surname;
+        $student->date_of_birth = $request->date_of_birth;
+        $student->gender = $request->gender;
+        $student->address = $request->address;
+        $student->phone = $request->phone;
+        $student->county = $request->county;
+        $student->country = $request->country;
+        $student->religion = $request->religion;
+        $student->student_type = $request->student_type;
+        $student->last_school = $request->last_school;
+        $student->last_grade = $request->last_grade;
+        $student->grade_id = $request->grade_id;
+        $student->guardian_id = $request->guardian_id;
+
+        // if student photo is being uploaded
+        if ($request->hasFile('photo')) {
+
+            $image = $request->file('photo');
+            $ext = $image->guessExtension();
+            $photoName = time().'.'.$ext;
+            $location = public_path('images/' .$photoName);  
+            Image::make($image)->resize(160, 160)->save($location);
+
+            //get old student photo name from database
+            $oldPhotoName = $student->photo;
+
+            //assigned new photo name
+            $student->photo = $photoName;
+
+            //delete the old photo
+            \Storage::delete($oldPhotoName);
+        } 
+
+        //update the student
+        $student->update();
+
 
         // send a message to the session that greets/ thank user
         session()->flash('message', $student->first_name." ".$student->surname);
@@ -213,6 +249,9 @@ class StudentsController extends Controller
          */
         try {
             $student = Student::findOrFail($id);
+            //delete student photo
+            \Storage::delete($student->photo);
+
             $student->delete();
             return response()->json ( array (
                 'message' => "Student deleted!"
