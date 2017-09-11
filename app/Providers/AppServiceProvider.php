@@ -38,6 +38,20 @@ class AppServiceProvider extends ServiceProvider
             $view->with(compact('guardians'));
         });
 
+        view()->composer('layouts.sidebar', function ($view){
+            
+            $institution = \App\Institution::findOrFail(1);
+            //dd($guardians);
+            $view->with(compact('institution'));
+        });
+
+        view()->composer('layouts.header', function ($view){
+            
+            $academics = \App\Academic::where('status', 1)->get();
+            //dd($academic->status);
+            $view->with(compact('academics'));
+        });
+
         
     }
 

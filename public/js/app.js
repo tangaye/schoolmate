@@ -11925,10 +11925,10 @@ if (token) {
 __webpack_require__(30);
 
 // swal alert function to delete records
-window.swal_delete = function (message, item, route, row) {
+window.swal_delete = function (message, route, row) {
     swal({
         title: "Are you sure?",
-        text: message,
+        text: "Are you sure you want to delete this " + message,
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
@@ -11946,13 +11946,13 @@ window.swal_delete = function (message, item, route, row) {
                     swal("Deleted!", data.message, "success");
                     jQuery(row).fadeOut('slow');
                 } else if (data.error) {
-                    sweetAlert("Oops...", data.error, "error");
+                    swal("Oops...", data.error, "error");
                 }
             }).fail(function () {
                 swal("Oops...", "Something Went Wrong .... Please contact administrator :)", "error");
             });
         } else {
-            swal("Cancelled", item + " is safe :)", "error");
+            swal("Cancelled", message + " is safe :)", "error");
         }
     });
 };
