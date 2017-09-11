@@ -76,11 +76,28 @@ Route::group(['middleware' => ['auth', 'admin', 'preventBackHistory']], function
 	Route::post('/scores', 'ScoresController@store');
 
 	Route::get('/scores/report/terms', 'ScoresController@term'); // display form to search for student report
-
 	Route::post('/scores/report/terms', 'ScoresController@findTerm'); // send data and return student term report
-	
 	Route::get('/scores/report/semesters', 'ScoresController@semester'); // display form to search for student report
 	Route::post('/scores/report/semesters', 'ScoresController@findSemester'); // send data and return student semester report
+
+	//school information
+	Route::get('/institution', 'InstitutionController@index');
+	Route::post('/institution', 'InstitutionController@store');
+	Route::put('/institution/update/{id}', 'InstitutionController@update');
+
+	//school academic information
+	Route::get('/academics', 'AcademicsController@index');
+	Route::get('/academics/edit/{id}', 'AcademicsController@edit');
+	Route::post('/academics', 'AcademicsController@store');
+	Route::put('/academics/update/{id}', 'AcademicsController@update');
+	Route::delete('/academics/delete/{id}', 'AcademicsController@destroy');
+
+
+	Route::get('/academics/start/{date}', 'AcademicsController@findStartYear');
+	Route::get('/academics/end/{date}', 'AcademicsController@findEndYear');
+
+	Route::get('/academics/edit-start/{id}/{date}', 'AcademicsController@findEditStartYear');
+	Route::get('/academics/edit-end/{id}/{date}', 'AcademicsController@findEditEndYear');
 
 	//guardian
 	Route::get('/guardians', 'GuardiansController@index');

@@ -170,7 +170,7 @@ class SubjectsController extends Controller
             // Integrity constraint violation: 1451
             if($error_code  == 1451){
                 return response()->json ( array (
-                    'name' => "Subject is reference in other tables. Please unlink the subject from those tables and try again"
+                    'error' => "Subject is reference in other tables. Please unlink the subject from those tables and try again"
                 ) );
             }
             
