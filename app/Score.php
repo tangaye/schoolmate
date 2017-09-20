@@ -81,7 +81,7 @@ class Score extends Model
                 ->where('scores.term_id', $term->id)
                 ->get();
 
-        return \View::make('partials.term-report')->with(array(
+        return \View::make('scores.partials.term-report')->with(array(
             'student'=>$student, 
             'term'=>$term,
             'date'=>$date,
@@ -122,7 +122,7 @@ class Score extends Model
         }
 
 
-        return \View::make('partials.semester-report')->with(array(
+        return \View::make('scores.partials.semester-report')->with(array(
             'student'=>$student, 
             'terms'=>$terms,
             'date'=>$date,

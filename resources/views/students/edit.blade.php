@@ -13,15 +13,25 @@
 @section('admin-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
-  <li class="header">MAIN NAVIGATION</li>
-  <!-- Optionally, you can add icons to the links -->
+  <li class="header">ADMIN NAVIGATION</li>
+
   <li class="">
-    <a href="/home"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
+    <a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
     </a>
   </li>
 
   <!-- guardians -->
-  <li><a href="/guardians"><i class="fa fa-user"></i> <span>Guardians</span></a></li>
+  <li class="treeview">
+    <a href="#"><i class="fa fa-user"></i> <span>Guardians</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+    <ul class="treeview-menu">
+      <li><a href="{{route('guardians.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
+      <li><a href="{{route('guardians.form')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
+    </ul>
+  </li>
 
   <!-- Settings -->
   <li class="treeview">
@@ -55,7 +65,6 @@
     </ul>
   </li>
 
-  <!-- users -->
   <li class="treeview">
     <a href="#">
       <i class="glyphicon glyphicon-user"></i><span>Users</span>
@@ -64,8 +73,22 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li><a href="/users"><i class="glyphicon glyphicon-list-alt"></i>User List</a></li>
-      <li><a href="/register"><i class="fa fa-pencil"></i>Register User</a></li>
+      <li><a href="{{route('users.home')}}"><i class="glyphicon glyphicon-list-alt"></i>User List</a></li>
+      <li><a href="{{route('users.form')}}"><i class="fa fa-pencil"></i>New User</a></li>
+    </ul>
+  </li>
+
+   <!-- users roles-->
+  <li class="treeview">
+    <a href="#">
+      <i class="glyphicon glyphicon-user"></i><span>Users Roles</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+    <ul class="treeview-menu">
+      <li><a href="{{route('roles.home')}}"><i class="glyphicon glyphicon-list-alt"></i>Roles</a></li>
+      <li><a href="{{route('roles.form')}}"><i class="fa fa-pencil"></i>New Role</a></li>
     </ul>
   </li>
 
@@ -167,7 +190,7 @@
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 @if($student->guardian)
                     <div class="widget-user-header bg-yellow">
-                      <h3><a style="color: white;" href="/guardians/edit/{{$student->guardian->user->id}}">{{$student->guardian->user->first_name}} {{$student->guardian->user->surname}}</a></h3>
+                      <h3><a style="color: white;" href="/admin/guardians/edit/{{$student->guardian->id}}">{{$student->guardian->first_name}} {{$student->guardian->surname}}</a></h3>
                       <h5>{{$student->guardian->relationship}}</h5>
                     </div>
                     <div class="box-footer no-padding">
@@ -175,21 +198,14 @@
                         <li>
                             <a href="javascript:void(0)">Phone
                                 <span class="pull-right badge bg-blue">
-                                    {{$student->guardian->user->phone}}
+                                    {{$student->guardian->phone}}
                                 </span>
                             </a>
                         </li>
                         <li>
                             <a href="javascript:void(0)">Address 
                                 <span class="pull-right badge bg-aqua">
-                                    {{$student->guardian->user->address}}
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)">Education 
-                                <span class="pull-right badge bg-green">
-                                    {{$student->guardian->user->education}}
+                                    {{$student->guardian->address}}
                                 </span>
                             </a>
                         </li>
@@ -502,7 +518,7 @@
                                 <select name="guardian_id" id="guardian" class="form-control guardians" style="width: 100%;" required="">
                                     <option value="">None Selected(Please Select Guardian)</option>
                                     @foreach($guardians as $guardian)
-                                        <option value="{{$guardian->id}}" {{$guardian->id == $student->guardian_id ? 'selected' : ''}}>{{$guardian->first_name}} {{$guardian->surname}}</option>
+                                        <option value="{{$guardian->id}}" {{$guardian->id == $student->guardian->id ? 'selected' : ''}}>{{$guardian->first_name}} {{$guardian->surname}}</option>
                                     @endforeach
                                 </select>
                             </div>

@@ -44,7 +44,7 @@
                             <label>Division</label>
                             <p class="text-muted">Please select the division the class is found in.</p>
 
-                            <div id="grade-select">
+                            <div class="division-select">
                                 
                             </div>
                 

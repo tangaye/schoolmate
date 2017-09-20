@@ -83,7 +83,7 @@ class GradesController extends Controller
         $divisions =  Division::all();
 
 
-        return \View::make('partials.division-selected')->with(array('divisions'=>$divisions, 'grade_divisions'=>$grade_divisions->toArray()));
+        return \View::make('grades.partials.grade-division')->with(array('divisions'=>$divisions, 'grade_divisions'=>$grade_divisions->toArray()));
     }
 
     /**

@@ -18,10 +18,65 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/errors/unauthorized', 'ErrorsController@unauthorized');
+Route::get('/home', 'HomeController@index')->name('user.dashboard');
 
-Route::group(['middleware' => ['auth', 'admin', 'preventBackHistory']], function() {
+Route::get('/admin', 'AdminController@index')->name('admin.dashboard');
+Route::get('/admin/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+Route::post('/admin/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
+
+
+Route::get('/guardian', 'GuardianController@index')->name('guardian.dashboard');
+Route::get('/guardian/login', 'Auth\GuardianLoginController@showLoginForm')->name('guardian.login');
+Route::post('/guardian/login', 'Auth\GuardianLoginController@login')->name('guardian.login.submit');
+
+
+// the routes below have gates and polices assigned to them as to what a user
+// can do with a given student resource
+Route::group(['prefix' => 'users/students',  'middleware' => 'auth:web'], function()
+{
+    Route::get('/', 'StudentsController@index');
+
+    Route::get('create', 'StudentsController@create')
+    	->middleware('can:create-student');
+
+    Route::post('/', 'StudentsController@store')
+    	->middleware('can:create-student');
+
+    Route::get('edit/{id}', 'StudentsController@edit')
+    	->middleware('can:edit-student');
+
+    Route::put('update/{id}', 'StudentsController@update')
+    	->middleware('can:edit-student');
+
+    Route::delete('delete/{id}', 'StudentsController@destroy')
+    	->middleware('can:delete-student');
+});
+
+Route::group(['prefix' => 'users/scores', 'middleware' => 'auth:web'], function () {
+	Route::get('/', 'ScoresController@index');
+	Route::get('terms', 'ScoresController@scoreTerm');
+});
+
+// the routes below have gates and polices assigned to them as to what a user
+// can do with a given guardian resource
+Route::group(['prefix' => 'users/guardians',  'middleware' => 'auth:web'], function()
+{
+    Route::get('/', 'Admin\GuardiansController@index');
+
+    Route::get('create', 'Admin\GuardiansController@create')
+    	->middleware('can:create-guardian');
+
+    Route::post('/', 'Admin\GuardiansController@store')
+    	->middleware('can:create-guardian');
+
+    Route::get('edit/{id}', 'Admin\GuardiansController@edit')
+    	->middleware('can:edit-guardian');
+
+    Route::put('update/{id}', 'Admin\GuardiansController@update')
+    	->middleware('can:edit-guardian');
+});
+
+Route::group(['middleware' => ['auth:admin', 'preventBackHistory']], function() {
     // your routes
 
     //subject
@@ -100,28 +155,41 @@ Route::group(['middleware' => ['auth', 'admin', 'preventBackHistory']], function
 	Route::get('/academics/edit-end/{id}/{date}', 'AcademicsController@findEditEndYear');
 
 	//guardian
-	Route::get('/guardians', 'GuardiansController@index');
-	Route::get('/guardians/edit/{id}', 'GuardiansController@edit');
-	Route::put('/guardians/update/{id}', 'GuardiansController@update');
+	Route::get('/admin/guardians', 'Admin\GuardiansController@index')->name('guardians.home');
+	Route::get('/admin/guardians/edit/{id}', 'Admin\GuardiansController@edit');
+	Route::get('/admin/guardians/create', 'Admin\GuardiansController@create')->name('guardians.form');
+	Route::post('/admin/guardians', 'Admin\GuardiansController@store')->name('guardians.create');
+	Route::put('/admin/guardians/update/{id}', 'Admin\GuardiansController@update');
+	Route::delete('/admin/guardians/delete/{id}', 'Admin\GuardiansController@destroy');
 
 	//users
-	Route::get('/users', 'UsersController@index');
-	Route::get('/users/edit/{id}', 'UsersController@edit');
-	Route::put('/users/update/{id}', 'UsersController@update');
-	Route::delete('/users/delete/{id}', 'UsersController@destroy');
+	Route::get('/admin/users', 'Admin\UsersController@index')->name('users.home');
+	Route::get('/admin/users/create', 'Admin\UsersController@create')->name('users.form');
+	Route::post('/admin/users', 'Admin\UsersController@store')->name('users.create');
+	Route::get('/admin/users/edit/{id}', 'Admin\UsersController@edit');
+	Route::put('/admin/users/update/{id}', 'Admin\UsersController@update');
+	Route::delete('/admin/users/delete/{id}', 'Admin\UsersController@destroy');
+
+	//roles
+	Route::get('/roles', 'RolesController@index')->name('roles.home');
+	Route::get('/roles/create', 'RolesController@create')->name('roles.form');
+	Route::post('/roles', 'RolesController@store')->name('roles.create');
+	Route::get('/roles/edit/{id}', 'RolesController@edit');
+	Route::put('/roles/update/{id}', 'RolesController@update');
+	Route::delete('/roles/delete/{id}', 'RolesController@destroy');
 
 });
 
 
 
-Route::group(['middleware' => ['auth', 'guardian', 'preventBackHistory']], function() {
+Route::group(['middleware' => ['auth:guardian', 'preventBackHistory']], function() {
     // your routes
 
     //subject
-	Route::get('/guardian/students/term', 'GuardiansController@termForm');
-	Route::post('/guardian/students/term', 'GuardiansController@termResults');
+	Route::get('/guardian/students/term', 'GuardianController@termForm');
+	Route::post('/guardian/students/term', 'GuardianController@termResults');
 
-	Route::get('/guardian/students/semester', 'GuardiansController@semesterForm');
-	Route::post('/guardian/students/semester', 'GuardiansController@semesterResults');
+	Route::get('/guardian/students/semester', 'GuardianController@semesterForm');
+	Route::post('/guardian/students/semester', 'GuardianController@semesterResults');
 	
 });

@@ -22,15 +22,25 @@
 @section('admin-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
-  <li class="header">MAIN NAVIGATION</li>
-  <!-- Optionally, you can add icons to the links -->
+  <li class="header">ADMIN NAVIGATION</li>
+
   <li class="">
-    <a href="/home"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
+    <a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
     </a>
   </li>
 
   <!-- guardians -->
-  <li><a href="/guardians"><i class="fa fa-user"></i> <span>Guardians</span></a></li>
+  <li class="treeview">
+    <a href="#"><i class="fa fa-user"></i> <span>Guardians</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+    <ul class="treeview-menu">
+      <li><a href="{{route('guardians.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
+      <li><a href="{{route('guardians.form')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
+    </ul>
+  </li>
 
   <!-- Settings -->
   <li class="treeview">
@@ -64,7 +74,6 @@
     </ul>
   </li>
 
-  <!-- users -->
   <li class="treeview">
     <a href="#">
       <i class="glyphicon glyphicon-user"></i><span>Users</span>
@@ -73,8 +82,22 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li><a href="/users"><i class="glyphicon glyphicon-list-alt"></i>User List</a></li>
-      <li><a href="/register"><i class="fa fa-pencil"></i>Register User</a></li>
+      <li><a href="{{route('users.home')}}"><i class="glyphicon glyphicon-list-alt"></i>User List</a></li>
+      <li><a href="{{route('users.form')}}"><i class="fa fa-pencil"></i>New User</a></li>
+    </ul>
+  </li>
+
+   <!-- users roles-->
+  <li class="treeview">
+    <a href="#">
+      <i class="glyphicon glyphicon-user"></i><span>Users Roles</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+    <ul class="treeview-menu">
+      <li><a href="{{route('roles.home')}}"><i class="glyphicon glyphicon-list-alt"></i>Roles</a></li>
+      <li><a href="{{route('roles.form')}}"><i class="fa fa-pencil"></i>New Role</a></li>
     </ul>
   </li>
 
@@ -283,7 +306,7 @@
                             		<span class="input-group-addon">
                             			<i class="fa fa-phone"></i>
                             		</span>
-                            		<input id="phone" type="" name="phone" class="form-control" data-inputmask='"mask": "(9999) 999-999"' value="{{ old('phone') }}" data-mask>
+                            		<input id="phone" type="" name="phone" class="form-control" data-inputmask='"mask": "(9999) 999-999"' value="{{ old('phone') }}" phone-mask>
                             	</div>
                                 @if ($errors->has('phone'))
                                     <span class="help-block">
@@ -457,7 +480,7 @@
           autoclose: true
         });
 
-        $("[data-mask]").inputmask();
+        $("[phone-mask]").inputmask();
 
         // check if student picture is greater than 2mb
         // If it is avoid upload of such large file by 

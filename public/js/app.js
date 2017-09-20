@@ -11952,7 +11952,7 @@ window.swal_delete = function (message, route, row) {
                 swal("Oops...", "Something Went Wrong .... Please contact administrator :)", "error");
             });
         } else {
-            swal("Cancelled", message + " is safe :)", "error");
+            swal("Cancelled", "Item is safe :)", "error");
         }
     });
 };

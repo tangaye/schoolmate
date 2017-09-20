@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 use App\Score;
 use App\Student;
@@ -23,7 +24,14 @@ class ScoresController extends Controller
     public function index()
     {
         $terms = Term::all();
-        return view('scores.home', compact('terms'));
+
+        if (Auth::guard('admin')->check()) 
+        {
+            return view('scores.home', compact('terms'));
+        } 
+        else if (Auth::guard('web')->check()) {
+            return view('user-scores.home', compact('terms'));
+        }
     }
 
     /**
@@ -37,11 +45,18 @@ class ScoresController extends Controller
 
        $students = $score->termTables($term->id);
 
-        return \View::make('partials.term-table')->with(array(
-            'students'=>$students
-        ));
+        if (Auth::guard('admin')->check()) 
+        {
+            return \View::make('scores.partials.term-tables')->with(array(
+                'students'=>$students
+            ));
+        } 
+        else if (Auth::guard('web')->check()) {
+            return \View::make('user-scores.partials.term-tables')->with(array(
+                'students'=>$students
+            ));
+        }
 
-        //dd($students);
     }
 
     /**
@@ -55,7 +70,7 @@ class ScoresController extends Controller
         $terms = Term::all();
         $grades = Grade::all();
 
-        return view('scores.master', compact('subjects', 'grades', 'terms'));
+        return view('scores.partials.master-scores-form', compact('subjects', 'grades', 'terms'));
     }
 
 
@@ -78,7 +93,7 @@ class ScoresController extends Controller
             ->where('students.grade_id', $grade->id)
             ->get();  
 
-        return \View::make('partials.create-score')->with(array(
+        return \View::make('scores.create')->with(array(
             'students'=>$students, 
             'grade'=>$grade->name, 
             'subject'=>$subject, 
@@ -154,7 +169,7 @@ class ScoresController extends Controller
         //
         $terms = Term::all();
 
-        return view('scores.term', compact('terms'));
+        return view('scores.partials.student-term-scores', compact('terms'));
     }
 
     /**
@@ -171,7 +186,7 @@ class ScoresController extends Controller
 
     /**
      * Show the form to search for a specific.
-     * student term(periodic) report
+     * student semester report
      *
      * @return \Illuminate\Http\Response
      */
@@ -179,7 +194,7 @@ class ScoresController extends Controller
     {
         //
         $semesters = Semester::all();
-        return view('scores.semester', compact('semesters'));
+        return view('scores.partials.student-semester-scores', compact('semesters'));
     }
 
     public function findSemester(Request $request, Score $score)

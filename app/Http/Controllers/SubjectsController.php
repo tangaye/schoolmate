@@ -84,7 +84,7 @@ class SubjectsController extends Controller
         $grades =  Grade::all();
 
 
-        return \View::make('partials.grade-assigned')->with(array(
+        return \View::make('subjects.partials.grade-assigned')->with(array(
             'grades'=>$grades, 
             'subject_grades'=>$subject_grades->toArray()
         ));

@@ -16,7 +16,7 @@ class CreateTermsTable extends Migration
         Schema::create('terms', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->integer('semester_id')->unsigned()->nullable();
+            $table->unsignedInteger('semester_id');
             $table->timestamps();
 
             $table->foreign('semester_id')

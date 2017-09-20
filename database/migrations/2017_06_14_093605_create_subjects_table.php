@@ -24,8 +24,8 @@ class CreateSubjectsTable extends Migration
         * or within multiple classes (11th grade, 12th grade, 4th grade)
         **/
         Schema::create('grade_subject', function (Blueprint $table) {
-            $table->integer('subject_id')->unsigned()->nullable();
-            $table->integer('grade_id')->unsigned()->nullable();
+            $table->unsignedInteger('subject_id');
+            $table->unsignedInteger('grade_id');
             $table->primary(['subject_id', 'grade_id']);
 
             $table->foreign('subject_id')

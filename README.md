@@ -8,6 +8,9 @@ SchoolMate helps Secondary(High) school to easily store, retrieve and manage stu
 * Live search on Students grades
 * Guardian/Parent login
 * Student photo upload
+* User login
+* Multi Authentication
+* User Role Authentication
 
 ### Installation & Usage###
 
@@ -20,17 +23,7 @@ $ php artisan migrate
 $ php artisan db:seed
 $ php artisan serve
 ```
-```
-npm install notifyjs
-```
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
 
 ### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+* Nathan Tangaye Siafa [twitter](https://twitter.com/NathanSiafa1)

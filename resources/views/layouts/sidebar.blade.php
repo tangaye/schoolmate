@@ -26,10 +26,12 @@
     {{--If user is not a guardian but admin load the admin navigation
       else load the guardian navigation
     --}}
-    @if(!Auth::user()->hasType('\App\Guardian'))
+    @if(Auth::guard('admin')->check())
        @yield('admin-navigation')
-    @elseif(Auth::user()->hasType('\App\Guardian'))
+    @elseif(Auth::guard('guardian')->check())
       @yield('guardian-navigation')
+    @elseif(Auth::guard('web')->check())
+       @yield('user-navigation')
     @endif 
   </section>
   <!-- /.sidebar -->

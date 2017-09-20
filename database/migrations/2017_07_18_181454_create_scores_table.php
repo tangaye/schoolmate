@@ -15,11 +15,11 @@ class CreateScoresTable extends Migration
     {
         Schema::create('scores', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('student_id')->unsigned()->nullable();
-            $table->integer('subject_id')->unsigned()->nullable();
-            $table->integer('grade_id')->unsigned()->nullable();
-            $table->integer('term_id')->unsigned()->nullable();
-            $table->double('score')->unsigned()->nullable();
+            $table->unsignedInteger('student_id');
+            $table->unsignedInteger('subject_id');
+            $table->unsignedInteger('grade_id');
+            $table->unsignedInteger('term_id');
+            $table->double('score');
             $table->timestamps();
 
             $table->unique(array('student_id', 'subject_id', 'term_id'));

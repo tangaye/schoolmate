@@ -110,7 +110,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">User Details</div>
                 <div class="panel-body">
@@ -118,7 +118,7 @@
                         {{ csrf_field() }}
 
                         <div class="row">
-                            <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }} col-md-6">
+                            <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }} col-md-12">
                                 <label for="first_name" class="control-label">First Name</label>
 
                                 <input type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" id="first_name" required autofocus>
@@ -129,8 +129,10 @@
                                     </span>
                                 @endif
                             </div>
+                        </div>
 
-                            <div class="form-group{{ $errors->has('surname') ? ' has-error' : '' }} col-md-6">
+                        <div class="row">
+                            <div class="form-group{{ $errors->has('surname') ? ' has-error' : '' }} col-md-12">
                                 <label for="surname" class="    control-label">Last Name</label>
 
                                 <input id="surname" type="text" class="form-control" name="surname" value="{{ old('surname') }}" required autofocus>
@@ -144,17 +146,6 @@
                         </div>
 
                         <div class="row">
-                            <div class="form-group{{ $errors->has('date_of_birth') ? ' has-error' : '' }} col-md-6">
-                                <label for="date_of_birth" class="control-label">Date Of Birth</label>
-
-                                <input id="date_of_birth" type="text" class="form-control date" name="date_of_birth" value="{{ old('date_of_birth') }}" required autofocus>
-
-                                @if ($errors->has('date_of_birth'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('date_of_birth') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
 
                             <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }} col-md-6">
                                 <label for="gender" class="control-label">Gender</label>
@@ -170,39 +161,8 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="form-group{{ $errors->has('education') ? ' has-error' : '' }} col-md-4">
-                                <label for="education" class="control-label">Education</label>
-
-                                <select id="education" type="text" class="form-control" name="education" value="{{ old('education') }}" required autofocus>
-                                    <option value="High School Diploma">High School Diploma</option>
-                                    <option value="BSc">BSc</option>
-
-                                </select>
-
-                                @if ($errors->has('education'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('education') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-
-                            
-
-                            <div class="form-group{{ $errors->has('country') ? ' has-error' : '' }} col-md-4">
-                                <label for="country" class="control-label">Country</label>
-
-                                <input id="country" type="text" class="form-control" name="country" value="{{ old('country') }}" required autofocus>
-
-                                @if ($errors->has('country'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('country') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                            <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }} col-md-4">
+                            <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }} col-md-6">
                                 <label for="phone" class="control-label">Phone Number</label>
 
                                 <input data-inputmask='"mask": "(9999) 999-999"' data-mask id="phone" type="text" class="form-control" name="phone" value="{{ old('phone') }}" required autofocus>
@@ -230,57 +190,21 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }} col-md-12">
-                                <label for="gender" class="control-label">Type</label>
+                        
+                        <div class="form-group{{ $errors->has('role_id') ? ' has-error' : '' }}">
+                            <label for="role_id" class="control-label">Role</label>
 
-                                <select id="type" type="text" class="form-control" name="type" value="{{ old('type') }}" required autofocus>
-                                    <option value="">Select User type</option>
-                                    <option value="guardian">Guardian</option>
-                                    <option value="admin">Admin</option>
+                            <select class="form-control" name="role_id" id="role_id" value="{{old('role_id')}}" required="">
+                                @foreach($roles as $id => $name)
+                                    <option value="{{$id}}">{{$name}}</option>
+                                @endforeach
+                            </select>
 
-                                </select>
-
-                                @if ($errors->has('type'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('type') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-
-                        <div class="row relationship-div hidden">
-                            <div class="form-group{{ $errors->has('relationship') ? ' has-error' : '' }} col-md-12">
-                                <label class="control-label">Relationship</label>
-
-                                <select class="form-control relationship" name="relationship" value="{{ old('relationship') }}">
-                                    <option value="Father">Father</option>
-                                    <option value="Mother">Mother</option>
-                                    <option value="Brother">Brother</option>
-                                    <option value="Sister">Sister</option>
-                                </select>
-
-                                @if ($errors->has('relationship'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('relationship') }}</strong>
-                                    </span>
-                                @endif
-                            </div>                          
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group{{ $errors->has('user_name') ? ' has-error' : '' }} col-md-12">
-                                <label for="user_name" class="control-label">User Name</label>
-
-                                <input id="user_name" type="text" class="form-control" name="user_name" value="{{ old('user_name') }}" required autofocus>
-
-                                @if ($errors->has('user_name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('user_name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                            @if ($errors->has('role_id'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('role_id') }}</strong>
+                                </span>
+                            @endif
                         </div>
 
                         <div class="row">
@@ -336,36 +260,4 @@
 @section('page-scripts')
     <script src="{{ asset ("/bower_components/AdminLTE/plugins/datepicker/bootstrap-datepicker.js") }}"></script>
     <script src="{{ asset ("/bower_components/AdminLTE/plugins/input-mask/jquery.inputmask.js") }}"></script>
-
-    <script type="text/javascript">
-        //Date picker
-        $('#date_of_birth').datepicker({
-          autoclose: true
-        });
-
-        $("[data-mask]").inputmask();
-
-        $('#type').on('change', function(event) {
-            event.preventDefault();
-
-            var type = $("#type").val();
-            if (type === "guardian") {
-                $(".relationship-div").removeClass('hidden');
-                $('.relationship').attr('required', true);
-                $(".relationship-div").show();
-            } else {
-                $(".relationship-div").addClass('hidden');
-                $('.relationship').attr('required', false);
-                $('#relationship').hide();
-            }
-
-        });
-    </script>
-
-    @if($flash = session('message'))
-        <script type="text/javascript">
-            var message = "User <b>{{$flash}}</b> save!";
-            notify(message);
-        </script>
-    @endif
 @endsection

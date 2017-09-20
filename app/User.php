@@ -3,6 +3,8 @@
 namespace App;
 
 use Carbon\Carbon;
+use App\Role;
+
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -16,18 +18,14 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name',
-        'surname',
-        'date_of_birth',
+        'name',
         'gender',
-        'education',
         'address',
         'phone',
-        'country',
         'user_name',
         'email',
-        'type',
-        'password'
+        'password',
+        'role_id',
     ];
 
     /**
@@ -39,50 +37,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function setDateOfBirthAttribute($value)
+    // a user has only one role or belongs to a single row
+    public function role()
     {
-       return $this->attributes['date_of_birth'] = Carbon::createFromFormat('d/m/Y', $value);
+        return $this->belongsTo(Role::class);
     }
 
-    // this helps get a readable format for the date of birth field
-    protected $dates = ['date_of_birth'];
-
-    public function data()
-    {
-        return $this->hasOne($this->type);
-    }
-
-    /**
-     * Check if this user belongs to a role
-     *
-     * @return bool
-     */
-    public function hasType($type)
-    {
-        return $this->type == $type;
-    }
-
-    public static function relationships()
-    {
-        return [
-            'Father',
-            'Mother',
-            'Uncle',
-            'Brother',
-            'Sister',
-            'Grand Father',
-            'Grand Mother'
-        ];
-    }
-
-    public static function roles()
-    {
-        return [
-            'admin',
-            'registrar',
-            'secretary'
-        ];
-    }
 
     public static function genders()
     {
@@ -92,11 +52,12 @@ class User extends Authenticatable
         ];
     }
 
-    public static function educations()
+
+    public function hasAccess(array $permissions)
     {
-        return [
-            "Bsc", 
-            "High School Diploma"
-        ];
+        if ($this->role->hasAccess($permissions)) {
+            return true;
+        }
+        return false;
     }
 }

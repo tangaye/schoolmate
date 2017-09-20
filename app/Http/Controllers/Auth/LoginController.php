@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -35,13 +36,41 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest:web')->except('logout');
     }
 
     public function username()
     {
-        return 'user_name';
+        return 'email';
     }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        if (Auth::guard('admin')->check()) {
+            $this->redirectTo = redirect()->route('admin.login');
+        }
+        else if (Auth::guard('guardian')->check()) {
+            $this->redirectTo = redirect()->route('guardian.login');
+        }
+
+        elseif (Auth::guard('web')->check()) {
+            $this->redirectTo = redirect('/');
+        }
+
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return $this->redirectTo;
+        
+    }
+
 
     /**
      * The user has been authenticated.

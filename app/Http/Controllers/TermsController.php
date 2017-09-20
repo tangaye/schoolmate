@@ -73,7 +73,7 @@ class TermsController extends Controller
         $semesters =  Semester::all();
 
 
-        return \View::make('partials.semester-selected')->with(array('semesters'=>$semesters, 'term_semester'=>$term_semester->toArray()));
+        return \View::make('terms.partials.term-semester')->with(array('semesters'=>$semesters, 'term_semester'=>$term_semester->toArray()));
     }
 
     /**

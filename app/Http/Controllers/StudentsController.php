@@ -12,6 +12,7 @@ use Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class StudentsController extends Controller
 {
@@ -26,7 +27,13 @@ class StudentsController extends Controller
         //
         $students = Student::with('grade')->get();
 
-        return view('students.home', compact('students'));
+        if (Auth::guard('admin')->check()) 
+        {
+            return view('students.home', compact('students'));
+        } 
+        else if (Auth::guard('web')->check()) {
+            return view('user-students.home', compact('students'));
+        }
     }
 
     /**
@@ -36,17 +43,15 @@ class StudentsController extends Controller
      */
     public function create()
     {
-        //pass guardians to be assigned to students
-        $guardians = \DB::table('guardians')
-            ->join('users', 'users.id', '=', 'guardians.user_id')
-            ->select('users.surname', 'users.first_name', 'guardians.id')
-            ->where('users.type', '\App\Guardian')
-            ->get();
 
-        $grades = Grade::all();
-        //$guardians = User::where('type', '\App\Guardian')->get();
-       
-        return view('students.create', compact('grades', 'guardians'));
+        if (Auth::guard('admin')->check()) 
+        {
+            return view('students.create');
+        } 
+        else if (Auth::guard('web')->check()) {
+            return view('user-students.create');
+        }
+    
     }
 
     /**
@@ -136,19 +141,13 @@ class StudentsController extends Controller
         //
         $student = Student::findOrfail($id);
 
-        //dd($student->guardian->user->address);
-
-        //pass all grades
-        $grades =  Grade::all();
-
-        //pass guardians to be assigned to students
-        $guardians = \DB::table('guardians')
-            ->join('users', 'users.id', '=', 'guardians.user_id')
-            ->select('users.surname', 'users.first_name', 'guardians.id')
-            ->where('users.type', '\App\Guardian')
-            ->get();
-
-        return view('students.edit', compact('student', 'grades', 'guardians'));
+        if (Auth::guard('admin')->check()) 
+        {
+            return view('students.edit', compact('student'));
+        } 
+        else if (Auth::guard('web')->check()) {
+            return view('user-students.edit', compact('student'));
+        }
     }
 
     /**
@@ -229,7 +228,13 @@ class StudentsController extends Controller
         // send a message to the session that greets/ thank user
         session()->flash('message', $student->first_name." ".$student->surname);
 
-        return redirect('/students');
+        if (Auth::guard('admin')->check()) 
+        {
+            return redirect('/students');
+        } 
+        else if (Auth::guard('web')->check()) {
+            return redirect('/users/students');
+        }
     }
 
     /**

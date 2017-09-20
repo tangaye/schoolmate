@@ -15,7 +15,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('preventBackHistory');
-        $this->middleware('auth');
+        $this->middleware('auth:web');
     }
 
     /**
@@ -25,13 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        // if user is admin, secretary or registrar
-        if (!Auth::user()->hasType('\App\Guardian')) {
-            return view('admin-dashboard');   
-        }
-        // else if the user is guardian 
-        elseif (Auth::user()->hasType('\App\Guardian')){
-            return view('guardian-dashboard');
-        }
+        return view('users.home');
     }
 }

@@ -16,7 +16,7 @@ class CreateGradesTable extends Migration
         Schema::create('grades', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->integer('division_id')->unsigned()->nullable();
+            $table->unsignedInteger('division_id');
             $table->timestamps();
 
             $table->foreign('division_id')

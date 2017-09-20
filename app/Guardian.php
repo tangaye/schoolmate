@@ -2,12 +2,25 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Guardian extends Model
+class Guardian extends Authenticatable
 {
+    use Notifiable;
+
+    protected $guard = 'guardian';
     //
-    protected $fillable = ['relationship', 'user_id'];
+    protected $fillable = [
+        'first_name',
+        'surname',
+        'gender',
+        'address',
+        'phone',
+        'email',
+        'relationship', 
+        'password',
+    ];
 
 	// relationship between student and guardian
     // a guardian may have many students
@@ -16,8 +29,25 @@ class Guardian extends Model
     	return $this->hasMany(Student::class);
     }
 
-    public function user()
+    public static function relationships()
     {
-        return $this->belongsTo(User::class);
+        return [
+            'Father',
+            'Mother',
+            'Uncle',
+            'Brother',
+            'Sister',
+            'Grand Father',
+            'Grand Mother'
+        ];
     }
+
+    public static function genders()
+    {
+        return [
+            "Male", 
+            "Female"
+        ];
+    }
+
 }
