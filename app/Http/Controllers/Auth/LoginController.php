@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/users';
 
     /**
      * Create a new controller instance.
@@ -36,7 +36,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest:web')->except('logout');
+        $this->middleware('guest:web')->except('userLogout');
     }
 
     public function username()
@@ -50,24 +50,10 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function logout(Request $request)
+    public function userLogout()
     {
-        if (Auth::guard('admin')->check()) {
-            $this->redirectTo = redirect()->route('admin.login');
-        }
-        else if (Auth::guard('guardian')->check()) {
-            $this->redirectTo = redirect()->route('guardian.login');
-        }
-
-        elseif (Auth::guard('web')->check()) {
-            $this->redirectTo = redirect('/');
-        }
-
-        $this->guard()->logout();
-
-        $request->session()->invalidate();
-
-        return $this->redirectTo;
+        Auth::guard('web')->logout();
+        return redirect('/users');
         
     }
 

@@ -4,18 +4,28 @@
 
 @section('page-header', 'Home')
 
-@section('page-description', 'Control Panel')
+@section('page-description', 'Administrator Control Panel')
 
 @section('page-css')
 <!-- Animate css -->
   <link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
 @endsection
+
+@section('user-logout')
+  @component('components.user-logout')
+      @slot('user_name')
+          {{Auth::guard('admin')-> user()->user_name}}
+      @endslot
+      {{route('admin.logout')}}
+  @endcomponent
+@endsection
+
 @section('breadcrumb')
     <li><a href="#"><i class="fa fa-dashboard"></i> Home </a></li>
     <li class="active">Dashboard</li>
 @endsection
 
-@section('admin-navigation')
+@section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
   <li class="header">ADMIN NAVIGATION</li>
@@ -37,6 +47,19 @@
       <li><a href="{{route('guardians.form')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
     </ul>
   </li>
+
+  <!-- teachres -->
+<li class="treeview">
+  <a href="#"><i class="glyphicon glyphicon-education"></i> <span>Teachers</span>
+    <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+  </a>
+  <ul class="treeview-menu">
+    <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
+    <li><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
+  </ul>
+</li>
 
   <!-- Settings -->
   <li class="treeview">

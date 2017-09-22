@@ -16,7 +16,7 @@
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
-@section('admin-navigation')
+@section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
   <li class="header">ADMIN NAVIGATION</li>
@@ -38,6 +38,18 @@
       <li><a href="{{route('guardians.form')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
     </ul>
   </li>
+  
+  <!-- teacher -->
+  <li class="treeview">
+    <a href="#"><i class="glyphicon glyphicon-education"></i> <span>Teachers</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+    <ul class="treeview-menu">
+      <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
+      <li><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
+    </ul>
   </li>
 
   <!-- Settings -->

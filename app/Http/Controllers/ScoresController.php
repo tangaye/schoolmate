@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
 
 use App\Score;
 use App\Student;
@@ -25,13 +24,7 @@ class ScoresController extends Controller
     {
         $terms = Term::all();
 
-        if (Auth::guard('admin')->check()) 
-        {
-            return view('scores.home', compact('terms'));
-        } 
-        else if (Auth::guard('web')->check()) {
-            return view('user-scores.home', compact('terms'));
-        }
+         return view('scores.home', compact('terms'));
     }
 
     /**
@@ -45,18 +38,9 @@ class ScoresController extends Controller
 
        $students = $score->termTables($term->id);
 
-        if (Auth::guard('admin')->check()) 
-        {
-            return \View::make('scores.partials.term-tables')->with(array(
+        return \View::make('scores.partials.term-tables')->with(array(
                 'students'=>$students
             ));
-        } 
-        else if (Auth::guard('web')->check()) {
-            return \View::make('user-scores.partials.term-tables')->with(array(
-                'students'=>$students
-            ));
-        }
-
     }
 
     /**

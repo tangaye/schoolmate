@@ -11,15 +11,24 @@
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
+@section('user-logout')
+  @component('components.user-logout')
+      @slot('user_name')
+          {{Auth::guard('guardian')-> user()->user_name}}
+      @endslot
+      {{route('guardian.logout')}}
+  @endcomponent
+@endsection
+
 @section('page-header', 'Guardian Student Semester Report')
 
-@section('guardian-navigation')
+@section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
   <li class="header">MAIN NAVIGATION</li>
   <!-- Optionally, you can add icons to the links -->
   <li>
-    <a href="/home"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
+    <a href="{{route('guardian.dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
     </a>
   </li>
   <!-- reports -->

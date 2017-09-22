@@ -49,6 +49,7 @@ $factory->define(App\Guardian::class, function (Faker\Generator $faker) {
         'address' => $faker->city,
         'phone' => '0777653657',
         'relationship' => 'Father',
+        'user_name' => $faker->userName,
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret')
     ];

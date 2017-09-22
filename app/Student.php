@@ -40,14 +40,6 @@ class Student extends Model
         ];
     }
 
-    public static function genders()
-    {
-        return [
-            "Male", 
-            "Female"
-        ];
-    }
-
     public static function religions()
     {
         return [

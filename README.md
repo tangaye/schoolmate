@@ -1,18 +1,19 @@
 # SchoolMate #
 
-SchoolMate helps Secondary(High) school to easily store, retrieve and manage students records.
+A Hig School Management System for Schools in # Liberia #.
 
-### Features ###
+# Features #
 
 * Built with [Laravel 5.4](https://laravel.com)
 * Live search on Students grades
 * Guardian/Parent login
 * Student photo upload
 * User login
+* Teacher login
 * Multi Authentication
 * User Role Authentication
 
-### Installation & Usage###
+# Installation & Usage #
 
 ```sh
 $ git clone git@github.com:nathansiafa/SchoolMate.git
@@ -24,6 +25,6 @@ $ php artisan db:seed
 $ php artisan serve
 ```
 
-### Who do I talk to? ###
+# Who do I talk to? #
 
 * Nathan Tangaye Siafa [twitter](https://twitter.com/NathanSiafa1)

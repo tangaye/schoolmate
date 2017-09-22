@@ -12,7 +12,6 @@ use Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
 
 class StudentsController extends Controller
 {
@@ -27,13 +26,7 @@ class StudentsController extends Controller
         //
         $students = Student::with('grade')->get();
 
-        if (Auth::guard('admin')->check()) 
-        {
-            return view('students.home', compact('students'));
-        } 
-        else if (Auth::guard('web')->check()) {
-            return view('user-students.home', compact('students'));
-        }
+       return view('students.home', compact('students'));
     }
 
     /**
@@ -44,13 +37,7 @@ class StudentsController extends Controller
     public function create()
     {
 
-        if (Auth::guard('admin')->check()) 
-        {
-            return view('students.create');
-        } 
-        else if (Auth::guard('web')->check()) {
-            return view('user-students.create');
-        }
+        return view('students.create');
     
     }
 
@@ -141,13 +128,7 @@ class StudentsController extends Controller
         //
         $student = Student::findOrfail($id);
 
-        if (Auth::guard('admin')->check()) 
-        {
-            return view('students.edit', compact('student'));
-        } 
-        else if (Auth::guard('web')->check()) {
-            return view('user-students.edit', compact('student'));
-        }
+        return view('students.edit', compact('student'));
     }
 
     /**
@@ -228,13 +209,7 @@ class StudentsController extends Controller
         // send a message to the session that greets/ thank user
         session()->flash('message', $student->first_name." ".$student->surname);
 
-        if (Auth::guard('admin')->check()) 
-        {
-            return redirect('/students');
-        } 
-        else if (Auth::guard('web')->check()) {
-            return redirect('/users/students');
-        }
+        return redirect('/students');
     }
 
     /**

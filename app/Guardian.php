@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use Carbon\Carbon;
+
+
 class Guardian extends Authenticatable
 {
     use Notifiable;
@@ -17,6 +20,7 @@ class Guardian extends Authenticatable
         'gender',
         'address',
         'phone',
+        'user_name',
         'email',
         'relationship', 
         'password',
@@ -39,14 +43,6 @@ class Guardian extends Authenticatable
             'Sister',
             'Grand Father',
             'Grand Mother'
-        ];
-    }
-
-    public static function genders()
-    {
-        return [
-            "Male", 
-            "Female"
         ];
     }
 

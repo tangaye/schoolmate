@@ -13,7 +13,17 @@
 
 @section('page-header', 'New Guardian')
 
-@section('user-navigation')
+@section('user-logout')
+  @component('components.user-logout')
+      @slot('user_name')
+          {{Auth::guard('web')-> user()->user_name}}
+      @endslot
+      {{route('user.logout')}}
+  @endcomponent
+@endsection
+
+
+@section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
   <li class="header">USER NAVIGATION</li>
@@ -171,7 +181,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} col-md-12">
+                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} col-md-6">
                                 <label for="email" class="control-label">E-Mail Address</label>
 
                                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
@@ -179,6 +189,18 @@
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="form-group{{ $errors->has('user_name') ? ' has-error' : '' }} col-md-6">
+                                <label for="user_name" class="control-label">User Name</label>
+
+                                <input id="user_name" type="email" class="form-control" name="user_name" value="{{old('user_name')}}">
+
+                                @if ($errors->has('user_name'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('user_name') }}</strong>
                                     </span>
                                 @endif
                             </div>

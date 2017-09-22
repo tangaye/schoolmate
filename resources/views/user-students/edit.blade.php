@@ -10,7 +10,7 @@
 @endsection
 
 
-@section('user-navigation')
+@section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
   <li class="header">USER NAVIGATION</li>
@@ -121,7 +121,7 @@
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 @if($student->guardian)
                     <div class="widget-user-header bg-yellow">
-                      <h3><a style="color: white;" href="/admin/guardians/edit/{{$student->guardian->id}}">{{$student->guardian->first_name}} {{$student->guardian->surname}}</a></h3>
+                      <h3><a style="color: white;" href="/users/guardians/edit/{{$student->guardian->id}}">{{$student->guardian->first_name}} {{$student->guardian->surname}}</a></h3>
                       <h5>{{$student->guardian->relationship}}</h5>
                     </div>
                     <div class="box-footer no-padding">

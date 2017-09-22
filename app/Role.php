@@ -40,12 +40,12 @@ class Role extends Model
     {
         return [
             "create-student" => "true",
-            "edit-student" => "true",
+            "show-student" => "true",
             "delete-student" => "true",
             "update-student" => "true",
+            "show-guardian" => "true",
             "create-guardian" => "true", 
             "delete-guardian" => "true",
-            "edit-guardian" => "true",
             "update-guardian" => "true",
         ];
     }

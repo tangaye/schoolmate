@@ -36,10 +36,15 @@ class RedirectIfAuthenticated
                     return redirect()->route('guardian.dashboard');
                 }
                 break;
+            case 'teacher':
+                if (Auth::guard($guard)->check()) {
+                    return redirect()->route('teacher.dashboard');
+                }
+                break;
             default:
                 // code...
                 if (Auth::guard($guard)->check()) {
-                    return redirect('/home');
+                    return redirect('/users');
                 }
                 break;
         }

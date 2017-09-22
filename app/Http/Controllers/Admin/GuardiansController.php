@@ -11,13 +11,21 @@ use App\Term;
 use App\Score;
 use App\Student;
 use App\Semester;
-
-
-use Illuminate\Support\Facades\Auth;
+use App\Common;
 
 
 class GuardiansController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:admin,web');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -28,13 +36,7 @@ class GuardiansController extends Controller
         //
         $guardians = Guardian::all();
 
-        if (Auth::guard('admin')->check()) 
-        {
-            return view('admin-guardians.home', compact('guardians'));
-        } 
-        else if (Auth::guard('web')->check()) {
-            return view('user-guardians.home', compact('guardians'));
-        }
+        return view('admin-guardians.home', compact('guardians'));
         
     }
 
@@ -47,13 +49,7 @@ class GuardiansController extends Controller
     {
         $relationships = Guardian::relationships();
 
-        if (Auth::guard('admin')->check()) 
-        {
-            return view('admin-guardians.create', compact('relationships'));
-        } 
-        else if (Auth::guard('web')->check()) {
-            return view('user-guardians.create', compact('relationships'));
-        }
+        return view('admin-guardians.create', compact('relationships'));
     }
 
      /**
@@ -71,7 +67,8 @@ class GuardiansController extends Controller
             'relationship' => 'required|string',
             'address' => 'required|string|max:255|regex:/^[a-z ,.\'-]+$/i',
             'phone' => 'required|unique:guardians',
-            'email' => 'sometimes|string|email|max:255|unique:guardians|nullable',
+            'user_name' => 'required|string|unique:guardians|max:20',
+            'email' => 'sometimes|email|unique:guardians|nullable',
             'password' => 'required|string|min:6|confirmed'
         ]);
 
@@ -82,6 +79,7 @@ class GuardiansController extends Controller
             'relationship' => request('relationship'),
             'address' => request('address'),
             'phone' => request('phone'),
+            'user_name' => request('user_name'),
             'email' => request('email'),
             'password' => bcrypt(request('password'))
         ]);
@@ -104,18 +102,12 @@ class GuardiansController extends Controller
         //
         $guardian = Guardian::findOrfail($id);
 
-        //pass guardian with students assigned to he/she
+        //pass guardian with students assigned
         $guardians = Guardian::with('student')->where('id', $guardian->id)->get();
-        $genders = Guardian::genders();
+        $genders = Common::genders();
         $relationships = Guardian::relationships();
 
-        if (Auth::guard('admin')->check()) 
-        {
-            return view('admin-guardians.edit', compact('guardian', 'guardians', 'genders', 'relationships'));
-        } 
-        else if (Auth::guard('web')->check()) {
-            return view('user-guardians.edit', compact('guardian', 'guardians', 'genders', 'relationships'));
-        }
+        return view('admin-guardians.edit', compact('guardian', 'guardians', 'genders', 'relationships'));
 
         
     }
@@ -129,7 +121,6 @@ class GuardiansController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $guardian = Guardian::findOrfail($id);
 
         $this->validate(request(), [
             'first_name' => 'required|string|max:200|regex:/^[a-z ,.\'-]+$/i',
@@ -137,9 +128,12 @@ class GuardiansController extends Controller
             'gender' => 'required|string',
             'relationship' => 'required|string',
             'address' => 'required|string|max:255|regex:/^[a-z ,.\'-]+$/i',
-            'phone' => 'required|unique:guardians,phone,'.$guardian->id,
-            'email' => 'sometimes|nullable|string|email|max:255|unique:guardians,email,'.$guardian->id
+            'phone' => 'required|unique:guardians,phone,'.$id,
+            'user_name' => 'required|string|max:30|unique:guardians,user_name,'.$id,
+            'email' => 'sometimes|nullable|email|unique:guardians,email,'.$id
         ]);
+
+        $guardian = Guardian::findOrfail($id);
 
         // update guardian/user
         $guardian->first_name = $request->first_name;
@@ -148,6 +142,7 @@ class GuardiansController extends Controller
         $guardian->relationship = $request->relationship;
         $guardian->address = $request->address;
         $guardian->phone = $request->phone;
+        $guardian->user_name = $request->user_name;
         $guardian->email = $request->email;
 
         // if password is being updated
@@ -160,18 +155,12 @@ class GuardiansController extends Controller
             $guardian->password = bcrypt($request->password);  
         }
 
-        $guardian->save();
+        $guardian->update();
 
         // notify guardian has been updated
         session()->flash('message', $guardian->first_name." ".$guardian->surname);
 
-        if (Auth::guard('admin')->check()) 
-        {
-            return redirect()->route('guardians.home');
-        } 
-        else if (Auth::guard('web')->check()) {
-            return redirect('/users/guardians');
-        }
+        return redirect()->route('guardians.home');
     }
 
     

@@ -11,7 +11,7 @@ class GuardianLoginController extends Controller
     // only people who are admins and are not login can access this
     public function __construct()
     {
-        $this->middleware('guest:guardian');
+        $this->middleware('guest:guardian')->except('logout');
     }
 
     public function showLoginForm()
@@ -64,5 +64,19 @@ class GuardianLoginController extends Controller
     public function username()
     {
         return 'phone';
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout()
+    {
+        Auth::guard('guardian')->logout();
+
+        return redirect()->route('guardian.dashboard');
+        
     }
 }

@@ -19,7 +19,7 @@
 @section('page-header', 'Create Student')
 
 
-@section('user-navigation')
+@section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
   <li class="header">USER NAVIGATION</li>
