@@ -13,7 +13,17 @@
 <link href="{{ asset("/bower_components/AdminLTE/plugins/datepicker/datepicker3.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
-@section('admin-navigation')
+@section('user-logout')
+  @component('components.user-logout')
+      @slot('user_name')
+          {{Auth::guard('admin')-> user()->user_name}}
+      @endslot
+      {{route('admin.logout')}}
+  @endcomponent
+@endsection
+
+
+@section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
   <li class="header">ADMIN NAVIGATION</li>
@@ -33,6 +43,19 @@
     <ul class="treeview-menu">
       <li class="active"><a href="{{route('guardians.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
       <li><a href="{{route('guardians.form')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
+    </ul>
+  </li>
+
+  <!-- teacher -->
+  <li class="treeview">
+    <a href="#"><i class="glyphicon glyphicon-education"></i> <span>Teachers</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+    <ul class="treeview-menu">
+      <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
+      <li><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
     </ul>
   </li>
 
@@ -313,7 +336,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} col-md-12">
+                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} col-md-6">
                                 <label for="email" class="control-label">E-Mail Address</label>
 
                                 <input id="email" type="email" class="form-control" name="email" value="{{$guardian->email}}">
@@ -321,6 +344,18 @@
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="form-group{{ $errors->has('user_name') ? ' has-error' : '' }} col-md-6">
+                                <label for="user_name" class="control-label">User Name</label>
+
+                                <input id="user_name" type="email" class="form-control" name="user_name" value="{{$guardian->user_name}}">
+
+                                @if ($errors->has('user_name'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('user_name') }}</strong>
                                     </span>
                                 @endif
                             </div>

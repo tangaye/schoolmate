@@ -17,8 +17,17 @@
 
 @section('page-header', 'Score Tables')
 
+@section('user-logout')
+  @component('components.user-logout')
+      @slot('user_name')
+          {{Auth::guard('web')-> user()->user_name}}
+      @endslot
+      {{route('user.logout')}}
+  @endcomponent
+@endsection
 
-@section('user-navigation')
+
+@section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
   <li class="header">USER NAVIGATION</li>

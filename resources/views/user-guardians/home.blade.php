@@ -17,7 +17,17 @@
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
-@section('user-navigation')
+@section('user-logout')
+  @component('components.user-logout')
+      @slot('user_name')
+          {{Auth::guard('web')-> user()->user_name}}
+      @endslot
+      {{route('user.logout')}}
+  @endcomponent
+@endsection
+
+
+@section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
   <li class="header">USER NAVIGATION</li>
@@ -98,7 +108,7 @@
 									<td>{{$guardian->phone}}</td>
 									<td>{{$guardian->relationship}}</td>
 									<td>
-										@can('edit-guardian')
+										@can('show-guardian')
 											<a data-toggle="tooltip" title="Edit" href="/users/guardians/edit/{{$guardian->id}}" role="button">
 												<i class="glyphicon glyphicon-edit text-info"></i>
 											</a> &nbsp; 

@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer(['students.edit', 'user-students.edit'], function ($view){
             $types = \App\Student::types();
-            $genders = \App\Student::genders();
+            $genders = \App\Common::genders();
             $counties = \App\Student::counties();
             $religions = \App\Student::religions();
             $grades =  \App\Grade::all();

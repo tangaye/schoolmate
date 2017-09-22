@@ -60,7 +60,7 @@ class UsersController extends Controller
             'gender' => 'required|string|regex:/^[a-z ,.\'-]+$/i',
             'address' => 'required|string|regex:/^[a-z ,.\'-]+$/i',
             'phone' => 'required|string',
-            'user_name' => 'required|string|unique:users|max:30',
+            'user_name' => 'required|string|unique:users|max:20',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'role_id' => 'required',

@@ -17,7 +17,17 @@
 
 @section('page-header', 'Students')
 
-@section('user-navigation')
+@section('user-logout')
+  @component('components.user-logout')
+      @slot('user_name')
+          {{Auth::guard('web')-> user()->user_name}}
+      @endslot
+      {{route('user.logout')}}
+  @endcomponent
+@endsection
+
+
+@section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
   <li class="header">USER NAVIGATION</li>
@@ -106,7 +116,7 @@
 									<td>{{$student->grade->name}}</td>
 
 									<td>
-										@can('edit-student')
+										@can('show-student')
 											<a id="edit-student" href="/users/students/edit/{{$student->id}}" data-toggle="tooltip" title="Edit" href="#" role="button">
 												<i class="glyphicon glyphicon-edit text-info"></i>
 											</a> &nbsp;

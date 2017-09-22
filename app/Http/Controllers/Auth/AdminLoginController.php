@@ -11,7 +11,7 @@ class AdminLoginController extends Controller
     // only people who are admins and are not login can access this
     public function __construct()
     {
-        $this->middleware('guest:admin');
+        $this->middleware('guest:admin')->except('logout');
     }
 
     public function showLoginForm()
@@ -65,5 +65,20 @@ class AdminLoginController extends Controller
     {
         return 'email';
     }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+
+        return redirect()->route('admin.dashboard');
+        
+    }
+
 
 }

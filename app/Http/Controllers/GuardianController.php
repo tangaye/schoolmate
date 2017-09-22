@@ -9,8 +9,12 @@ use App\Term;
 use App\Semester;
 
 
-
-
+/**
+ * This controller handles redirecting logged in guardians
+ * to the home or guardian dashboard page.
+ * It also posses functions that allows a guardian to view scores
+ * of student(s) assigned to them.
+ */
 
 class GuardianController extends Controller
 {
@@ -21,8 +25,8 @@ class GuardianController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('preventBackHistory');
         $this->middleware('auth:guardian');
+        $this->middleware('preventBackHistory');
     }
 
     /**
@@ -34,7 +38,6 @@ class GuardianController extends Controller
     {   
         $guardians = Guardian::with('student')->where('id', Auth::guard('guardian')->user()->id)->get();
 
-       // dd($guardian);
         return view('guardian.home', compact('guardians'));
     }
 

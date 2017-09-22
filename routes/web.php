@@ -11,73 +11,88 @@
 |
 */
 
-// user registration
-
+// user login view
 Route::get('/', function () {
     return view('auth.login');
 });
 
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('user.dashboard');
+Route::get('/users', 'UsersController@index')->name('user.dashboard');
+Route::post('users/logout', 'Auth\LoginController@userLogout')->name('user.logout');
 
-Route::get('/admin', 'AdminController@index')->name('admin.dashboard');
-Route::get('/admin/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
-Route::post('/admin/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
+// routes for admin login and dashboard
+Route::group(['prefix' => 'admin'], function () {
+	Route::get('/', 'AdminController@index')->name('admin.dashboard');
+	Route::get('login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+	Route::post('login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
+	Route::post('logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
+});
 
+// routes for guardian login and dashboard
+Route::group(['prefix' => 'guardian'], function () {
+	Route::get('/', 'GuardianController@index')->name('guardian.dashboard');
+	Route::get('login', 'Auth\GuardianLoginController@showLoginForm')->name('guardian.login');
+	Route::post('login', 'Auth\GuardianLoginController@login')->name('guardian.login.submit');
+	Route::post('logout', 'Auth\GuardianLoginController@logout')->name('guardian.logout');
+});
 
-Route::get('/guardian', 'GuardianController@index')->name('guardian.dashboard');
-Route::get('/guardian/login', 'Auth\GuardianLoginController@showLoginForm')->name('guardian.login');
-Route::post('/guardian/login', 'Auth\GuardianLoginController@login')->name('guardian.login.submit');
+// routes for teacher login and dashboard
+Route::group(['prefix' => 'teacher'], function () {
+	Route::get('/', 'TeachersController@index')->name('teacher.dashboard');
+	Route::get('login', 'Auth\TeacherLoginController@showLoginForm')->name('teacher.login');
+	Route::post('login', 'Auth\TeacherLoginController@login')->name('teacher.login.submit');
+	Route::post('logout', 'Auth\TeacherLoginController@logout')->name('teacher.logout');
+});
 
 
 // the routes below have gates and polices assigned to them as to what a user
 // can do with a given student resource
 Route::group(['prefix' => 'users/students',  'middleware' => 'auth:web'], function()
 {
-    Route::get('/', 'StudentsController@index');
+    Route::get('/', 'User\StudentsController@index');
 
-    Route::get('create', 'StudentsController@create')
+    Route::get('create', 'User\StudentsController@create')
     	->middleware('can:create-student');
 
-    Route::post('/', 'StudentsController@store')
+    Route::post('/', 'User\StudentsController@store')
     	->middleware('can:create-student');
 
-    Route::get('edit/{id}', 'StudentsController@edit')
+    Route::get('edit/{id}', 'User\StudentsController@edit')
     	->middleware('can:edit-student');
 
-    Route::put('update/{id}', 'StudentsController@update')
+    Route::put('update/{id}', 'User\StudentsController@update')
     	->middleware('can:edit-student');
 
-    Route::delete('delete/{id}', 'StudentsController@destroy')
+    Route::delete('delete/{id}', 'User\StudentsController@destroy')
     	->middleware('can:delete-student');
 });
 
 Route::group(['prefix' => 'users/scores', 'middleware' => 'auth:web'], function () {
-	Route::get('/', 'ScoresController@index');
-	Route::get('terms', 'ScoresController@scoreTerm');
+	Route::get('/', 'User\ScoresController@index');
+	Route::get('terms', 'User\ScoresController@scoreTerm');
 });
 
 // the routes below have gates and polices assigned to them as to what a user
 // can do with a given guardian resource
 Route::group(['prefix' => 'users/guardians',  'middleware' => 'auth:web'], function()
 {
-    Route::get('/', 'Admin\GuardiansController@index');
+    Route::get('/', 'User\GuardiansController@index');
 
-    Route::get('create', 'Admin\GuardiansController@create')
+    Route::get('create', 'User\GuardiansController@create')
     	->middleware('can:create-guardian');
 
-    Route::post('/', 'Admin\GuardiansController@store')
+    Route::post('/', 'User\GuardiansController@store')
     	->middleware('can:create-guardian');
 
-    Route::get('edit/{id}', 'Admin\GuardiansController@edit')
+    Route::get('edit/{id}', 'User\GuardiansController@edit')
     	->middleware('can:edit-guardian');
 
-    Route::put('update/{id}', 'Admin\GuardiansController@update')
+    Route::put('update/{id}', 'User\GuardiansController@update')
     	->middleware('can:edit-guardian');
 });
 
+// routes that are only accessible to admin
 Route::group(['middleware' => ['auth:admin', 'preventBackHistory']], function() {
-    // your routes
 
     //subject
 	Route::get('/subjects', 'SubjectsController@index');
@@ -162,6 +177,16 @@ Route::group(['middleware' => ['auth:admin', 'preventBackHistory']], function() 
 	Route::put('/admin/guardians/update/{id}', 'Admin\GuardiansController@update');
 	Route::delete('/admin/guardians/delete/{id}', 'Admin\GuardiansController@destroy');
 
+	//teacher
+	Route::group(['prefix' => '/admin/teachers'], function () {
+		Route::get('/', 'Admin\TeachersController@index')->name('teachers.home');
+		Route::get('edit/{id}', 'Admin\TeachersController@edit');
+		Route::get('create', 'Admin\TeachersController@create')->name('teachers.form');
+		Route::post('/', 'Admin\TeachersController@store')->name('teachers.create');
+		Route::put('update/{id}', 'Admin\TeachersController@update');
+		Route::delete('delete/{id}', 'Admin\TeachersController@destroy');
+	});
+
 	//users
 	Route::get('/admin/users', 'Admin\UsersController@index')->name('users.home');
 	Route::get('/admin/users/create', 'Admin\UsersController@create')->name('users.form');
@@ -181,15 +206,13 @@ Route::group(['middleware' => ['auth:admin', 'preventBackHistory']], function() 
 });
 
 
+//routes that are only accessible to guardian
+Route::group(['prefix' => '/guardian/students'], function() {
 
-Route::group(['middleware' => ['auth:guardian', 'preventBackHistory']], function() {
-    // your routes
+	Route::get('term', 'GuardianController@termForm');
+	Route::post('term', 'GuardianController@termResults');
 
-    //subject
-	Route::get('/guardian/students/term', 'GuardianController@termForm');
-	Route::post('/guardian/students/term', 'GuardianController@termResults');
-
-	Route::get('/guardian/students/semester', 'GuardianController@semesterForm');
-	Route::post('/guardian/students/semester', 'GuardianController@semesterResults');
+	Route::get('semester', 'GuardianController@semesterForm');
+	Route::post('semester', 'GuardianController@semesterResults');
 	
 });

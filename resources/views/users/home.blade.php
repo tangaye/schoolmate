@@ -4,7 +4,7 @@
 
 @section('page-header', 'Home')
 
-@section('page-description', 'Control Panel')
+@section('page-description', 'Users Control Panel')
 
 @section('page-css')
 <!-- Animate css -->
@@ -15,7 +15,17 @@
     <li class="active">Dashboard</li>
 @endsection
 
-@section('user-navigation')
+@section('user-logout')
+  @component('components.user-logout')
+      @slot('user_name')
+          {{Auth::guard('web')-> user()->user_name}}
+      @endslot
+      {{route('user.logout')}}
+  @endcomponent
+@endsection
+
+
+@section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
   <li class="header">USER NAVIGATION</li>

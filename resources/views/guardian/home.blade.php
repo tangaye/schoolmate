@@ -7,20 +7,33 @@
 @section('page-description', 'Guardian Control Panel')
 
 @section('page-css')
+
 <!-- Animate css -->
   <link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
 @endsection
+
+@section('user-logout')
+  @component('components.user-logout')
+      @slot('user_name')
+          {{Auth::guard('guardian')-> user()->user_name}}
+      @endslot
+      {{route('guardian.logout')}}
+  @endcomponent
+@endsection
+
 @section('breadcrumb')
     <li><a href="#"><i class="fa fa-dashboard"></i> Home </a></li>
     <li class="active">Dashboard</li>
 @endsection
 
-@section('guardian-navigation')
+
+
+@section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
   <li class="header">MAIN NAVIGATION</li>
   <li class="">
-    <a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
+    <a href="{{route('guardian.dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
     </a>
   </li>
   <!-- reports -->
@@ -47,7 +60,8 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3>GUARDIAN WARD</h3>
+          <span>GUARDIAN WARD Hello: </span>
+          <strong>{{Auth::guard('guardian')->user()->first_name }} {{Auth::guard('guardian')->user()->surname }}</strong>
         </div>
 
         <div class="panel-body">

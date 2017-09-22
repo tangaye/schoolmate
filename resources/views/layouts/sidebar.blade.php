@@ -23,16 +23,7 @@
       </div>
     </div>
 
-    {{--If user is not a guardian but admin load the admin navigation
-      else load the guardian navigation
-    --}}
-    @if(Auth::guard('admin')->check())
-       @yield('admin-navigation')
-    @elseif(Auth::guard('guardian')->check())
-      @yield('guardian-navigation')
-    @elseif(Auth::guard('web')->check())
-       @yield('user-navigation')
-    @endif 
+    @yield('sidebar-navigation')
   </section>
   <!-- /.sidebar -->
 </aside>

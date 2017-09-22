@@ -27,36 +27,7 @@
 
           <!-- Authentication Links -->
            @if (Auth::user())
-              <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-
-                      {{--if a guardian logs in--}}
-                      @if(Auth::guard('guardian')->check())
-
-                        {{ Auth::guard('guardian')->user()->first_name}} {{ Auth::guard('guardian')->user()->surname}} 
-                      {{--if admin logs in--}}  
-                      @elseif(Auth::guard('admin')->check())
-
-                        {{ Auth::guard('admin')->user()->user_name }} 
-                      {{--if an user logs in--}}  
-                      @elseif(Auth::guard('web')->check())
-                        {{ Auth::guard('web')->user()->user_name }} 
-                      @endif
-                      <span class="caret"></span>
-                      
-                  </a>
-
-                  <ul class="dropdown-menu list-group">
-                    <a style="border: none;" class="list-group-item" href="{{ route('logout') }}"
-                            onclick="event.preventDefault();
-                                 document.getElementById('logout-form').submit();">
-                        Logout
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            {{ csrf_field() }}
-                      </form>
-                  </ul>
-              </li>
+              @yield('user-logout')
           @endif
           <!-- Control Sidebar Toggle Button -->
           <li>
