@@ -281,7 +281,7 @@
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} col-md-12">
                         <label for="user_name" class="control-label">User Name</label>
 
-                        <input id="user_name" type="user_name" class="form-control" name="user_name" value="{{ old('user_name') }}">
+                        <input id="user_name" type="text" class="form-control" name="user_name" value="{{ old('user_name') }}">
 
                         @if ($errors->has('user_name'))
                             <span class="help-block">

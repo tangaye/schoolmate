@@ -54,4 +54,10 @@ class Teacher extends Authenticatable
        return $this->attributes['date_of_birth'] = Carbon::createFromFormat('d/m/Y', $value);
     }
 
+    // gets the total number of teachers
+    public static function teachers_count()
+    {
+        return Teacher::count();
+    }
+
 }

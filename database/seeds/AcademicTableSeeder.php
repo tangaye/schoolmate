@@ -20,8 +20,8 @@ class AcademicTableSeeder extends Seeder
             DB::table('academics')->insert([
 
                 [
-                	'date_start' => '2017-08-08',
-                	'date_end' => '2018-08-08',
+                	'date_start' => '2017-12-12',
+                	'date_end' => '2018-12-12',
                 	'status' => 1,
                 	'created_at' => $now, 
                 	'updated_at' => $now

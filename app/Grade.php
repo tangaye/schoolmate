@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Grade extends Model
 {
@@ -27,5 +28,15 @@ class Grade extends Model
     public function score()
     {
         return $this->hasMany(\Score::class);
+    }
+
+    public static function grades_student_count()
+    {
+        return DB::table('grades')
+            ->join('students', 'grades.id', '=', 'students.grade_id')
+            ->select('grades.name as name', DB::raw('COUNT(students.id) as students'))
+            ->groupBy('grades.name')
+            ->orderBy(DB::raw('COUNT(students.id)'), 'desc')
+            ->get();
     }
 }

@@ -48,6 +48,16 @@ class AppServiceProvider extends ServiceProvider
             $view->with(compact('academics'));
         });
 
+        view()->composer('layouts.partials.stats-bar', function ($view){
+            
+            $students_total = \App\Student::students_count();
+            $guardians_total = \App\Guardian::guardians_count();
+            $teachers_total = \App\Teacher::teachers_count();
+            $users_total = \App\User::users_count();
+            $view->with(compact('students_total', 'guardians_total', 'teachers_total', 'users_total'));
+        });
+
+
         
     }
 

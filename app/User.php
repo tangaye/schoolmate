@@ -63,4 +63,10 @@ class User extends Authenticatable
         }
         return false;
     }
+
+    // gets the total number of users
+    public static function users_count()
+    {
+        return User::count();
+    }
 }

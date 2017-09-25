@@ -110,5 +110,16 @@ class Student extends Model
         return $this->hasMany(Score::class);
     }
 
+    // gets the total number of students
+    public static function students_count()
+    {
+        return Student::count();
+    }
+
+    public static function students_gender_count()
+    {
+        return \DB::select('SELECT gender, count(gender) as total FROM students group by gender');
+    }
+
     
 }
