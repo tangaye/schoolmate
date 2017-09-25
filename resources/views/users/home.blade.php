@@ -75,21 +75,10 @@
 
     <div class="row">
       <section class="col-lg-7 connectedSortable">
-        <!-- Student gender chart -->
-        <div class="box box-success">
-          <div class="box-body">
-             <canvas id="genderPieChart"></canvas>
-          </div>
-        </div>
-        <!-- /.Close of Student gender chart -->
-
-      </section>
-      <!-- /.Left col -->
-      <section class="col-lg-5 connectedSortable">
-        <!-- grades stat bar chart -->
+      <!-- grades stat bar chart -->
         <div class="box box-info">
           <div class="box-header">
-            <h3 class="box-title">Grades/Class Population</h3>
+            <h3 class="box-title">Grade/Class Population</h3>
 
           </div>
           <div class="box-body">
@@ -97,7 +86,16 @@
           </div>
         </div>
         <!-- /.grades stats bar chart -->
-
+      </section>
+      <!-- /.Left col -->
+      <section class="col-lg-5 connectedSortable">
+          <!-- Student gender chart -->
+        <div class="box box-success">
+          <div class="box-body">
+             <canvas id="genderPieChart"></canvas>
+          </div>
+        </div>
+        <!-- /.Close of Student gender chart -->
       </section>
       <!-- /.Left col -->
     </div>
