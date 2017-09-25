@@ -220,8 +220,6 @@ class StudentsController extends Controller
      */
     public function destroy($id)
     {
-        //
-
         /**
          * if student is related to others entities
          * warn user to modify or delete records

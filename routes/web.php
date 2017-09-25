@@ -44,6 +44,8 @@ Route::group(['prefix' => 'teacher'], function () {
 	Route::post('logout', 'Auth\TeacherLoginController@logout')->name('teacher.logout');
 });
 
+Route::get('/charts/gender', 'ChartsController@genderChart')->name('charts.gender');
+Route::get('/charts/grades', 'ChartsController@gradesChart')->name('charts.grades');
 
 // the routes below have gates and polices assigned to them as to what a user
 // can do with a given student resource

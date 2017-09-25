@@ -46,4 +46,9 @@ class Guardian extends Authenticatable
         ];
     }
 
+    public static function guardians_count()
+    {
+        return Guardian::count();
+    }
+
 }
