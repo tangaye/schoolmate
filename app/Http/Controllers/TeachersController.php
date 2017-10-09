@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Teacher;
+
+
 
 
 /**
@@ -35,7 +39,11 @@ class TeachersController extends Controller
      */
     public function index()
     {   
-        return view('teachers.home');
+        $teacher = Teacher::findOrFail(Auth::guard('teacher')->user()->id);
+        $subjects = Teacher::teacherSubjects(Auth::guard('teacher')->user()->id);
+        $grades = Teacher::teacherGrades(Auth::guard('teacher')->user()->id); 
+
+        return view('teachers.home', compact('teacher', 'subjects', 'grades'));
     }
 
     /**

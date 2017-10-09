@@ -65,7 +65,7 @@
   </li>
 
   <li class=" active">
-    <a href="/users/scores"><i class="glyphicon glyphicon-list-alt"></i> Score Tables
+    <a href="/users/scores"><i class="glyphicon glyphicon-list-alt"></i> <span>Score Tables</span>
     </a>
   </li>
 </ul>

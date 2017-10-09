@@ -30,6 +30,12 @@ class Grade extends Model
         return $this->hasMany(\Score::class);
     }
 
+    // a many to many relationship for grades/class and subjects
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class);
+    }
+
     public static function grades_student_count()
     {
         return DB::table('grades')

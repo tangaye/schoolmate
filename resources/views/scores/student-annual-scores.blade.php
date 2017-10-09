@@ -1,17 +1,8 @@
 @extends('layouts.master')
 
-@section('page-title', 'Term Report')
+@section('page-title', 'Annual Report')
 
-@section('meta')
-	<meta name="csrf-token" content="{{csrf_token()}}">
-@endsection
-
-@section('page-css')
-	<!-- Animate css -->
-	<link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
-@endsection
-
-@section('page-header', 'Term Report')
+@section('page-header', 'Annual Report')
 
 @section('user-logout')
   @component('components.user-logout')
@@ -56,9 +47,11 @@
     <ul class="treeview-menu">
       <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
       <li><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
+      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-asterisk"></i>Teacher Grades</a></li>
+        <li><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
     </ul>
   </li>
-  
+
   <!-- Settings -->
   <li class="treeview">
     <a href="#"><i class="fa fa-cogs"></i> <span>Settings</span>
@@ -142,9 +135,9 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li class="active"><a href="/scores/report/terms"><i class="fa fa-file-text-o"></i>Term Report</a></li>
+      <li><a href="/scores/report/terms"><i class="fa fa-file-text-o"></i>Term Report</a></li>
       <li><a href="/scores/report/semesters"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
-      <li><a href="#"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
+      <li class="active"><a href="{{route('annual-scores')}}"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
 </ul>
@@ -157,27 +150,21 @@
 	<div class="row">
 		<div class="col-md-12">
 
-			<!-- div to display errors returned by server-->
-            <div class="errors alert hidden">
-            </div>
-            <!-- end of errors div -->
-
          	<div class="panel">
          		<div class="panel-body">
          			<div class="form-group">
          				<div class="input-group">
-                        	<span class="input-group-addon">Student Code</span>
-                        	<input class="form-control" maxlength="4" type="text" name="student_code" id="code" placeholder="Enter student code">
-
-	                  		<span class="input-group-addon">Term</span>
-	                  		<select name="term_id" class="form-control" id="term">
-                      			@foreach($terms as $term)
-		                  			<option value="{{$term->id}}">{{$term->name}}</option>
-		                  		@endforeach
+                  	<span class="input-group-addon">Student Code</span>
+                  	<input class="form-control" type="text" maxlength="4" name="student_code" id="code" placeholder="Enter student code">
 	         				</select>
 	         			</div>
 	         		</div>
 	         		<div id="result"></div>
+              <div>
+                <button class="btn btn-primary print-btn" onclick="printReport('result')">
+                 <i class="fa fa-print"></i> Print
+                </button>
+              </div>
 	         	</div>
          	</div>
 	    </div>
@@ -186,7 +173,25 @@
 @endsection
 
 @section('page-scripts')
+
 	<script type="text/javascript">
+
+    function printReport (section){
+        var printContent = document.getElementById(section);
+        var WinPrint = window.open();
+
+        WinPrint.document.write('<link rel="stylesheet" type="text/css" href="{{ asset("/css/app.css") }}">');
+        WinPrint.document.write('<link rel="stylesheet" type="text/css" href="{{ asset("/css/media-print.css") }}" media="print">');
+        WinPrint.document.write(printContent.innerHTML);
+        WinPrint.document.write('<footer>Courtesy of <b>School</b>Mate</footer>');
+        WinPrint.document.close();
+        WinPrint.setTimeout(function(){
+          WinPrint.focus();
+          WinPrint.print();
+          WinPrint.close();
+        }, 1000);
+    }
+
 
 		$(document).ready(function() {
 
@@ -200,15 +205,23 @@
 				event.preventDefault();
 
 		        var code = $('#code').val();
-		        var term = $('#term').val();
 
 		        if (code != '' && code.length === 4) {
 		          $.ajax({
-		          	url:"/scores/report/terms",
+		          	url:"/scores/report/annual",
 		            method:"POST",
-		           	data:{"student_code":code, "term_id":term},
+		           	data:{"student_code":code},
 		           	success:function(data){
 		            	$("#result").html(data);
+
+                  $('#download_pdf').click(function () {
+                    var doc = new jsPDF('p', 'pt');
+                    var elem = document.getElementById("test");
+                    var res = doc.autoTableHtmlToJson(elem);
+                    doc.autoTable(res.columns, res.data);
+                    doc.save("table.pdf");
+
+                  });
 		           	}
 		          });
 		        } else {
@@ -216,29 +229,6 @@
 
 		        }   
 		    });  
-
-			$('#term').on('change', function(event) {
-		      	event.preventDefault();
-
-		      	/* Act on the event */
-		        var code = $('#code').val();
-		        var term = $('#term').val();
-
-		        if (code != '' && code.length === 4) {
-		          $.ajax({
-		          	url:"/scores/report/terms",
-		            method:"POST",
-		           	data:{"student_code":code, "term_id":term},
-		           	success:function(data){
-		            	$("#result").html(data);
-		           	}
-		          });
-		        } else {
-		          $("#result").html('');
-
-		        }   
-
-		    });
 		});
 
 	</script>

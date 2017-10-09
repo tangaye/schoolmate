@@ -28,13 +28,7 @@ Route::group(['prefix' => 'admin'], function () {
 	Route::post('logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
 });
 
-// routes for guardian login and dashboard
-Route::group(['prefix' => 'guardian'], function () {
-	Route::get('/', 'GuardianController@index')->name('guardian.dashboard');
-	Route::get('login', 'Auth\GuardianLoginController@showLoginForm')->name('guardian.login');
-	Route::post('login', 'Auth\GuardianLoginController@login')->name('guardian.login.submit');
-	Route::post('logout', 'Auth\GuardianLoginController@logout')->name('guardian.logout');
-});
+
 
 // routes for teacher login and dashboard
 Route::group(['prefix' => 'teacher'], function () {
@@ -42,10 +36,24 @@ Route::group(['prefix' => 'teacher'], function () {
 	Route::get('login', 'Auth\TeacherLoginController@showLoginForm')->name('teacher.login');
 	Route::post('login', 'Auth\TeacherLoginController@login')->name('teacher.login.submit');
 	Route::post('logout', 'Auth\TeacherLoginController@logout')->name('teacher.logout');
+
+	// routes teacher uses to access scores resources
+	Route::get('/scores', 'Teacher\ScoresController@index')->name('teacher.scores-home');
+	Route::get('/manage-scores', 'Teacher\ScoresController@master')->name('teacher.manage-scores');
+	Route::get('/grade-subjects/{id}', 'Teacher\ScoresController@gradeSubjects');
+	Route::get('/manage-scores/create', 'Teacher\ScoresController@create');
+	Route::post('/manage-scores', 'Teacher\ScoresController@store' );
+
+	Route::get('/students-scores', 'Teacher\ScoresController@studentsScores');
 });
 
-Route::get('/charts/gender', 'ChartsController@genderChart')->name('charts.gender');
-Route::get('/charts/grades', 'ChartsController@gradesChart')->name('charts.grades');
+//charts
+Route::group(['prefix' => 'charts'], function () {
+	Route::get('gender', 'ChartsController@genderChart')->name('charts.gender');
+	Route::get('grades', 'ChartsController@gradesChart')->name('charts.grades');
+});
+
+
 
 // the routes below have gates and polices assigned to them as to what a user
 // can do with a given student resource
@@ -60,10 +68,10 @@ Route::group(['prefix' => 'users/students',  'middleware' => 'auth:web'], functi
     	->middleware('can:create-student');
 
     Route::get('edit/{id}', 'User\StudentsController@edit')
-    	->middleware('can:edit-student');
+    	->middleware('can:view-student');
 
     Route::put('update/{id}', 'User\StudentsController@update')
-    	->middleware('can:edit-student');
+    	->middleware('can:update-student');
 
     Route::delete('delete/{id}', 'User\StudentsController@destroy')
     	->middleware('can:delete-student');
@@ -87,10 +95,10 @@ Route::group(['prefix' => 'users/guardians',  'middleware' => 'auth:web'], funct
     	->middleware('can:create-guardian');
 
     Route::get('edit/{id}', 'User\GuardiansController@edit')
-    	->middleware('can:edit-guardian');
+    	->middleware('can:view-guardian');
 
     Route::put('update/{id}', 'User\GuardiansController@update')
-    	->middleware('can:edit-guardian');
+    	->middleware('can:update-guardian');
 });
 
 // routes that are only accessible to admin
@@ -115,6 +123,9 @@ Route::group(['middleware' => ['auth:admin', 'preventBackHistory']], function() 
 	Route::get('/grades/edit/{id}', 'GradesController@edit');
 	Route::put('/grades/update/{id}', 'GradesController@update');
 	Route::delete('/grades/delete/{id}', 'GradesController@destroy');
+
+	// query out subjects assigned to a grade or class
+	Route::get('/grades/grade-subjects/{id}', 'GradesController@gradeSubjects');
 
 	//student
 	Route::get('/students', 'StudentsController@index');
@@ -151,6 +162,9 @@ Route::group(['middleware' => ['auth:admin', 'preventBackHistory']], function() 
 	Route::post('/scores/report/terms', 'ScoresController@findTerm'); // send data and return student term report
 	Route::get('/scores/report/semesters', 'ScoresController@semester'); // display form to search for student report
 	Route::post('/scores/report/semesters', 'ScoresController@findSemester'); // send data and return student semester report
+
+	Route::get('/scores/report/annual', 'ScoresController@annual')->name('annual-scores');
+	Route::post('/scores/report/annual', 'ScoresController@findAnnual')->name('find.annual-scores');
 
 	//school information
 	Route::get('/institution', 'InstitutionController@index');
@@ -205,8 +219,22 @@ Route::group(['middleware' => ['auth:admin', 'preventBackHistory']], function() 
 	Route::put('/roles/update/{id}', 'RolesController@update');
 	Route::delete('/roles/delete/{id}', 'RolesController@destroy');
 
+	// grades teachers
+	Route::group(['prefix' => '/grades-teacher'], function (){
+		Route::get('/', 'GradesTeacherController@index')->name('admin-gradesTeacher.home');
+		Route::get('create', 'GradesTeacherController@create')->name('admin-gradesTeacher.form');
+		Route::post('/', 'GradesTeacherController@store')->name('admin-gradesTeacher.submit');
+		Route::delete('/delete/{id}', 'GradesTeacherController@destroy');
+	});
 });
 
+// routes for guardian login and dashboard
+Route::group(['prefix' => 'guardian'], function () {
+	Route::get('/', 'GuardianController@index')->name('guardian.dashboard');
+	Route::get('login', 'Auth\GuardianLoginController@showLoginForm')->name('guardian.login');
+	Route::post('login', 'Auth\GuardianLoginController@login')->name('guardian.login.submit');
+	Route::post('logout', 'Auth\GuardianLoginController@logout')->name('guardian.logout');
+});
 
 //routes that are only accessible to guardian
 Route::group(['prefix' => '/guardian/students'], function() {
@@ -216,5 +244,8 @@ Route::group(['prefix' => '/guardian/students'], function() {
 
 	Route::get('semester', 'GuardianController@semesterForm');
 	Route::post('semester', 'GuardianController@semesterResults');
+
+	Route::get('annual', 'GuardianController@annualForm');
+	Route::post('annual', 'GuardianController@annualResults');
 	
 });

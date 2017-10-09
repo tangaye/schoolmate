@@ -31,9 +31,9 @@ class UsersTableSeeder extends Seeder
             $secretary_user->address = $faker->city;
             $secretary_user->phone = '0776393939';
             $secretary_user->user_name = $faker->userName;
-            $secretary_user->email = $faker->unique()->safeEmail;
+            $secretary_user->email = 'user@example.com';
             $secretary_user->role_id = $role_secretary->id;
-            $secretary_user->password = bcrypt('secret');
+            $secretary_user->password = bcrypt('user1234');
             $secretary_user->save();
 
             $registrar_user = new User();

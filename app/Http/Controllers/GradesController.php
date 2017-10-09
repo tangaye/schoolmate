@@ -148,4 +148,13 @@ class GradesController extends Controller
             
         }
     }
+
+    public function gradeSubjects($id)
+    {
+        $grade = Grade::findOrfail($id);
+
+        $subjects = $grade->subjects->pluck('name', 'id');
+
+        return response()->json($subjects);
+    }
 }

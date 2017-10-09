@@ -19,9 +19,9 @@ class RolesTableSeeder extends Seeder
                 'description' => 'Responsible to update both student and guardians records. Can also delete both student and guardians records',
                 'permissions' => [
                     "update-student" => "true",
-                    "show-student" => "true",
+                    "view-student" => "true",
                     "update-guardian" => "true",
-                    "show-guardian" => "true",
+                    "view-guardian" => "true",
                 ]
             ]);
 
@@ -31,7 +31,7 @@ class RolesTableSeeder extends Seeder
                 'permissions' => [
                     'create-student' => "true",
                     'create-guardian' => "true",
-                    "show-guardian" => "true",
+                    "view-guardian" => "true",
                 ]
             ]);
 

@@ -65,25 +65,24 @@
   </li>
 
   <li class="">
-    <a href="/users/scores"><i class="glyphicon glyphicon-list-alt"></i> Score Tables
+    <a href="/users/scores"><i class="glyphicon glyphicon-list-alt"></i> <span>Score Tables</span>
     </a>
   </li>
 </ul>
 @endsection
 
 @section('content')
-	@can('create-guardian')
-		<div class="row">
-			<div class="col-sm-12">
-				<a href="/users/guardians/create" class="btn btn-sm btn-primary btn-flat pull-right">New Guardian</a>
-			</div> 
-		</div><br>
-	@endcan
+
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="panel panel-default ol-md-offset-2">
 				<div class="panel-heading">
-					Guardians
+					<div class="container-fluid">
+						<span class="panel-title">Guardians</span>
+						@can('create-guardian')
+							<a href="/users/guardians/create" class="btn btn-sm btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i> New Guardian</a>
+						@endcan
+					</div>
 				</div>
 
 				<div class="panel-body">
@@ -108,7 +107,7 @@
 									<td>{{$guardian->phone}}</td>
 									<td>{{$guardian->relationship}}</td>
 									<td>
-										@can('show-guardian')
+										@can('view-guardian')
 											<a data-toggle="tooltip" title="Edit" href="/users/guardians/edit/{{$guardian->id}}" role="button">
 												<i class="glyphicon glyphicon-edit text-info"></i>
 											</a> &nbsp; 

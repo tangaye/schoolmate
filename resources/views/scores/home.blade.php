@@ -2,10 +2,6 @@
 
 @section('page-title', 'Score Tables')
 
-@section('meta')
-	<meta name="csrf-token" content="{{csrf_token()}}">
-@endsection
-
 @section('page-css')
 	<!-- Animate css -->
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
@@ -60,6 +56,9 @@
     <ul class="treeview-menu">
       <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
       <li><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
+
+      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-asterisk"></i>Teacher Grades</a></li>
+        <li><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
     </ul>
   </li>
 

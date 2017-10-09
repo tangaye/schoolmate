@@ -2,15 +2,6 @@
 
 @section('page-title', 'Semester Report')
 
-@section('meta')
-	<meta name="csrf-token" content="{{csrf_token()}}">
-@endsection
-
-@section('page-css')
-	<!-- Animate css -->
-	<link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
-@endsection
-
 @section('page-header', 'Semester Report')
 
 @section('user-logout')
@@ -56,6 +47,8 @@
     <ul class="treeview-menu">
       <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
       <li><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
+      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-asterisk"></i>Teacher Grades</a></li>
+        <li><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
     </ul>
   </li>
 
@@ -142,9 +135,9 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li><a href="/scores/report/terms"><i class="fa fa-file-text-o"></i>Term Report</a></li>
-      <li class="active"><a href="/scores/report/semesters"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
-      <li><a href="#"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
+      <li><a href="/scores/report/terms"><i class="fa fa-file-text-o"></i><span>Term Report</span></a></li>
+      <li class="active"><a href="/scores/report/semesters"><i class="fa fa-file-text-o"></i><span>Semester Report</span></a></li>
+      <li><a href="{{route('annual-scores')}}"><i class="fa fa-file-text-o"></i><span>Annual Report</span></a></li>
     </ul>
   </li>
 </ul>
@@ -157,27 +150,27 @@
 	<div class="row">
 		<div class="col-md-12">
 
-			<!-- div to display errors returned by server-->
-            <div class="errors alert hidden">
-            </div>
-            <!-- end of errors div -->
-
          	<div class="panel">
          		<div class="panel-body">
          			<div class="form-group">
          				<div class="input-group">
-                        	<span class="input-group-addon">Student Code</span>
-                        	<input class="form-control" type="text" maxlength="4" name="student_code" id="code" placeholder="Enter student code">
+                	<span class="input-group-addon">Student Code</span>
+                	<input class="form-control" type="text" maxlength="4" name="student_code" id="code" placeholder="Enter student code">
 
-	                  		<span class="input-group-addon">Semester</span>
-	                  		<select name="semester_id" class="form-control" id="semester">
-                      			@foreach($semesters as $semester)
-		                  			<option value="{{$semester->id}}">{{$semester->name}}</option>
-		                  		@endforeach
+            		<span class="input-group-addon">Semester</span>
+            		<select name="semester_id" class="form-control" id="semester">
+              			@foreach($semesters as $semester)
+              			<option value="{{$semester->id}}">{{$semester->name}}</option>
+              		@endforeach
 	         				</select>
 	         			</div>
 	         		</div>
 	         		<div id="result"></div>
+              <div>
+                <button class="btn btn-primary print-btn" onclick="printReport('result')">
+                 <i class="fa fa-print"></i> Print
+                </button>
+              </div>
 	         	</div>
          	</div>
 	    </div>
@@ -187,6 +180,23 @@
 
 @section('page-scripts')
 	<script type="text/javascript">
+
+    function printReport (section){
+        var printContent = document.getElementById(section);
+        var WinPrint = window.open();
+
+        WinPrint.document.write('<link rel="stylesheet" type="text/css" href="{{ asset("/css/app.css") }}">');
+        WinPrint.document.write('<link rel="stylesheet" type="text/css" href="{{ asset("/css/media-print.css") }}" media="print">');
+        WinPrint.document.write(printContent.innerHTML);
+        WinPrint.document.write('<footer>Courtesy of <b>School</b>Mate</footer>');
+        WinPrint.document.close();
+        WinPrint.setTimeout(function(){
+          WinPrint.focus();
+          WinPrint.print();
+          WinPrint.close();
+        }, 1000);
+    }
+
 
 		$(document).ready(function() {
 

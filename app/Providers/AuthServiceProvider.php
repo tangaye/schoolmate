@@ -36,8 +36,8 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasAccess(['create-student']); 
         });
 
-        Gate::define('edit-student', function($user) {
-            return $user->hasAccess(['edit-student']); 
+        Gate::define('view-student', function($user) {
+            return $user->hasAccess(['view-student']); 
         });
 
         Gate::define('delete-student', function($user) {
@@ -55,8 +55,8 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasAccess(['create-guardian']); 
         });
 
-        Gate::define('edit-guardian', function($user) {
-            return $user->hasAccess(['edit-guardian']); 
+        Gate::define('view-guardian', function($user) {
+            return $user->hasAccess(['view-guardian']); 
         });
 
         Gate::define('delete-guardian', function($user) {

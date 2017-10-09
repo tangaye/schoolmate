@@ -2,8 +2,13 @@
 
 @section('page-title', 'Create Student')
 
-@section('meta')
-	<meta name="csrf-token" content="{{csrf_token()}}">
+@section('user-logout')
+  @component('components.user-logout')
+      @slot('user_name')
+          {{Auth::guard('web')-> user()->user_name}}
+      @endslot
+      {{route('user.logout')}}
+  @endcomponent
 @endsection
 
 @section('page-css')
@@ -57,8 +62,8 @@
   </li>
 
   <!-- score -->
-  <li>
-    <a href="/users/scores"><i class="glyphicon glyphicon-list-alt"></i> Score Tables
+ <li class="">
+    <a href="/users/scores"><i class="glyphicon glyphicon-list-alt"></i> <span>Score Tables</span>
     </a>
   </li>
 </ul>

@@ -10,8 +10,6 @@
 <link href="{{ asset("/bower_components/AdminLTE/plugins/datepicker/datepicker3.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
-@section('page-header', 'New Teacher')
-
 @section('user-logout')
   @component('components.user-logout')
       @slot('user_name')
@@ -55,6 +53,8 @@
     <ul class="treeview-menu">
       <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
       <li class="active"><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
+      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-asterisk"></i>Teacher Grades</a></li>
+      <li><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
     </ul>
   </li>
 
@@ -144,21 +144,13 @@
     <ul class="treeview-menu">
       <li><a href="/scores/report/terms"><i class="fa fa-file-text-o"></i>Term Report</a></li>
       <li><a href="/scores/report/semesters"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
-      <li><a href="#"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
+      <li><a href="{{route('annual-scores')}}"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
 </ul>
 @endsection
 
 @section('content')
-    <div class="row" style="margin-bottom: 10px">
-      <div class="col-md-12">
-        <a href="{{route('teachers.home')}}" class="btn btn-primary btn-flat btn-sm pull-right">
-          <i class="glyphicon glyphicon-arrow-left"></i>
-          Back
-        </a>
-      </div>
-    </div>
     <div class="row">
         <form role="form" method="POST" action="{{route('teachers.create')}}">
           {{ csrf_field() }}
@@ -170,7 +162,7 @@
                   </div>
                   <div class="panel-body">
                     <div class="row">
-                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }} col-md-6">
+                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }} col-md-12">
                             <label for="first_name" class="control-label">First Name</label>
 
                             <input type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" id="first_name" required autofocus>
@@ -181,8 +173,10 @@
                                 </span>
                             @endif
                         </div>
+                    </div>
 
-                        <div class="form-group{{ $errors->has('surname') ? ' has-error' : '' }} col-md-6">
+                    <div class="row">
+                      <div class="form-group{{ $errors->has('surname') ? ' has-error' : '' }} col-md-12">
                             <label for="surname" class="control-label">Last Name</label>
 
                             <input id="surname" type="text" class="form-control" name="surname" value="{{ old('surname') }}" required autofocus>
@@ -193,7 +187,6 @@
                                 </span>
                             @endif
                         </div>
-                        
                     </div>
           
                     <div class="row">
@@ -265,10 +258,6 @@
                             @endif
                         </div>                          
                     </div>
-
-                    <h1>Teacher Subject and Class Details!</h1>
-                    <p class="text-danger"><strong>COMMING SOON!!!</strong></p>
-
                   </div>
               </div>
           </div>
@@ -327,7 +316,8 @@
                 </div>                
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary form-control">Register</button>
+                    <button type="submit" class="btn btn-primary pull-left">Register</button>
+                    <a href="javascript:void(0)" onclick="history.back()" class="btn btn-default pull-right">Cancel</a>
                 </div>
               </div>
             </div>

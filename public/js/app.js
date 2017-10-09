@@ -11928,7 +11928,7 @@ __webpack_require__(30);
 window.swal_delete = function (message, route, row) {
     swal({
         title: "Are you sure?",
-        text: "Are you sure you want to delete this " + message,
+        text: message,
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",

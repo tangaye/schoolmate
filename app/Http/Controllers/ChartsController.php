@@ -10,7 +10,7 @@ use App\Grade;
 
 class ChartsController extends Controller
 {
-    //
+    
     public function genderChart()
     {
     	$gender_count = Student::students_gender_count();

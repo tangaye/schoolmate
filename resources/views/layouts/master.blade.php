@@ -14,12 +14,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
+   <link rel="stylesheet" type="text/css" href="{{ asset("/css/media-print.css") }}" media="print">
   <!-- Bootstrap 3.3.2 -->
   <link href="{{ asset("/css/app.css") }}" rel="stylesheet" type="text/css" />
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+
+  <!-- Theme style -->
+  <link href="{{ asset("/bower_components/AdminLTE/dist/css/AdminLTE.min.css")}}" rel="stylesheet" type="text/css" />
+
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect.
@@ -28,9 +31,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- custom page css -->
   @yield('page-css')
-
-  <!-- Theme style -->
-  <link href="{{ asset("/bower_components/AdminLTE/dist/css/AdminLTE.min.css")}}" rel="stylesheet" type="text/css" />
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -60,55 +60,55 @@ desired effect
 |---------------------------------------------------------|
 -->
 <body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
+  <div class="wrapper">
 
-  <!-- Main Header -->
-  @include('layouts.header')
-  
-  <!-- Left side column. contains the logo and sidebar -->
-  @include('layouts.sidebar')
+    <!-- Main Header -->
+    @include('layouts.header')
+    
+    <!-- Left side column. contains the logo and sidebar -->
+    @include('layouts.sidebar')
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        @yield('page-header')
-        <small>@yield('page-description')</small>
-      </h1>
-      <ol class="breadcrumb">
-        @yield('breadcrumb')
-      </ol>
-    </section>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          @yield('page-header')
+          <small>@yield('page-description')</small>
+        </h1>
+        <ol class="breadcrumb">
+          @yield('breadcrumb')
+        </ol>
+      </section>
 
-    <!-- Main content -->
-    <section class="content">
+      <!-- Main content -->
+      <section class="content">
 
-      <!-- Your Page Content Here -->
-      @yield('content')
+        <!-- Your Page Content Here -->
+        @yield('content')
 
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
 
-  <!-- Main Footer -->
-  @include('layouts.footer')
+    <!-- Main Footer -->
+    <footer class="main-footer">
+    <!-- To the right -->
+      <div class="pull-right hidden-xs">
+      </div>
+      <!-- Default to the left -->
+      <strong>Copyright &copy; <a href="#">Company</a>.</strong> All rights reserved.
+    </footer>
 
-  <!-- Control Sidebar -->
-  @include('layouts.control')
-  <!-- /.control-sidebar -->
+</div>  
+  <!-- REQUIRED JS SCRIPTS -->
 
-  
-</div>
-<!-- ./wrapper -->
-
-<!-- REQUIRED JS SCRIPTS -->
-
-     <script src="{{ asset ("/js/app.js") }}"></script>
+  <script src="{{ asset ("/js/app.js") }}"></script>
 
     <!-- adding optional page lavel scripts -->
     @yield('page-scripts')
+
 
     <!-- AdminLTE App -->
     <!-- this should be the last to be loaded -->

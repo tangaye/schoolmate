@@ -48,7 +48,7 @@
     <ul class="treeview-menu">
       <li><a href="/guardian/students/term"><i class="fa fa-file-text-o"></i>Term Report</a></li>
       <li><a href="/guardian/students/semester"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
-      <li><a href="#"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
+      <li><a href="/guardian/students/annual"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
 </ul>
@@ -82,14 +82,16 @@
                         </div>
                         <!-- /.widget-user-image -->
                         <h3 class="widget-user-username">{{$student->first_name}} {{$student->surname}}</h3>
-                        <h5 class="widget-user-desc">{{$student->grade->name}}</h5>
+                        <h5 class="widget-user-desc">
+                          {{$student->grade->name}}
+                          <span class="badge bg-green">{{$student->gender}}</span>
+                        </h5>
                       </div>
                       <div class="box-footer no-padding">
                         <ul class="nav nav-stacked">
                           <li><a href="javascript:void(0)">Age<span class="pull-right badge bg-yellow">{{$student->age()}}</span></a></li>
 
                           <li><a href="javascript:void(0)">Birth Date <span class="pull-right badge bg-aqua">{{$student->date_of_birth->toFormattedDateString()}}</span></a></li>
-                          <li><a href="javascript:void(0)">Gender<span class="pull-right badge bg-green">{{$student->gender}}</span></a></li>
                           <li><a href="javascript:void(0)">Address<span class="pull-right badge bg-red">{{$student->address}}</span></a></li>
                         </ul>
                       </div>

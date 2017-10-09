@@ -12,7 +12,9 @@
 	<!-- swal alert css -->
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.css") }}" rel="stylesheet" type="text/css" />
 	<!-- datatables -->
-	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css") }}" rel="stylesheet" type="text/css" />
+	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.css") }}" rel="stylesheet" type="text/css" />
+
+  <link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/buttons.bootstrap.min.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page-header', 'Students')
@@ -61,6 +63,8 @@
     <ul class="treeview-menu">
       <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
       <li><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
+      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-asterisk"></i>Teacher Grades</a></li>
+        <li><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
     </ul>
   </li>
   
@@ -150,7 +154,7 @@
     <ul class="treeview-menu">
       <li><a href="/scores/report/terms"><i class="fa fa-file-text-o"></i>Term Report</a></li>
       <li><a href="/scores/report/semesters"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
-      <li><a href="#"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
+      <li><a href="{{route('annual-scores')}}"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
 </ul>
@@ -168,23 +172,23 @@
 					<div class="container-fluid">
 						<span class="panel-title">Students</span>
 						<!-- button that triggers modal -->
-						<a role="button" title="New student" data-toggle="title" href="/students/create" class="pull-right" id="add-student">
-							<span class="badge label-primary"><i class="fa fa-pencil"></i> </span>
+						<a role="button" class="btn btn-primary btn-sm pull-right" title="New student" data-toggle="title" href="/students/create" id="add-student">
+						<i class="glyphicon glyphicon-plus"></i> New Student
 						</a>
 					</div>
 					
 				</div>
 				<div class="panel-body">
-					<table class="table table-responsive table-striped table-condensed table-bordered" id="student-table">
+					<table class="table table-responsive table-striped table-condensed table-bordered" id="student-table" cellspacing="0" width="100%">
 						<thead>
 							<tr>
 								<th>Name</th>
+                <th>Gender</th>
 								<th>Birth Date</th>
 								<th>Address</th>
 								<th>County</th>
-								<th>Country</th>
 								<th>Grade</th>
-								<th>Actions</th>
+								<th class="actions noExport">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -192,19 +196,34 @@
 								<tr>
 
 									<td>{{$student->first_name}} {{$student->surname}}</td>
+                  <td>{{$student->gender}}</td>
 									<td>{{$student->date_of_birth->toFormattedDateString()}}</td>
 									<td>{{$student->address}}</td>
 									<td>{{$student->county}}</td>
-									<td>{{$student->country}}</td>
 									<td>{{$student->grade->name}}</td>
 
 									<td>
-										<a id="edit-student" href="/students/edit/{{$student->id}}" data-toggle="tooltip" title="Edit" href="#" role="button">
-											<i class="glyphicon glyphicon-edit text-info"></i>
-										</a> &nbsp;
-										<a id="delete-student" data-id="{{$student->id}}" data-toggle="tooltip" title="Delete" href="#" role="button">
-											<i class="glyphicon glyphicon-trash text-danger"></i>
-										</a>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default btn-sm">Action</button>
+                      <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a id="edit-student" href="/students/edit/{{$student->id}}">
+                            <i class="glyphicon glyphicon-edit text-info"></i>
+                            Edit
+                          </a>
+                        </li>
+                        <li>
+                          <a id="delete-student" href="javascript:void(0)" data-id="{{$student->id}}">
+                            <i class="glyphicon glyphicon-trash text-danger"></i>
+                            Delete
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
 									</td>
 
 								</tr>
@@ -224,7 +243,21 @@
 
 	<script src="{{ asset ("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.min.js") }}"></script>
 	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jquery.dataTables.min.js") }}"></script>
-	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
+  <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.buttons.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.bootstrap.min.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jszip.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/pdfmake.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/vfs_fonts.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.print.min.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.html5.min.js") }}"></script>
+
+   
+
 
 	<script type="text/javascript">
 
@@ -234,7 +267,42 @@
 		    }
 		});
 
-		$('#student-table').DataTable();
+		$('#student-table').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'excel',
+          title: 'Student Listing',
+          text: '<i class="fa fa-file-excel-o"></i> Excel',
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        },
+        {
+          extend: 'pdf',
+          title: 'Student Listing',
+          text: '<i class="fa fa-file-pdf-o"></i> PDF',
+          exportOptions: {
+           columns: ':not(.noExport)'
+          }
+        },
+        {
+          extend: 'print',
+          title: 'Student Listing',
+          text: '<i class="fa fa-print"></i> Print',
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        }
+      ],
+
+      "aoColumnDefs" : [
+       {
+         'bSortable' : false,
+         'aTargets' : ['actions', 'text-holder' ]
+       }]
+
+    });
 
 		// deleting a student
 		$(document).on('click', '#delete-student', function(event) {

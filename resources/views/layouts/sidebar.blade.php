@@ -18,7 +18,7 @@
             {{$institution->name}}
           </p>
         @else
-          <p>Schoo Name</p>
+          <p>School Name</p>
         @endif
       </div>
     </div>

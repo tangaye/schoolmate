@@ -2,6 +2,16 @@
 
 @section('page-title', 'Edit Student')
 
+@section('user-logout')
+  @component('components.user-logout')
+      @slot('user_name')
+          {{Auth::guard('web')-> user()->user_name}}
+      @endslot
+      {{route('user.logout')}}
+  @endcomponent
+@endsection
+
+
 @section('page-header', 'Edit Student')
 
 @section('page-css')
@@ -48,8 +58,8 @@
   </li>
 
   <!-- score -->
- <li>
-    <a href="/users/scores"><i class="glyphicon glyphicon-list-alt"></i> Score Tables
+<li class="">
+    <a href="/users/scores"><i class="glyphicon glyphicon-list-alt"></i> <span>Score Tables</span>
     </a>
   </li>
 </ul>

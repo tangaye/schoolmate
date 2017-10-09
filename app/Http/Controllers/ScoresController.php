@@ -24,7 +24,7 @@ class ScoresController extends Controller
     {
         $terms = Term::all();
 
-         return view('scores.home', compact('terms'));
+        return view('scores.home', compact('terms'));
     }
 
     /**
@@ -54,7 +54,7 @@ class ScoresController extends Controller
         $terms = Term::all();
         $grades = Grade::all();
 
-        return view('scores.partials.master-scores-form', compact('subjects', 'grades', 'terms'));
+        return view('scores.master-scores-form', compact('subjects', 'grades', 'terms'));
     }
 
 
@@ -77,7 +77,7 @@ class ScoresController extends Controller
             ->where('students.grade_id', $grade->id)
             ->get();  
 
-        return \View::make('scores.create')->with(array(
+        return \View::make('scores.partials.create')->with(array(
             'students'=>$students, 
             'grade'=>$grade->name, 
             'subject'=>$subject, 
@@ -153,7 +153,7 @@ class ScoresController extends Controller
         //
         $terms = Term::all();
 
-        return view('scores.partials.student-term-scores', compact('terms'));
+        return view('scores.student-term-scores', compact('terms'));
     }
 
     /**
@@ -178,13 +178,30 @@ class ScoresController extends Controller
     {
         //
         $semesters = Semester::all();
-        return view('scores.partials.student-semester-scores', compact('semesters'));
+        return view('scores.student-semester-scores', compact('semesters'));
     }
 
     public function findSemester(Request $request, Score $score)
     {
         return $score->semesterReport($request->student_code, $request->semester_id);
     }
+
+    /**
+     * Show the form to search for a specific.
+     * student semester report
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function annual(Request $request)
+    {
+        return  view('scores.student-annual-scores');
+    }
+
+    public function findAnnual(Request $request, Score $score)
+    {
+        return $score->annualReport($request->student_code, $request->semester_id);
+    }
+
 
 
     /**

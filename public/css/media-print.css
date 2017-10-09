@@ -1,0 +1,18 @@
+@media print {
+	.no-print {
+		display: none;
+	}
+
+	.failure {
+  		color:red !important;
+	}
+
+	footer {
+	   text-align: center;
+	   margin-left: auto;
+	   margin-right: auto;
+	   font-size: 15px;
+	}
+}
+
+

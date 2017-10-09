@@ -2,15 +2,6 @@
 
 @section('page-title', 'Guardian Student Term Report')
 
-@section('meta')
-	<meta name="csrf-token" content="{{csrf_token()}}">
-@endsection
-
-@section('page-css')
-	<!-- Animate css -->
-	<link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
-@endsection
-
 @section('user-logout')
   @component('components.user-logout')
       @slot('user_name')
@@ -43,7 +34,7 @@
     <ul class="treeview-menu">
       <li><a href="/guardian/students/term"><i class="fa fa-file-text-o"></i>Term Report</a></li>
       <li class="active"><a href="/guardian/students/semester"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
-      <li><a href="#"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
+      <li><a href="/guardian/students/annual"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
 </ul>
@@ -56,11 +47,6 @@
 
 	<div class="row">
 		<div class="col-md-12">
-
-			<!-- div to display errors returned by server-->
-            <div class="errors alert hidden">
-            </div>
-            <!-- end of errors div -->
 
          	<div class="panel">
          		<div class="panel-body">
@@ -85,6 +71,11 @@
 	         			</div>
 	         		</div>
 	         		<div id="result"></div>
+	         		<div>
+	                	<button class="btn btn-primary print-btn" onclick="printReport('result')">
+	                 		<i class="fa fa-print"></i> Print
+	                	</button>
+	              	</div>
 	         	</div>
          	</div>
 	    </div>
@@ -94,6 +85,22 @@
 
 @section('page-scripts')
 	<script type="text/javascript">
+
+		function printReport (section){
+	        var printContent = document.getElementById(section);
+	        var WinPrint = window.open();
+
+	        WinPrint.document.write('<link rel="stylesheet" type="text/css" href="{{ asset("/css/app.css") }}">');
+	        WinPrint.document.write('<link rel="stylesheet" type="text/css" href="{{ asset("/css/media-print.css") }}" media="print">');
+	        WinPrint.document.write(printContent.innerHTML);
+	        WinPrint.document.write('<footer>Courtesy of <b>School</b>Mate</footer>');
+	        WinPrint.document.close();
+	        WinPrint.setTimeout(function(){
+	          WinPrint.focus();
+	          WinPrint.print();
+	          WinPrint.close();
+	        }, 1000);
+	    }
 
 		$(document).ready(function() {
 

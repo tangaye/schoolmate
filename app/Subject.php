@@ -10,7 +10,7 @@ class Subject extends Model
     protected $fillable = ['name', 'grade_id'];
 
 
-    /// a many to many relationship for grades/classe and subjects
+    // a many to many relationship for grades/class and subjects
     public function grade()
     {
         return $this->belongsToMany(Grade::class);
@@ -20,4 +20,6 @@ class Subject extends Model
     {
         return $this->hasMany(Score::class);
     }
+
+
 }

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Guardian;
 use App\Term;
 use App\Semester;
+use App\Score;
+
 
 
 /**
@@ -65,6 +67,7 @@ class GuardianController extends Controller
         //
         return $score->termReport($request->term_id, $request->student_id);
     }
+
     /**
      * Show the form to search for a specific.
      * student term(periodic) report
@@ -78,6 +81,7 @@ class GuardianController extends Controller
         $guardians = Guardian::with('student')->where('id', Auth::guard('guardian')->user()->id)->get();
         return view('guardian.student-semester', compact('semesters', 'guardians'));
     }
+
     /**
      * display a student semester report
      *
@@ -87,5 +91,30 @@ class GuardianController extends Controller
     {
         return $score->semesterReport($request->student_id, $request->semester_id);
     }
+
+    /**
+     * Show the form to generate a student annual report
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function annualForm(Request $request)
+    {
+        //
+        $guardians = Guardian::with('student')->where('id', Auth::guard('guardian')->user()->id)->get();
+        return view('guardian.student-annual', compact('guardians'));
+    }
+
+    /**
+     * display a student semester report
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function annualResults(Request $request, Score $score)
+    {
+
+        return $score->annualReport($request->student_id, $request->semester_id);
+    }
+
+
 
 }
