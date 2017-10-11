@@ -17,7 +17,7 @@ class CreateRolesTable extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('description');
-            $table->json('permissions')->nullable();
+            $table->text('permissions')->nullable();
             $table->timestamps();
         });
     }
