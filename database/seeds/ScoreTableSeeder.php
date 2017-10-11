@@ -55,13 +55,6 @@ class ScoreTableSeeder extends Seeder
 
         
             // student three
-            $score_four = new Score();
-            $score_four->student_id = $student_three->id;
-            $score_four->grade_id = $student_three->grade_id;
-            $score_four->subject_id = $geo->id;
-            $score_four->term_id = $periodOne->id;
-            $score_four->score = 77;
-            $score_four->save();
 
             $score_five = new Score();
             $score_five->student_id = $student_three->id;
