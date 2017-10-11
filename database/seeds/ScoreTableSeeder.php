@@ -35,77 +35,77 @@ class ScoreTableSeeder extends Seeder
 
 
         if(DB::table('scores')->get()->count() == 0){
-            $score_one = new Score();
-            $score_one->student_id = $student_one->id;
-            $score_one->grade_id = $student_one->grade_id;
-            $score_one->subject_id = $maths->id;
-            $score_one->term_id = $periodOne->id;
-            $score_one->score = 90;
-            $score_one->save();
+            $score = new Score();
+            $score->student_id = $student_one->id;
+            $score->grade_id = $student_one->grade_id;
+            $score->subject_id = $maths->id;
+            $score->term_id = $periodOne->id;
+            $score->score = 90;
+            $score->save();
 
-            $score_two = new Score();
-            $score_two->student_id = $student_one->id;
-            $score_two->grade_id = $student_one->grade_id;
-            $score_two->subject_id = $maths->id;
-            $score_two->term_id = $periodFour->id;
-            $score_two->score = 65;
-            $score_two->save();
+            $score = new Score();
+            $score->student_id = $student_one->id;
+            $score->grade_id = $student_one->grade_id;
+            $score->subject_id = $maths->id;
+            $score->term_id = $periodFour->id;
+            $score->score = 65;
+            $score->save();
 
-            $score_nine = new Score();
-            $score_nine->student_id = $student_one->id;
-            $score_nine->grade_id = $student_one->grade_id;
-            $score_nine->subject_id = $biology->id;
-            $score_nine->term_id = $periodThere->id;
-            $score_nine->score = 80;
-            $score_nine->save();
+            $score = new Score();
+            $score->student_id = $student_one->id;
+            $score->grade_id = $student_one->grade_id;
+            $score->subject_id = $biology->id;
+            $score->term_id = $periodThere->id;
+            $score->score = 80;
+            $score->save();
 
-            $score_four = new Score();
-            $score_four->student_id = $student_three->id;
-            $score_four->grade_id = $student_three->grade_id;
-            $score_four->subject_id = $geo->id;
-            $score_four->term_id = $periodOne->id;
-            $score_four->score = 77;
-            $score_four->save();
+            $score = new Score();
+            $score->student_id = $student_three->id;
+            $score->grade_id = $student_three->grade_id;
+            $score->subject_id = $geo->id;
+            $score->term_id = $periodOne->id;
+            $score->score = 77;
+            $score->save();
 
-            $score_five = new Score();
-            $score_five->student_id = $student_three->id;
-            $score_five->grade_id = $student_three->grade_id;
-            $score_five->subject_id = $maths->id;
-            $score_five->term_id = $periodFour->id;
-            $score_five->score = 87;
-            $score_five->save();
+            $score = new Score();
+            $score->student_id = $student_three->id;
+            $score->grade_id = $student_three->grade_id;
+            $score->subject_id = $maths->id;
+            $score->term_id = $periodFour->id;
+            $score->score = 87;
+            $score->save();
 
-            $score_six = new Score();
-            $score_six->student_id = $student_one->id;
-            $score_six->grade_id = $student_one->grade_id;
-            $score_six->subject_id = $biology->id;
-            $score_six->term_id = $periodOne->id;
-            $score_six->score = 100;
-            $score_six->save();
+            $score = new Score();
+            $score->student_id = $student_one->id;
+            $score->grade_id = $student_one->grade_id;
+            $score->subject_id = $biology->id;
+            $score->term_id = $periodOne->id;
+            $score->score = 100;
+            $score->save();
 
-            $score_seven = new Score();
-            $score_seven->student_id = $student_two->id;
-            $score_seven->grade_id = $student_two->grade_id;
-            $score_seven->subject_id = $biology->id;
-            $score_seven->term_id = $periodTwo->id;
-            $score_seven->score = 69;
-            $score_seven->save();
+            $score = new Score();
+            $score->student_id = $student_two->id;
+            $score->grade_id = $student_two->grade_id;
+            $score->subject_id = $biology->id;
+            $score->term_id = $periodTwo->id;
+            $score->score = 69;
+            $score->save();
 
-            $score_eight = new Score();
-            $score_eight->student_id = $student_two->id;
-            $score_eight->grade_id = $student_two->grade_id;
-            $score_eight->subject_id = $biology->id;
-            $score_eight->term_id = $periodOne->id;
-            $score_eight->score = 75;
-            $score_eight->save();
+            $score = new Score();
+            $score->student_id = $student_two->id;
+            $score->grade_id = $student_two->grade_id;
+            $score->subject_id = $biology->id;
+            $score->term_id = $periodOne->id;
+            $score->score = 75;
+            $score->save();
 
-            $score_nine = new Score();
-            $score_nine->student_id = $student_two->id;
-            $score_nine->grade_id = $student_two->grade_id;
-            $score_nine->subject_id = $physics->id;
-            $score_nine->term_id = $periodOne->id;
-            $score_nine->score = 62;
-            $score_nine->save();
+            $score = new Score();
+            $score->student_id = $student_two->id;
+            $score->grade_id = $student_two->grade_id;
+            $score->subject_id = $physics->id;
+            $score->term_id = $periodOne->id;
+            $score->score = 62;
+            $score->save();
 
 
         } else { echo "\e[scores table is not empty, therefore not seeding "; }
