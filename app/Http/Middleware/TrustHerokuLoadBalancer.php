@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Middleware;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\Request;
 
 use Closure;
 
