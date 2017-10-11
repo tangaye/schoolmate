@@ -5,6 +5,7 @@ use Illuminate\Database\Seeder;
 use App\Term;
 use App\Subject;
 use App\Student;
+
 use App\Score;
 
 
@@ -39,10 +40,7 @@ class ScoreTableSeeder extends Seeder
             ->where('student_code', 0002)
             ->first();
 
-        $student_three = DB::table('students')
-            ->select('id', 'grade_id')
-            ->where('student_code', 0003)
-            ->first();
+        $student_three = Student::where('id', 3)->first();
 
 
         if(DB::table('scores')->get()->count() == 0){
@@ -78,58 +76,12 @@ class ScoreTableSeeder extends Seeder
 
                 [
                     'student_id' => $student_three->id,
-                    'grade_id' => $student_three->grade_id, 
+                    'grade_id' => $student_three->grade->id, 
                     'subject_id' => $geo->id, 
                     'term_id' => $periodOne->id,
                     'score' => 77
                      
-                ],
-
-                [
-                    'student_id' => $student_three->id,
-                    'grade_id' => $student_three->grade_id, 
-                    'subject_id' => $maths->id, 
-                    'term_id' => $periodFour->id,
-                    'score' => 87
-                     
-                ],
-
-                [
-                    'student_id' => $student_one->id,
-                    'grade_id' => $student_one->grade_id, 
-                    'subject_id' => $biology->id, 
-                    'term_id' => $periodOne->id,
-                    'score' => 100
-                     
-                ],
-
-                [
-                    'student_id' => $student_two->id,
-                    'grade_id' => $student_two->grade_id, 
-                    'subject_id' => $biology->id, 
-                    'term_id' => $periodTwo->id,
-                    'score' => 69
-                     
-                ],
-
-                [
-                    'student_id' => $student_two->id,
-                    'grade_id' => $student_two->grade_id, 
-                    'subject_id' => $biology->id, 
-                    'term_id' => $periodOne->id,
-                    'score' => 75
-                     
-                ],
-
-                [
-                    'student_id' => $student_two->id,
-                    'grade_id' => $student_two->grade_id, 
-                    'subject_id' => $physics->id, 
-                    'term_id' => $periodOne->id,
-                    'score' => 62
-                     
                 ]
-                
 
             ]);
 
