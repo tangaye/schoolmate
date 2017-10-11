@@ -29,9 +29,9 @@ class ScoreTableSeeder extends Seeder
     	$physics = Subject::where('name', 'Physics')->first();
     	$geo = Subject::where('name', 'Geography')->first();
 
-    	$student_one = Student::where('student_code', 0001)->first();
-    	$student_two = Student::where('student_code', 0002)->first();
-    	$student_three = Student::where('student_code', 0003)->first();
+    	$student_one = Student::where('id', 1)->first();
+    	$student_two = Student::where('id', 2)->first();
+    	$student_three = Student::where('id', 3)->first();
 
 
         if(DB::table('scores')->get()->count() == 0){
