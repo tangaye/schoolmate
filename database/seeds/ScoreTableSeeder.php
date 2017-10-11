@@ -40,7 +40,7 @@ class ScoreTableSeeder extends Seeder
             ->where('student_code', 0002)
             ->first();
 
-        $student_three = Student::where('id', 3)->first();
+        $student_three = Student::where('id', 3)->select('id')->first();
 
 
         if(DB::table('scores')->get()->count() == 0){
