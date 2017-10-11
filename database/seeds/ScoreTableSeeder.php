@@ -54,49 +54,7 @@ class ScoreTableSeeder extends Seeder
             $score->save();
 
         
-            // student three
-
-            $score = new Score();
-            $score->student_id = $student_three->id;
-            $score->grade_id = $student_three->grade_id;
-            $score->subject_id = $maths->id;
-            $score->term_id = $periodFour->id;
-            $score->score = 87;
-            $score->save();
-
-            // student one
-            $score = new Score();
-            $score->student_id = $student_one->id;
-            $score->grade_id = $student_one->grade_id;
-            $score->subject_id = $biology->id;
-            $score->term_id = $periodOne->id;
-            $score->score = 100;
-            $score->save();
-
-            // student two
-            $score = new Score();
-            $score->student_id = $student_two->id;
-            $score->grade_id = $student_two->grade_id;
-            $score->subject_id = $biology->id;
-            $score->term_id = $periodTwo->id;
-            $score->score = 69;
-            $score->save();
-
-            $score = new Score();
-            $score->student_id = $student_two->id;
-            $score->grade_id = $student_two->grade_id;
-            $score->subject_id = $biology->id;
-            $score->term_id = $periodOne->id;
-            $score->score = 75;
-            $score->save();
-
-            $score_nine = new Score();
-            $score_nine->student_id = $student_two->id;
-            $score_nine->grade_id = $student_two->grade_id;
-            $score_nine->subject_id = $physics->id;
-            $score_nine->term_id = $periodOne->id;
-            $score_nine->score = 62;
-            $score_nine->save();
+            
 
 
         } else { echo "\e[scores table is not empty, therefore not seeding "; }
