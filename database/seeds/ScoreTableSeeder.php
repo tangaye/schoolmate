@@ -35,6 +35,8 @@ class ScoreTableSeeder extends Seeder
 
 
         if(DB::table('scores')->get()->count() == 0){
+
+            // student one
             $score_one = new Score();
             $score_one->student_id = $student_one->id;
             $score_one->grade_id = $student_one->grade_id;
@@ -51,14 +53,8 @@ class ScoreTableSeeder extends Seeder
             $score_two->score = 65;
             $score_two->save();
 
-            $score_nine = new Score();
-            $score_nine->student_id = $student_one->id;
-            $score_nine->grade_id = $student_one->grade_id;
-            $score_nine->subject_id = $biology->id;
-            $score_nine->term_id = $periodThere->id;
-            $score_nine->score = 80;
-            $score_nine->save();
-
+        
+            // student three
             $score_four = new Score();
             $score_four->student_id = $student_three->id;
             $score_four->grade_id = $student_three->grade_id;
@@ -75,6 +71,7 @@ class ScoreTableSeeder extends Seeder
             $score_five->score = 87;
             $score_five->save();
 
+            // student one
             $score_six = new Score();
             $score_six->student_id = $student_one->id;
             $score_six->grade_id = $student_one->grade_id;
@@ -83,6 +80,7 @@ class ScoreTableSeeder extends Seeder
             $score_six->score = 100;
             $score_six->save();
 
+            // student two
             $score_seven = new Score();
             $score_seven->student_id = $student_two->id;
             $score_seven->grade_id = $student_two->grade_id;
