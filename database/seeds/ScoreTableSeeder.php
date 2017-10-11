@@ -29,55 +29,53 @@ class ScoreTableSeeder extends Seeder
     	$physics = Subject::where('name', 'Physics')->first();
     	$geo = Subject::where('name', 'Geography')->first();
 
-    	$student_one = Student::where('student_code', 0001)->first();
-    	$student_two = Student::where('student_code', 0002)->first();
-    	$student_three = Student::where('student_code', 0003)->first();
+    	$student = Student::where('student_code', 0001)->first();
 
 
         if(DB::table('scores')->get()->count() == 0){
             $score = new Score();
-            $score->student_id = $student_one->id;
-            $score->grade_id = $student_one->grade_id;
+            $score->student_id = $student->id;
+            $score->grade_id = $student->grade_id;
             $score->subject_id = $maths->id;
             $score->term_id = $periodOne->id;
             $score->score = 90;
             $score->save();
 
             $score = new Score();
-            $score->student_id = $student_one->id;
-            $score->grade_id = $student_one->grade_id;
+            $score->student_id = $student->id;
+            $score->grade_id = $student->grade_id;
             $score->subject_id = $maths->id;
             $score->term_id = $periodFour->id;
             $score->score = 65;
             $score->save();
 
             $score = new Score();
-            $score->student_id = $student_one->id;
-            $score->grade_id = $student_one->grade_id;
+            $score->student_id = $student->id;
+            $score->grade_id = $student->grade_id;
             $score->subject_id = $biology->id;
             $score->term_id = $periodThere->id;
             $score->score = 80;
             $score->save();
 
             $score = new Score();
-            $score->student_id = $student_one->id;
-            $score->grade_id = $student_one->grade_id;
+            $score->student_id = $student->id;
+            $score->grade_id = $student->grade_id;
             $score->subject_id = $geo->id;
             $score->term_id = $periodOne->id;
             $score->score = 77;
             $score->save();
 
             $score = new Score();
-            $score->student_id = $student_one->id;
-            $score->grade_id = $student_one->grade_id;
+            $score->student_id = $student->id;
+            $score->grade_id = $student->grade_id;
             $score->subject_id = $physics->id;
             $score->term_id = $periodFour->id;
             $score->score = 87;
             $score->save();
 
             $score = new Score();
-            $score->student_id = $student_one->id;
-            $score->grade_id = $student_one->grade_id;
+            $score->student_id = $student->id;
+            $score->grade_id = $student->grade_id;
             $score->subject_id = $biology->id;
             $score->term_id = $periodOne->id;
             $score->score = 100;
