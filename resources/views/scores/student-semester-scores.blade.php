@@ -166,7 +166,7 @@
 	         			</div>
 	         		</div>
 	         		<div id="result">
-                <div id="loader" class="text-center" style="display: none;">
+                <div id="loading" class="text-center" style="display: none;">
                   <img src="{{ asset("images/Loading_icon.gif") }}" alt="loader">
                 </div>   
               </div>
@@ -213,6 +213,14 @@
 			$("#code").keyup(function(event){
 				event.preventDefault();
 
+          $(document).ajaxStart(function() {
+            $("#loading").show();
+          });
+
+          $(document).ajaxStop(function() {
+            $("#loading").hide();
+          });
+
 		        var code = $('#code').val();
 		        var semester = $('#semester').val();
 
@@ -221,19 +229,11 @@
 		          	url:"/scores/report/semesters",
 		            method:"POST",
 		           	data:{"student_code":code, "semester_id":semester},
-		           	beforeSend: function(){
-                  // Show image container
-                  $("#loader").show();
-                },
                 success:function(data){
                   $("#result").html(data);
                 },
                 error:function() {
                   $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
-                },
-                complete:function(){
-                  // Hide image container
-                  $("#loader").hide();
                 }
 		          });
 		        } else {
@@ -245,6 +245,14 @@
 			$('#semester').on('change', function(event) {
 		      	event.preventDefault();
 
+            $(document).ajaxStart(function() {
+              $("#loading").show();
+            });
+
+            $(document).ajaxStop(function() {
+              $("#loading").hide();
+            });
+
 		      	/* Act on the event */
 		        var code = $('#code').val();
 		        var semester = $('#semester').val();
@@ -254,19 +262,11 @@
 		          	url:"/scores/report/semesters",
 		            method:"POST",
 		           	data:{"student_code":code, "semester_id":semester},
-		           	beforeSend: function(){
-                  // Show image container
-                  $("#loader").show();
-                },
                 success:function(data){
                   $("#result").html(data);
                 },
                 error:function() {
                   $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
-                },
-                complete:function(){
-                  // Hide image container
-                  $("#loader").hide();
                 }
 		          });
 		        } else {
