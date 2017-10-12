@@ -213,13 +213,13 @@
 			$("#code").keyup(function(event){
 				event.preventDefault();
 
-          $(document).ajaxStart(function() {
-            $("#loading").show();
-          });
+            $(document).ajaxStart(function() {
+              $("#loading").css("display", "block");
+            });
 
-          $(document).ajaxStop(function() {
-            $("#loading").hide();
-          });
+            $(document).ajaxStop(function() {
+              $("#loading").css("display", "none");
+            });
 
 		        var code = $('#code').val();
 		        var semester = $('#semester').val();
