@@ -169,7 +169,11 @@
        			</div>
        		</div>
           
-       		<div id="result"></div>
+       		<div id="result">
+            <div id="loader" class="text-center" style="display: none;">
+              <img src="{{ asset("images/Loading_icon.gif") }}" alt="loader">
+            </div>  
+          </div>
          <div>
             <a href="#" onclick="printReport('result')" class="btn btn-primary print-btn">
               <span>
@@ -226,50 +230,20 @@
 		          	url:"/scores/report/terms",
 		            method:"POST",
 		           	data:{"student_code":code, "term_id":term},
-		           	success:function(data){
-		            	$("#result").html(data);
-
-                  $('#download_pdf').click(function () {
-                    var pdf = new jsPDF('p', 'pt', 'letter');
-                    // source can be HTML-formatted string, or a reference
-                    // to an actual DOM element from which the text will be scraped.
-                    source = $('#test')[0];
-
-                    // we support special element handlers. Register them with jQuery-style 
-                    // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
-                    // There is no support for any other type of selectors 
-                    // (class, of compound) at this time.
-                    specialElementHandlers = {
-                        // element with id of "bypass" - jQuery style selector
-                        '#bypassme': function (element, renderer) {
-                            // true = "handled elsewhere, bypass text extraction"
-                            return true
-                        }
-                    };
-                    margins = {
-                        top: 80,
-                        bottom: 60,
-                        left: 40,
-                        width: 522
-                    };
-                    // all coords and widths are in jsPDF instance's declared units
-                    // 'inches' in this case
-                    pdf.fromHTML(
-                    source, // HTML string or DOM elem ref.
-                    margins.left, // x coord
-                    margins.top, { // y coord
-                        'width': margins.width, // max width of content on PDF
-                        'elementHandlers': specialElementHandlers
-                    },
-
-                    function (dispose) {
-                        // dispose: object with X, Y of the last line add to the PDF 
-                        //          this allow the insertion of new lines after html
-                        pdf.save('Test.pdf');
-                    }, margins);
-
-                  });
-		           	}
+		           	beforeSend: function(){
+                  // Show image container
+                  $("#loader").show();
+                },
+                success:function(data){
+                  $("#result").html(data);
+                },
+                error:function() {
+                  $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
+                },
+                complete:function(){
+                  // Hide image container
+                  $("#loader").hide();
+                }
 		          });
 		        } else {
 		          $("#result").html('');
@@ -289,9 +263,20 @@
 		          	url:"/scores/report/terms",
 		            method:"POST",
 		           	data:{"student_code":code, "term_id":term},
-		           	success:function(data){
-		            	$("#result").html(data);
-		           	}
+		            beforeSend: function(){
+                  // Show image container
+                  $("#loader").show();
+                },
+                success:function(data){
+                  $("#result").html(data);
+                },
+                error:function() {
+                  $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
+                },
+                complete:function(){
+                  // Hide image container
+                  $("#loader").hide();
+                }
 		          });
 		        } else {
 		          $("#result").html('');

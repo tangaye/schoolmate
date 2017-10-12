@@ -21,6 +21,27 @@ class Score extends Model
         return Carbon::now();
     }
 
+     // define relationship and select only values that I want to use
+    public function student()
+    {
+        return $this->belongsTo(Student::class)->select(['id', 'first_name', 'surname']);
+    }
+
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class)->select(['id', 'name']);
+    }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class)->select(['id', 'name']);
+    }
+    
+    public function term()
+    {
+        return $this->belongsTo(Term::class)->select(['id', 'name']);
+    }
+
 
     // this function fetches a particular term/ period table by accepting
     // the id of the term/period table

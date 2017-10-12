@@ -187,7 +187,11 @@
 	         				</select>
 	         			</div>
 	         		</div>
-	         		<div id="result"></div>
+	         		<div id="result">
+                <div id="loader" class="text-center" style="display: none;">
+                  <img src="{{ asset("images/Loading_icon.gif") }}" alt="loader">
+                </div>  
+              </div>
 	         	</div>
          	</div>
 	    </div>
@@ -286,12 +290,21 @@
           method:"GET",
           data:{"subject_id":subject, "grade_id":grade, "term_id":term},
           dataType:"text",
+          beforeSend: function(){
+            // Show image container
+            $("#loader").show();
+          },
           success:function(data){
             $("#result").html(data);
           },
           error:function(){
             $("#result").html('There was an error please contact administrator');
+          },
+          complete:function(){
+            // Hide image container
+            $("#loader").hide();
           }
+
         });
       } else {
         $("#result").html('');

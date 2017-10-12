@@ -178,7 +178,11 @@
 	         				</select>
 	         			</div>
 	         		</div>
-	         		<div id="result"></div>
+	         		<div id="result">
+	         			<div id="loader" class="text-center" style="display: none;">
+	         				<img src="{{ asset("images/Loading_icon.gif") }}" alt="loader">
+	         			</div>
+	         		</div>
 	         	</div>
          	</div>
 	    </div>
@@ -215,12 +219,22 @@
 		            url:"/scores/terms",
 		            method:"GET",
 		            data:{"term_id":term},
+		            beforeSend: function(){
+					    // Show image container
+						$("#loader").show();
+					},
 		            success:function(data){
 		              $("#result").html(data);
 		              $('#term-table').DataTable();
 		            },
 		            error:function(){
-		              $("#result").html('There was an error please contact administrator');
+		            	// Hide image container
+    					$("#loader").hide();
+		              	$("#result").html('There was an error please contact administrator');
+		            },
+		            complete:function(){
+		            	// Hide image container
+    					$("#loader").hide();
 		            }
 		        });
 	        } else {
