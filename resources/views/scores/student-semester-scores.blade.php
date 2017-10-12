@@ -246,11 +246,11 @@
 		      	event.preventDefault();
 
             $(document).ajaxStart(function() {
-              $("#loading").show();
+              $("#loading").css("display", "block");
             });
 
             $(document).ajaxStop(function() {
-              $("#loading").hide();
+              $("#loading").css("display", "none");
             });
 
 		      	/* Act on the event */
