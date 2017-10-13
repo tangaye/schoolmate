@@ -273,6 +273,14 @@
 				// subject to be edited id
 				var id = $(this).attr('data-id');
 
+				$(document).ajaxStart(function() {
+                	$(".overlay").css("display", "block");
+              	});
+
+              	$(document).ajaxStop(function() {
+                	$(".overlay").css("display", "none");
+              	});
+
 				// an ajax call the get the division assigned to the subject to be edited
 				$.get('/subjects/edit/'+id)
 				.done(function (data) {
