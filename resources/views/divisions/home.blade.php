@@ -2,9 +2,6 @@
 
 @section('page-title', 'Division')
 
-@section('meta')
-	<meta name="csrf-token" content="{{csrf_token()}}">
-@endsection
 
 @section('page-css')
 	<!-- Animate css -->
@@ -166,58 +163,44 @@
 
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-			<div class="box box-default collapsed-box">
-				<div class="box-header with-border">
-	              	<h3 class="box-title">Divisions</h3>
-
-		            <div class="box-tools pull-right">
-		            	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-		            </div>
-		        </div>
-
-	            <div class="box-body container-fluid text-center">
-					<form action="" method="POST" class="form-inline" role="form" id="divisions-form">
-						<p class="name-error text-danger hidden"></p>
-						<div class="form-group">
-							<div class="input-group margin">
-								<input type="text" name="name" id="name" class="form-control" placeholder="Enter division name">
-				                <span class="input-group-btn">
-				                    <button type="submit" id="add-semester" class="btn btn-info btn-flat form-control">Save</button>
-				                </span>
-				             </div>
-						</div>
-						<button type="submit" id="add-division" class="btn btn-success form-control">Save</button>
-					</form>
-				</div>
-
-				<div class="panel-body">
-					<!-- Table -->
-					<table class="table table-bordered table-condensed table-striped" id="division-table">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th colspan="2">Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($divisions as $division)
-								<tr class="division{{$division->id}}">
-									<td>{{$division->name}}</td>
-									<td>
-										<a id="edit-division" data-id="{{$division->id}}" data-name="{{$division->name}}" data-toggle="tooltip" title="Edit" href="#" role="button">
-											<i class="glyphicon glyphicon-edit text-info"></i>
-										</a>
-									</td>
-									<td>
-										<a id="delete-division" data-id="{{$division->id}}" data-toggle="tooltip" title="Delete" href="#" role="button">
-											<i class="glyphicon glyphicon-trash text-danger"></i>
-										</a>
-									</td>
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+	              <li class="active"><a href="#division_details" data-toggle="tab">Details</a></li>
+	              <li><a href="#new_division" data-toggle="tab">Add Division</a></li>
+	            </ul>
+	            <div class="tab-content">
+	            	<div class="tab-pane active" id="division_details">
+	            		<!-- Table -->
+						<table class="table table-bordered table-condensed table-striped" id="division-table">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th colspan="2">Actions</th>
 								</tr>
-							@endforeach
-						</tbody>
-					</table>
-				</div>
+							</thead>
+							<tbody>
+								@foreach($divisions as $division)
+									<tr class="division{{$division->id}}">
+										<td>{{$division->name}}</td>
+										<td>
+											<a id="edit-division" data-id="{{$division->id}}" data-name="{{$division->name}}" data-toggle="tooltip" title="Edit" href="#" role="button">
+												<i class="glyphicon glyphicon-edit text-info"></i>
+											</a>
+										</td>
+										<td>
+											<a id="delete-division" data-id="{{$division->id}}" data-toggle="tooltip" title="Delete" href="#" role="button">
+												<i class="glyphicon glyphicon-trash text-danger"></i>
+											</a>
+										</td>
+									</tr>
+								@endforeach
+							</tbody>
+						</table>
+	            	</div>
+	            	<div class="tab-pane" id="new_division">
+	            		@include('divisions.partials.create')
+	            	</div>
+	            </div>
 			</div>
 		</div>	
 	</div>
@@ -325,22 +308,22 @@
 			});
 
 			// inserting division
-			$(document).on('click', '#add-division', function(event) {
+			$(document).on('click', '#insert-division', function(event) {
 				event.preventDefault();
 				/* Act on the event */
 				var name = $('#name').val();
 
-				if (name.length == 0 || name == null) {
+				if (name.length == 0 || name.length == null) {
 					$('.name-error').removeClass('hidden');
 					$('.name-error').show().html('Please check if the name field is fill in.'); 
 				} else {
-					$.post('/divisions', $("#divisions-form").serialize())
+					$.post('/divisions', $("#add-form").serialize())
 					.done(function (data) {
 						// body...
 
 						// if the validator bag returns error display error in modal
 						if (data.errors) {
-			        		$('.errors').removeClass('hidden');
+			        		$('.alert-danger').removeClass('hidden');
 			    			var errors = '';
 			                for(datum in data.errors){
 			                    errors += data.errors[datum] + '<br>';
@@ -349,7 +332,10 @@
 
 			            } else {
 			            	// reset the form
-			            	$("#divisions-form")[0].reset();
+			            	$("#add-form")[0].reset();
+
+			            	$('.alert-danger').addClass('hidden');
+			            	$('.name-error').addClass('hidden');
 
 			            	// prepare row of division details to append to table
 			            	var row = '<tr class="division'+data.id+'">';
@@ -391,7 +377,7 @@
 			    // row to be deleted
 			    var row = $(this).parent("td").parent("tr");
 
-				var message = "division";
+				var message = "If you continue you won't be able to retrieve this division!";
 
 				var route = "/divisions/delete/"+id;
 
