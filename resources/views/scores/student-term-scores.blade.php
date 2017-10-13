@@ -149,11 +149,11 @@
 
 	<div class="row">
 	 <div class="col-md-12">
-			<!-- div to display errors returned by server-->
-      <div class="errors alert hidden"></div>
-      <!-- end of errors div -->
 
      	<div class="panel">
+        @component('components.loader')
+        @endcomponent
+
      		<div class="panel-body">
      			<div class="form-group">
      				<div class="input-group">
@@ -168,8 +168,7 @@
        			  </select>
        			</div>
        		</div>
-          @component('components.loader')
-          @endcomponent
+          
        		<div id="result">
           </div>
          <div>
