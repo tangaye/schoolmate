@@ -226,23 +226,24 @@
 		        var term = $('#term').val();
 
 		        if (code != '' && code.length === 4) {
+
+              $(document).ajaxStart(function() {
+                $("#loading").css("display", "block");
+              });
+
+              $(document).ajaxStop(function() {
+                $("#loading").css("display", "none");
+              });
+
 		          $.ajax({
 		          	url:"/scores/report/terms",
 		            method:"POST",
 		           	data:{"student_code":code, "term_id":term},
-		           	beforeSend: function(){
-                  // Show image container
-                  $("#loader").show();
-                },
                 success:function(data){
                   $("#result").html(data);
                 },
                 error:function() {
                   $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
-                },
-                complete:function(){
-                  // Hide image container
-                  $("#loader").hide();
                 }
 		          });
 		        } else {
@@ -259,23 +260,24 @@
 		        var term = $('#term').val();
 
 		        if (code != '' && code.length === 4) {
+              
+              $(document).ajaxStart(function() {
+                $("#loading").css("display", "block");
+              });
+
+              $(document).ajaxStop(function() {
+                $("#loading").css("display", "none");
+              });
+
 		          $.ajax({
 		          	url:"/scores/report/terms",
 		            method:"POST",
 		           	data:{"student_code":code, "term_id":term},
-		            beforeSend: function(){
-                  // Show image container
-                  $("#loader").show();
-                },
                 success:function(data){
                   $("#result").html(data);
                 },
                 error:function() {
                   $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
-                },
-                complete:function(){
-                  // Hide image container
-                  $("#loader").hide();
                 }
 		          });
 		        } else {

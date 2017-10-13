@@ -166,7 +166,7 @@
 	         			</div>
 	         		</div>
 	         		<div id="result">
-                <div id="loading" class="text-center" style="display: none;">
+                <div id="loader" class="text-center" style="display: none;">
                   <img src="{{ asset("images/Loading_icon.gif") }}" alt="loader">
                 </div>   
               </div>
@@ -213,18 +213,20 @@
 			$("#code").keyup(function(event){
 				event.preventDefault();
 
-            $(document).ajaxStart(function() {
-              $("#loading").css("display", "block");
-            });
-
-            $(document).ajaxStop(function() {
-              $("#loading").css("display", "none");
-            });
+            
 
 		        var code = $('#code').val();
 		        var semester = $('#semester').val();
 
 		        if (code != '' && code.length === 4) {
+              $(document).ajaxStart(function() {
+                $("#loader").css("display", "block");
+              });
+
+              $(document).ajaxStop(function() {
+                $("#loader").css("display", "none");
+              });
+
 		          $.ajax({
 		          	url:"/scores/report/semesters",
 		            method:"POST",
@@ -245,19 +247,21 @@
 			$('#semester').on('change', function(event) {
 		      	event.preventDefault();
 
-            $(document).ajaxStart(function() {
-              $("#loading").css("display", "block");
-            });
-
-            $(document).ajaxStop(function() {
-              $("#loading").css("display", "none");
-            });
 
 		      	/* Act on the event */
 		        var code = $('#code').val();
 		        var semester = $('#semester').val();
 
 		        if (code != '' && code.length === 4) {
+              
+              $(document).ajaxStart(function() {
+                $("#loading").css("display", "block");
+              });
+
+              $(document).ajaxStop(function() {
+                $("#loading").css("display", "none");
+              });
+
 		          $.ajax({
 		          	url:"/scores/report/semesters",
 		            method:"POST",

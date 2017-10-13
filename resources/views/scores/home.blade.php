@@ -215,26 +215,23 @@
 	        var term = $('#term').val();
 
 	        if (term != "") {
+	        	$(document).ajaxStart(function() {
+                	$("#loading").css("display", "block");
+              	});
+
+              	$(document).ajaxStop(function() {
+                	$("#loading").css("display", "none");
+              	});
 	        	$.ajax({
 		            url:"/scores/terms",
 		            method:"GET",
 		            data:{"term_id":term},
-		            beforeSend: function(){
-					    // Show image container
-						$("#loader").show();
-					},
 		            success:function(data){
 		              $("#result").html(data);
 		              $('#term-table').DataTable();
 		            },
 		            error:function(){
-		            	// Hide image container
-    					$("#loader").hide();
 		              	$("#result").html('There was an error please contact administrator');
-		            },
-		            complete:function(){
-		            	// Hide image container
-    					$("#loader").hide();
 		            }
 		        });
 	        } else {
