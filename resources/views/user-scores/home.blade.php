@@ -2,10 +2,6 @@
 
 @section('page-title', 'Score Tables')
 
-@section('meta')
-	<meta name="csrf-token" content="{{csrf_token()}}">
-@endsection
-
 @section('page-css')
 	<!-- Animate css -->
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
@@ -13,6 +9,8 @@
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.css") }}" rel="stylesheet" type="text/css" />
 	<!-- datatables -->
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css") }}" rel="stylesheet" type="text/css" />
+	<!-- loader -->
+	<link href="{{ asset("/css/loader.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page-header', 'Score Tables')
@@ -92,10 +90,10 @@
 	         				</select>
 	         			</div>
 	         		</div>
+	         		<div class="text-center overlay" style="display: none;">
+         				<img id="loader" src="{{ asset("images/loader.gif") }}" alt="loader">
+         			</div>
 	         		<div id="result">
-	         			<div id="loader" class="text-center" style="display: none;">
-		                  <img src="{{ asset("images/Loading_icon.gif") }}" alt="loader">
-		                </div> 
 	         		</div>
 	         	</div>
          	</div>
@@ -135,7 +133,7 @@
 		            data:{"term_id":term},
 		            beforeSend: function(){
 	                  // Show image container
-	                  $("#loader").show();
+	                  $(".overlay").show();
 	                },
 	                success:function(data){
 	                  $("#result").html(data);
@@ -146,7 +144,7 @@
 	                },
 	                complete:function(){
 	                  // Hide image container
-	                  $("#loader").hide();
+	                  $(".overlay").hide();
 	                }
 		        });
 	        } else {

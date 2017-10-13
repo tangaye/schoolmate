@@ -14,7 +14,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-   <link rel="stylesheet" type="text/css" href="{{ asset("/css/media-print.css") }}" media="print">
+  <link rel="stylesheet" type="text/css" href="{{ asset("/css/media-print.css") }}" media="print">
   <!-- Bootstrap 3.3.2 -->
   <link href="{{ asset("/css/app.css") }}" rel="stylesheet" type="text/css" />
   <!-- Font Awesome -->

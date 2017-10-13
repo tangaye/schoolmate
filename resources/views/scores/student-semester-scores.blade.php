@@ -2,6 +2,11 @@
 
 @section('page-title', 'Semester Report')
 
+@section('page-css')
+  <!-- loader -->
+  <link href="{{ asset("/css/loader.css") }}" rel="stylesheet" type="text/css" />
+@endsection
+
 @section('page-header', 'Semester Report')
 
 @section('user-logout')
@@ -165,10 +170,10 @@
 	         				</select>
 	         			</div>
 	         		</div>
-	         		<div id="result">
-                <div id="loader" class="text-center" style="display: none;">
-                  <img src="{{ asset("images/Loading_icon.gif") }}" alt="loader">
-                </div>   
+              <div class="text-center overlay" style="display: none;">
+                <img id="loader" src="{{ asset("images/loader.gif") }}" alt="loader">
+              </div> 
+	         		<div id="result">  
               </div>
               <div>
                 <button class="btn btn-primary print-btn" onclick="printReport('result')">
@@ -220,11 +225,11 @@
 
 		        if (code != '' && code.length === 4) {
               $(document).ajaxStart(function() {
-                $("#loader").css("display", "block");
+                $(".overlay").css("display", "block");
               });
 
               $(document).ajaxStop(function() {
-                $("#loader").css("display", "none");
+                $(".overlay").css("display", "none");
               });
 
 		          $.ajax({
@@ -253,13 +258,13 @@
 		        var semester = $('#semester').val();
 
 		        if (code != '' && code.length === 4) {
-              
+
               $(document).ajaxStart(function() {
-                $("#loading").css("display", "block");
+                $(".overlay").css("display", "block");
               });
 
               $(document).ajaxStop(function() {
-                $("#loading").css("display", "none");
+                $(".overlay").css("display", "none");
               });
 
 		          $.ajax({

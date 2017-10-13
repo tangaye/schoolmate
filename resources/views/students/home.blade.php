@@ -2,9 +2,6 @@
 
 @section('page-title', 'Students')
 
-@section('meta')
-	<meta name="csrf-token" content="{{csrf_token()}}">
-@endsection
 
 @section('page-css')
 	<!-- Animate css -->

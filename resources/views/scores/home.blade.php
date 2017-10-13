@@ -9,18 +9,8 @@
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.css") }}" rel="stylesheet" type="text/css" />
 	<!-- datatables -->
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css") }}" rel="stylesheet" type="text/css" />
-	<style type="text/css">
-		.overlay {
-		    background: #e9e9e9;
-		    display: none;
-		    position: absolute;
-		    top: 0;
-		    right: 0;
-		    bottom: 0;
-		    left: 0;
-		    opacity: 0.5;
-		}
-	</style>
+	<!-- loader -->
+	<link href="{{ asset("/css/loader.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page-header', 'Score Tables')
@@ -191,7 +181,7 @@
 	         			</div>
 	         		</div>
 	         		<div class="text-center overlay" style="display: none;">
-         				<img id="loader" src="{{ asset("images/Loading_icon.gif") }}" alt="loader">
+         				<img id="loader" src="{{ asset("images/loader.gif") }}" alt="loader">
          			</div>
 	         		<div id="result">
 	         		</div>
