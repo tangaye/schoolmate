@@ -9,6 +9,18 @@
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.css") }}" rel="stylesheet" type="text/css" />
 	<!-- datatables -->
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css") }}" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		.overlay {
+		    background: #e9e9e9;
+		    display: none;
+		    position: absolute;
+		    top: 0;
+		    right: 0;
+		    bottom: 0;
+		    left: 0;
+		    opacity: 0.5;
+		}
+	</style>
 @endsection
 
 @section('page-header', 'Score Tables')
@@ -178,10 +190,10 @@
 	         				</select>
 	         			</div>
 	         		</div>
+	         		<div class="text-center overlay" style="display: none;">
+         				<img id="loader" src="{{ asset("images/Loading_icon.gif") }}" alt="loader">
+         			</div>
 	         		<div id="result">
-	         			<div id="loader" class="text-center" style="display: none;">
-	         				<img src="{{ asset("images/Loading_icon.gif") }}" alt="loader">
-	         			</div>
 	         		</div>
 	         	</div>
          	</div>
@@ -216,11 +228,11 @@
 
 	        if (term != "") {
 	        	$(document).ajaxStart(function() {
-                	$("#loading").css("display", "block");
+                	$(".overlay").css("display", "block");
               	});
 
               	$(document).ajaxStop(function() {
-                	$("#loading").css("display", "none");
+                	$(".overlay").css("display", "none");
               	});
 	        	$.ajax({
 		            url:"/scores/terms",
