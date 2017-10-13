@@ -170,9 +170,8 @@
 	         				</select>
 	         			</div>
 	         		</div>
-              <div class="text-center overlay" style="display: none;">
-                <img id="loader" src="{{ asset("images/loader.gif") }}" alt="loader">
-              </div> 
+              @component('components.loader')
+              @endcomponent
 	         		<div id="result">  
               </div>
               <div>

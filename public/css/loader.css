@@ -1,4 +1,5 @@
 #loader {
+    background: url(/images/loader.gif) center center no-repeat;;
 	height: 100%;
 	z-index: 20;
 }
