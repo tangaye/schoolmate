@@ -3,11 +3,12 @@
 @section('page-title', 'Subjects')
 
 @section('page-css')
-<link href="{{ asset("/bower_components/AdminLTE/plugins/select2/select2.min.css") }}" rel="stylesheet" type="text/css" />
+
 <!-- swal alert css -->
 <link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.css") }}" rel="stylesheet" type="text/css" />
 <!-- Animate css -->
 <link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset("/bower_components/AdminLTE/plugins/select2/select2.min.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page-header', 'Subjects')
@@ -155,71 +156,63 @@
 @section('content')
 
 	<!-- subject modal form start -->
-	@include('subjects.create')
-	<!-- subject modal form end -->
-
-	<!-- subject modal form start -->
 	@include('subjects.edit')
 	<!-- subject modal form end -->
 
 	<div class="row">
 		<div class="col-md-12">
-
-			<div class="panel panel-default">
-				<!-- Default panel contents -->
-				<div class="panel-heading">
-					<div class="container-fluid">
-						<span class="panel-title">Subjects</span>
-						<!-- button that triggers modal -->
-						<a role="button" class="pull-right" id="add-subject">
-							<span class="badge label-primary"><i class="fa fa-pencil"></i> </span>
-						</a>
-					</div>
-					
-				</div>
-				<div class="panel-body">
-					<table class="table table-responsive table-striped table-condensed table-bordered" id="subject-table">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Grade(s)</th>
-								<th colspan="2">Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($subjects as $subject)
-								<tr class="subject{{$subject->id}}">
-
-									<td>{{$subject->name}}</td>
-
-									<td>
-										<!-- If a subject belongs to a class/grade or classes/grades list all the grades/classes
-										that belongs to the subject -->
-										@if(count($subject->grade))
-											@foreach($subject->grade as $grade)
-												<span class="badge label-primary">{{$grade->name}}</span>
-											@endforeach
-										@endif
-									</td>
-
-									<td>
-										<a id="edit-subject" data-id="{{$subject->id}}" data-name="{{$subject->name}}" data-toggle="tooltip" title="Edit" href="#" role="button">
-											<i class="glyphicon glyphicon-edit text-info"></i>
-										</a>
-									</td>
-									<td>
-										<a id="delete-subject" data-id="{{$subject->id}}" data-toggle="tooltip" title="Delete" href="#" role="button">
-											<i class="glyphicon glyphicon-trash text-danger"></i>
-										</a>
-									</td>
-
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+	              <li class="active"><a href="#subject_details" data-toggle="tab">Details</a></li>
+	              <li><a href="#new_subject" data-toggle="tab">Add Subject</a></li>
+	            </ul>
+	            <div class="tab-content">
+	            	<div class="tab-pane active" id="subject_details">
+	            		<table class="table table-responsive table-striped table-condensed table-bordered" id="subject-table">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Grade(s)</th>
+									<th colspan="2">Actions</th>
 								</tr>
-							@endforeach
-						</tbody>
-					</table>
-				</div>
+							</thead>
+							<tbody>
+								@foreach($subjects as $subject)
+									<tr class="subject{{$subject->id}}">
+
+										<td>{{$subject->name}}</td>
+
+										<td>
+											<!-- If a subject belongs to a class/grade or classes/grades list all the grades/classes
+											that belongs to the subject -->
+											@if(count($subject->grade))
+												@foreach($subject->grade as $grade)
+													<span class="badge label-primary">{{$grade->name}}</span>
+												@endforeach
+											@endif
+										</td>
+
+										<td>
+											<a id="edit-subject" data-id="{{$subject->id}}" data-name="{{$subject->name}}" data-toggle="tooltip" title="Edit" href="#" role="button">
+												<i class="glyphicon glyphicon-edit text-info"></i>
+											</a>
+										</td>
+										<td>
+											<a id="delete-subject" data-id="{{$subject->id}}" data-toggle="tooltip" title="Delete" href="#" role="button">
+												<i class="glyphicon glyphicon-trash text-danger"></i>
+											</a>
+										</td>
+
+									</tr>
+								@endforeach
+							</tbody>
+						</table>
+	            	</div>
+	            	<div class="tab-pane" id="new_subject">
+	                	@include('subjects.create')
+		            </div>
+	            </div>
 			</div>
-			<!-- /. close of panel div -->
 		</div>
 	</div>
 
@@ -228,9 +221,11 @@
 
 @section('page-scripts')
 
+	<script src="{{ asset ("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.min.js") }}"></script>
+
 	<script src="{{ asset ("/bower_components/AdminLTE/plugins/select2/select2.full.min.js") }}"></script>
 
-	<script src="{{ asset ("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.min.js") }}"></script>
+	
 
 	<script type="text/javascript">
 
@@ -388,10 +383,11 @@
 					$.post('/subjects', $( "#add-form" ).serialize())
 					.done(function (data) {
 						// body...
+						$('.name-error').addClass('hidden');
 
 						// if the validator bag returns error display error in modal
 						if (data.errors) {
-			        		$('.errors').removeClass('hidden');
+			        		$('.alert-danger').removeClass('hidden');
 			    			var errors = '';
 			                for(datum in data.errors){
 			                    errors += data.errors[datum] + '<br>';
@@ -399,10 +395,13 @@
 			                $('.errors').show().html(errors); //this is my div with 
 
 			            } else {
+			            	//clear errors
+			            	$('.alert-danger').addClass('hidden');
 			            	// reset the form
 			            	$("#add-form")[0].reset();
-			            	// hide the modal
-			            	$('#add-modal').modal('hide');
+			            	// resest select list
+			            	$("#grade_id").select2('val', 'All');
+			            	
 
 			            	// prepare row of subject details to append to table
 			            	var row = '<tr class="subject'+data[0].id+'">';
@@ -453,7 +452,7 @@
 			    // row to be deleted
 			    var row = $(this).parent("td").parent("tr");
 
-				var message = "subject";
+				var message = "If you continue you won't be able to retrieve this subject!";
 
 				var route = "/subjects/delete/"+id;
 

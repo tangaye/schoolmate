@@ -2,11 +2,6 @@
 
 @section('page-title', 'Term Report')
 
-@section('page-css')
-  <!-- loader -->
-  <link href="{{ asset("/css/loader.css") }}" rel="stylesheet" type="text/css" />
-@endsection
-
 @section('page-header', 'Term Report')
 
 @section('user-logout')
@@ -178,7 +173,7 @@
        		<div id="result">
           </div>
          <div>
-            <a href="#" onclick="printReport('result')" class="btn btn-primary print-btn">
+            <a href="#" class="btn btn-primary print-btn">
               <span>
                 <i class="fa fa-print"></i>
               </span>
@@ -198,23 +193,13 @@
   
 	<script type="text/javascript">
 
-    function printReport (section){
-        var printContent = document.getElementById(section);
-        var WinPrint = window.open();
-
-        WinPrint.document.write('<link rel="stylesheet" type="text/css" href="{{ asset("/css/app.css") }}">');
-        WinPrint.document.write('<link rel="stylesheet" type="text/css" href="{{ asset("/css/media-print.css") }}" media="print">');
-        WinPrint.document.write(printContent.innerHTML);
-        WinPrint.document.write('<footer>Courtesy of <b>School</b>Mate</footer>');
-        WinPrint.document.close();
-        WinPrint.setTimeout(function(){
-          WinPrint.focus();
-          WinPrint.print();
-          WinPrint.close();
-        }, 1000);
-    }
-
 		$(document).ready(function() {
+
+      $(document).on('click', '.print-btn', function(event) {
+        event.preventDefault();
+        /* Act on the event */
+        printReport('result');
+      });
 
 			$.ajaxSetup({
 			    headers: {

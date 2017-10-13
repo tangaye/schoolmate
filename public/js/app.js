@@ -12041,6 +12041,22 @@ window.bootbox_small_alert = function (custom_message) {
     });
 };
 
+window.printReport = function (section) {
+    var printContent = document.getElementById(section);
+    var WinPrint = window.open();
+
+    WinPrint.document.write('<link rel="stylesheet" type="text/css" href="/css/app.css">');
+    WinPrint.document.write('<link rel="stylesheet" type="text/css" href="/css/media-print.css" media="print">');
+    WinPrint.document.write(printContent.innerHTML);
+    WinPrint.document.write('<footer>Courtesy of <b>School</b>Mate</footer>');
+    WinPrint.document.close();
+    WinPrint.setTimeout(function () {
+        WinPrint.focus();
+        WinPrint.print();
+        WinPrint.close();
+    }, 1000);
+};
+
 /***/ }),
 /* 30 */
 /***/ (function(module, exports, __webpack_require__) {

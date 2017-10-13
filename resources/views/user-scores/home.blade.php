@@ -126,24 +126,24 @@
 	        var term = $('#term').val();
 
 	        if (term != "") {
+	        	$(document).ajaxStart(function() {
+                	$(".overlay").css("display", "block");
+              	});
+
+              	$(document).ajaxStop(function() {
+                	$(".overlay").css("display", "none");
+              	});
+              	
 	        	$.ajax({
 		            url:"/users/scores/terms",
 		            method:"GET",
 		            data:{"term_id":term},
-		            beforeSend: function(){
-	                  // Show image container
-	                  $(".overlay").show();
-	                },
 	                success:function(data){
 	                  $("#result").html(data);
 	                  $('#term-table').DataTable();
 	                },
 	                error:function() {
 	                  $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
-	                },
-	                complete:function(){
-	                  // Hide image container
-	                  $(".overlay").hide();
 	                }
 		        });
 	        } else {

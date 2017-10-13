@@ -9,8 +9,6 @@
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.css") }}" rel="stylesheet" type="text/css" />
 	<!-- datatables -->
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css") }}" rel="stylesheet" type="text/css" />
-	<!-- loader -->
-	<link href="{{ asset("/css/loader.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page-header', 'Score Tables')
@@ -150,7 +148,7 @@
     <ul class="treeview-menu">
       <li><a href="/scores/report/terms"><i class="fa fa-file-text-o"></i>Term Report</a></li>
       <li><a href="/scores/report/semesters"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
-      <li><a href="#"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
+      <li><a href="/scores/report/annual"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
 </ul>
