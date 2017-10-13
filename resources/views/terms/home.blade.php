@@ -161,67 +161,46 @@
 
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-			<div class="box box-default collapsed-box">
-				<div class="box-header with-border">
-	              	<h3 class="box-title">Terms</h3>
-
-		            <div class="box-tools pull-right">
-		            	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-		            </div>
-		        </div>
-
-	            <div class="box-body container-fluid text-center">
-					<form action="" method="POST" class="form-inline" role="form" id="terms-form">
-						<p class="name-error text-danger hidden"></p>
-						<p class="semester-error text-danger hidden"></p>
-						<div class="form-group">
-							<label for="name">Name</label>
-							<input type="text" name="name" id="name" class="form-control" placeholder="Term name">
-						</div>
-						<div class="form-group">
-                            <label for="semester">Semester</label>
-                            
-                            <select class="form-control" name="semester_id" id="semester" required="">
-                                 @foreach($semesters as $semester)
-                                    <option value="{{$semester->id}}">{{$semester->name}}</option>
-                                @endforeach
-                            </select>
-                
-                        </div>
-                        <button type="submit" id="add-term" class="btn btn-success form-control">Save</button>
-					</form>
-				</div>
-
-				<div class="panel-body">
-					<!-- Table -->
-					<table class="table table-bordered table-condensed table-striped" id="terms-table">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Semester</th>
-								<th colspan="2">Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($terms as $term)
-								<tr class="term{{$term->id}}">
-									<td>{{$term->name}}</td>
-									<td>{{$term->semester->name}}</td>
-									<td>
-										<a id="edit-term" data-id="{{$term->id}}" data-name="{{$term->name}}" data-toggle="tooltip" title="Edit" href="#" role="button">
-											<i class="glyphicon glyphicon-edit text-info"></i>
-										</a>
-									</td>
-									<td>
-										<a id="delete-term" data-id="{{$term->id}}" data-toggle="tooltip" title="Delete" href="#" role="button">
-											<i class="glyphicon glyphicon-trash text-danger"></i>
-										</a>
-									</td>
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+	              <li class="active"><a href="#term_details" data-toggle="tab">Details</a></li>
+	              <li><a href="#new_term" data-toggle="tab">Add Term</a></li>
+	            </ul>
+	            <div class="tab-content">
+	            	<div class="tab-pane active" id="term_details">
+	            		<!-- Table -->
+						<table class="table table-bordered table-condensed table-striped" id="terms-table">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Semester</th>
+									<th colspan="2">Actions</th>
 								</tr>
-							@endforeach
-						</tbody>
-					</table>
-				</div>
+							</thead>
+							<tbody>
+								@foreach($terms as $term)
+									<tr class="term{{$term->id}}">
+										<td>{{$term->name}}</td>
+										<td>{{$term->semester->name}}</td>
+										<td>
+											<a id="edit-term" data-id="{{$term->id}}" data-name="{{$term->name}}" data-toggle="tooltip" title="Edit" href="#" role="button">
+												<i class="glyphicon glyphicon-edit text-info"></i>
+											</a>
+										</td>
+										<td>
+											<a id="delete-term" data-id="{{$term->id}}" data-toggle="tooltip" title="Delete" href="#" role="button">
+												<i class="glyphicon glyphicon-trash text-danger"></i>
+											</a>
+										</td>
+									</tr>
+								@endforeach
+							</tbody>
+						</table>
+	            	</div>
+	            	<div class="tab-pane" id="new_term">
+	            		@include('terms.partials.create')
+	            	</div>
+	            </div>
 			</div>
 		</div>	
 	</div>
@@ -242,13 +221,13 @@
 			});
 
 			// inserting semester
-			$(document).on('click', '#add-term', function(event) {
+			$(document).on('click', '#insert-term', function(event) {
 				event.preventDefault();
 				/* Act on the event */
 				var name = $('#name').val();
 				var semester = $('#semester').val();
 
-				if (name.length == 0 || name == null) {
+				if (name.length == 0 || name.length == null) {
 					$('.name-error').removeClass('hidden');
 					$('.name-error').show().html('Please enter term name.'); 
 				} 
@@ -256,13 +235,13 @@
 					$('.semester-error').removeClass('hidden');
 					$('.semester-error').show().html('Please select a semester the term is found in.');
 				} else {
-					$.post('/terms', $("#terms-form").serialize())
+					$.post('/terms', $("#add-form").serialize())
 					.done(function (data) {
 						// body...
 
 						// if the validator bag returns error display error in modal
 						if (data.errors) {
-			        		$('.errors').removeClass('hidden');
+			        		$('.alert-danger').removeClass('hidden');
 			    			var errors = '';
 			                for(datum in data.errors){
 			                    errors += data.errors[datum] + '<br>';
@@ -271,7 +250,9 @@
 
 			            } else {
 			            	// reset the form
-			            	$("#terms-form")[0].reset();
+			            	$("#add-form")[0].reset();
+			            	$('.name-error').addClass('hidden');
+			            	$('.alert-danger').addClass('hidden');
 
 			            	// prepare row of term details to append to table
 			            	var row = '<tr class="term'+data[0].id+'">';
@@ -322,6 +303,14 @@
 				$('.name-error').addClass('hidden');
 				$('.errors').addClass('hidden');
 
+				// display loader before ajax request
+				$(document).ajaxStart(function() {
+                	$(".overlay").css("display", "block");
+              	});
+
+              	$(document).ajaxStop(function() {
+                	$(".overlay").css("display", "none");
+              	});
 
 				// an ajax call the get the semester assigned to the term to be edited
 				$.get('/terms/edit/'+id)
@@ -421,7 +410,7 @@
 			    // row to be deleted
 			    var row = $(this).parent("td").parent("tr");
 
-				var message = "term";
+				var message = "If you continue you won't be able to retrieve this term!";
 
 				var route = "/terms/delete/"+id;
 
