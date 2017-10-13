@@ -209,7 +209,7 @@
 						</table>
 	            	</div>
 	            	<div class="tab-pane" id="new_subject">
-	                	@include('subjects.create')
+	                	@include('subjects.partials.create')
 		            </div>
 	            </div>
 			</div>
@@ -273,6 +273,7 @@
 				// subject to be edited id
 				var id = $(this).attr('data-id');
 
+				// display loader before ajax request
 				$(document).ajaxStart(function() {
                 	$(".overlay").css("display", "block");
               	});

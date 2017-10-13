@@ -19,10 +19,10 @@
                 <form action="" method="PUT" id='edit-form'>
                 	{{csrf_field()}}
                 	
+                    @component('components.loader')
+                    @endcomponent
+                    
                     <div class="box-body">
-
-                        @component('components.loader')
-                        @endcomponent
                         
                     	<!-- div to display errors returned by server-->
                     	<div class="errors alert alert-danger hidden">

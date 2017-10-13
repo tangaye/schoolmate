@@ -162,68 +162,49 @@
 	<!-- grades modal form end -->
 
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			<div class="box box-default collapsed-box">
-				<div class="box-header with-border">
-	              	<h3 class="box-title">Grades</h3>
-
-		            <div class="box-tools pull-right">
-		            	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-		            </div>
-		        </div>
-
-	            <div class="box-body container-fluid text-center">
-					<form action="" method="POST" class="form-inline" role="form" id="add-form">
-						<p class="name-error text-danger hidden"></p>
-						<div class="form-group">
-							<label for="name">Name</label>
-							<input type="text" name="name" id="name" class="form-control" placeholder="Grade/class name">
-						</div>
-						<div class="form-group">
-
-                            <label for="division">Division</label>
-                            <p class="division-error text-danger hidden"></p>
-                            <select class="form-control" name="division_id" id="division" required="">
-                                 @foreach($divisions as $division)
-                                    <option value="{{$division->id}}">{{$division->name}}</option>
-                                @endforeach
-                            </select>
-                
-                        </div>
-						<button type="submit" id="insert-grade" class="btn btn-success form-control">Save</button>
-					</form>
-				</div>
-
-				<div class="panel-body">
-					<!-- Table -->
-					<table class="table table-bordered table-condensed table-striped" id="grades-table">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Divison</th>
-								<th colspan="2">Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($grades as $grade)
-								<tr class="grade{{$grade->id}}">
-									<td>{{$grade->name}}</td>
-									<td>{{$grade->division->name}}</td>
-									<td>
-										<a id="edit-grade" data-id="{{$grade->id}}" data-name="{{$grade->name}}" data-toggle="tooltip" title="Edit" href="#" role="button">
-											<i class="glyphicon glyphicon-edit text-info"></i>
-										</a>
-									</td>
-									<td>
-										<a id="delete-grade" data-id="{{$grade->id}}" data-toggle="tooltip" title="Delete" href="#" role="button">
-											<i class="glyphicon glyphicon-trash text-danger"></i>
-										</a>
-									</td>
+		<div class="col-md-10 col-md-offset-1">
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+	              <li class="active"><a href="#grade_details" data-toggle="tab">Details</a></li>
+	              <li><a href="#new_grade" data-toggle="tab">New Grade</a></li>
+	            </ul>
+	            <div class="tab-content">
+	            	<div class="tab-pane active" id="grade_details">
+		            	<!-- Table -->
+						<table class="table table-bordered table-condensed table-striped" id="grades-table">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Divison</th>
+									<th colspan="2">Actions</th>
 								</tr>
-							@endforeach
-						</tbody>
-					</table>
-				</div>
+							</thead>
+							<tbody>
+								@foreach($grades as $grade)
+									<tr class="grade{{$grade->id}}">
+										<td>{{$grade->name}}</td>
+										<td>{{$grade->division->name}}</td>
+										<td>
+											<a id="edit-grade" data-id="{{$grade->id}}" data-name="{{$grade->name}}" data-toggle="tooltip" title="Edit" href="#" role="button">
+												<i class="glyphicon glyphicon-edit text-info"></i>
+											</a>
+										</td>
+										<td>
+											<a id="delete-grade" data-id="{{$grade->id}}" data-toggle="tooltip" title="Delete" href="#" role="button">
+												<i class="glyphicon glyphicon-trash text-danger"></i>
+											</a>
+										</td>
+									</tr>
+								@endforeach
+							</tbody>
+						</table>
+		            </div>
+		            <div class="tab-pane" id="new_grade">
+	            		@include('grades.partials.create')
+	            	</div>
+	            </div>
+	            
+	            
 			</div>
 		</div>	
 	</div>
@@ -249,7 +230,7 @@
 				var name = $('#name').val();
 				var division = $('#division').val();
 
-				if (name.length == 0 || name == null) {
+				if (name.length == 0 || name.length == null) {
 					$('.name-error').removeClass('hidden');
 					$('.name-error').show().html('Please enter a class/grade name.'); 
 				}
@@ -257,13 +238,15 @@
 					$('.division-error').removeClass('hidden');
 					$('.division-error').show().html('Please select a division the subject is taught in.');
 				} else {
+					//$('.name-error').addClass('hidden');
 					$.post('/grades', $("#add-form").serialize())
 					.done(function (data) {
 						// body...
 
 						// if the validator bag returns error display error in modal
 						if (data.errors) {
-			        		$('.errors').removeClass('hidden');
+			        		$('.alert-danger').removeClass('hidden');
+
 			    			var errors = '';
 			                for(datum in data.errors){
 			                    errors += data.errors[datum] + '<br>';
@@ -271,9 +254,10 @@
 			                $('.errors').show().html(errors); 
 
 			            } else {
-			            	console.log(data);
 			            	// reset the form
 			            	$("#add-form")[0].reset();
+			            	$('.name-error').addClass('hidden');
+			            	$('.alert-danger').addClass('hidden');
 
 			            	// prepare row of grade details to append to table
 			            	var row = '<tr class="grade'+data[0].id+'">';
@@ -326,6 +310,15 @@
 
 				$('.name-error').addClass('hidden');
 				$('.errors').addClass('hidden');
+
+				// display loader before ajax request
+				$(document).ajaxStart(function() {
+                	$(".overlay").css("display", "block");
+              	});
+
+              	$(document).ajaxStop(function() {
+                	$(".overlay").css("display", "none");
+              	});
 
 				// an ajax call the get the division assigned to the class/grade to be edited
 				$.get('/grades/edit/'+id)
@@ -426,7 +419,7 @@
 			    // row to be deleted
 			    var row = $(this).parent("td").parent("tr");
 
-				var message = "grade/class";
+				var message = "If you continue you won't be able to retreive this grade!";
 
 				var route = "/grades/delete/"+id;
 
