@@ -103,8 +103,14 @@ class Teacher extends Authenticatable
             ->pluck('name', 'id');
     }
 
-    // this function returns scores of students whow are that classes a teacher
-    // teaches for a specific subject and term(period)
+    /*
+    * this function returns scores of students who are in the classes a teacher
+    * teaches for a specific subject and term(period)
+
+    * The reason why the teacher id isn't specify here is that both the subject and grade 
+    * ids being passed are contrained by the program to be grades a teacher is teaching
+    * and subjects he/she teaches in such grade
+    */
     public static function teacherStudentsScores($grade_id, $subject_id, $term_id)
     {
         return \DB::table('scores')

@@ -248,7 +248,7 @@
 					<div class="container-fluid">
 						<span class="panel-title">Edit Student</span>
 						<!-- button that triggers modal -->
-						<a role="button" class="pull-right" href="" onclick="history.back()" title="students table">
+						<a role="button" class="pull-right btn btn-primary" href="" onclick="history.back()">
 						<i class="glyphicon glyphicon-arrow-left"></i> Back
 						</a>
 					</div>

@@ -3,9 +3,9 @@
   <!-- Logo -->
   <a href="javascript:void(0)" class="logo">
     <!-- mini logo for sidebar mini 50x50 pixels -->
-    <span class="logo-mini"><b>S</b>MT</span>
+    <span class="logo-mini" style="font-family:  Raleway;"><b>S</b>MT</span>
     <!-- logo for regular state and mobile devices -->
-    <span class="logo-lg"><b>School</b>MATE</span>
+    <span class="logo-lg" style="font-family:  Raleway;"><b>School</b>MATE</span>
   </a>
 
   <!-- Header Navbar -->
@@ -25,7 +25,7 @@
 
         <li style="padding-right: 10px">
           @foreach($academics as $academic)
-             <b class="label pull-right bg-aqua" style="margin-top: 11%; font-size: 12px;" > Academic Year: {{$academic->date_start->year}} - {{$academic->date_end->year}}</b> 
+             <b class="label pull-right bg-aqua" style="margin-top: 11%; font-size: 12px; font-family:  Raleway;" > Academic Year: {{$academic->date_start->year}} - {{$academic->date_end->year}}</b> 
           @endforeach
         </li>
 

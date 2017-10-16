@@ -179,6 +179,7 @@
 					<table class="table table-responsive table-striped table-condensed table-bordered" id="student-table" cellspacing="0" width="100%">
 						<thead>
 							<tr>
+                <th>Code</th>
 								<th>Name</th>
                 <th>Gender</th>
 								<th>Birth Date</th>
@@ -191,7 +192,7 @@
 						<tbody>
 							@foreach($students as $student)
 								<tr>
-
+                  <td class="text-right"><a href="javascript:void(0)">{{$student->student_code}}</a></td>
 									<td>{{$student->first_name}} {{$student->surname}}</td>
                   <td>{{$student->gender}}</td>
 									<td>{{$student->date_of_birth->toFormattedDateString()}}</td>
@@ -200,27 +201,12 @@
 									<td>{{$student->grade->name}}</td>
 
 									<td>
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-default btn-sm">Action</button>
-                      <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a id="edit-student" href="/students/edit/{{$student->id}}">
-                            <i class="glyphicon glyphicon-edit text-info"></i>
-                            Edit
-                          </a>
-                        </li>
-                        <li>
-                          <a id="delete-student" href="javascript:void(0)" data-id="{{$student->id}}">
-                            <i class="glyphicon glyphicon-trash text-danger"></i>
-                            Delete
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
+                    <a id="edit-student" href="/students/edit/{{$student->id}}" title="Edit" data-toggle="tooltip" style="padding-right: 5px">
+                      <i class="glyphicon glyphicon-edit text-info"></i>
+                    </a>
+                    <a id="delete-student" href="javascript:void(0)" data-id="{{$student->id}}" title="Delete" data-toggle="tooltip">
+                        <i class="glyphicon glyphicon-trash text-danger"></i>
+                    </a>
 									</td>
 
 								</tr>
@@ -309,17 +295,15 @@
 			// id of the row to be deleted
 			var id = $(this).attr('data-id');
 
-		    // row to be deleted
-		    var row = $(this).parent("td").parent("tr");
+	    // row to be deleted
+	    var row = $(this).parent("td").parent("tr");
 
 			var message = "You'll not be able to retrieve this student!";
 
 			var route = "/students/delete/"+id;
 
-			var item = "student";
 
-
-			swal_delete(message, item, route, row);
+			swal_delete(message, route, row);
 		});	
 	</script>
 

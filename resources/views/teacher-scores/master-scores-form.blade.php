@@ -52,7 +52,7 @@
          		<div class="panel-body">
          			<div class="form-group">
          				<div class="input-group">
-                  <span class="input-group-addon">Grades/Class</span>
+                  <span class="input-group-addon">Grade/Class</span>
                   <select name="grade_id" class="form-control" id="grade">
                     <option value="">Select Grade/Class</option>
                     @foreach($teacher_grades as $grade)

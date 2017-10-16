@@ -12,8 +12,6 @@
   <link href="{{ asset("/css/app.css") }}" rel="stylesheet" type="text/css" />
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   
   <!-- Theme style -->
   <link href="{{ asset("/bower_components/AdminLTE/dist/css/AdminLTE.min.css")}}" rel="stylesheet" type="text/css" />
@@ -63,7 +61,7 @@
             <!-- /.col -->
           </div>
           <div class="row">
-              <a class="btn btn-link pull-left" href="{{ route('password.request') }}">Forgot Your Password?</a>
+              <a class="btn btn-link pull-left disabled" href="{{ route('password.request') }}">Forgot Your Password?</a>
           </div>
     </form>
   </div>

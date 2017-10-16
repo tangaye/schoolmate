@@ -51,6 +51,10 @@
 		<div class="col-md-12">
 
          	<div class="panel">
+         		
+         		@component('components.loader')
+            	@endcomponent
+
          		<div class="panel-body">
          			<div class="form-group">
          				<div class="input-group">

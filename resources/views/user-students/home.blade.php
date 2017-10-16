@@ -91,6 +91,7 @@
 					<table class="table table-responsive table-striped table-condensed table-bordered" id="student-table">
 						<thead>
 							<tr>
+								<th>Code</th>
 								<th>Name</th>
 								<th>Gender</th>
 								<th>Birth Date</th>
@@ -103,7 +104,7 @@
 						<tbody>
 							@foreach($students as $student)
 								<tr>
-
+									<td class="text-right"><a href="javascript:void(0)">{{$student->student_code}}</a></td>
 									<td>{{$student->first_name}} {{$student->surname}}</td>
 									<td>{{$student->gender}}</td>
 									<td>{{$student->date_of_birth->toFormattedDateString()}}</td>
@@ -112,32 +113,19 @@
 									<td>{{$student->grade->name}}</td>
 
 									<td>
-										<div class="btn-group">
-					                      <button type="button" class="btn btn-default btn-sm">Action</button>
-					                      <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					                        <span class="caret"></span>
-					                        <span class="sr-only">Toggle Dropdown</span>
-					                      </button>
-					                      <ul class="dropdown-menu">
-					                      	@can('view-student')
-						                        <li>
-						                          <a id="edit-student" href="/users/students/edit/{{$student->id}}">
-						                            <i class="glyphicon glyphicon-edit text-info"></i>
-						                            Edit
-						                          </a>
-						                        </li>
-					                        @endcan
+										@can('view-student')
+						                	<a id="edit-student" href="/users/students/edit/{{$student->id}}" title="Edit" data-toggle="tooltip" style="padding-right: 5px">
+				                            	<i class="glyphicon glyphicon-edit text-info"></i>
+				                          	</a>
+					                        
+				                        @endcan
 
-					                        @can('delete-student')
-						                        <li>
-						                          <a id="delete-student" href="javascript:void(0)" data-id="{{$student->id}}">
-						                            <i class="glyphicon glyphicon-trash text-danger"></i>
-						                            Delete
-						                          </a>
-						                        </li>
-					                        @endcan
-					                      </ul>
-					                    </div>
+			                        	@can('delete-student')
+			                        		<a id="delete-student" href="javascript:void(0)" data-id="{{$student->id}}" title="Delete" data-toggle="tooltip">
+					                            <i class="glyphicon glyphicon-trash text-danger"></i>
+					                            
+					                        </a>
+				                        @endcan
 									</td>
 
 								</tr>

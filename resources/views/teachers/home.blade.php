@@ -66,7 +66,7 @@
               @if($teacher->gender === "Male")
                 Mr. {{$teacher->first_name}} {{$teacher->surname}}</h3>
               @else
-                Mrs. {{$teacher->first_name}} {{$teacher->surname}}</h3>
+                Mrs/Ms. {{$teacher->first_name}} {{$teacher->surname}}</h3>
               @endif
             <h5>{{$teacher->email}}</h5>
           </div>

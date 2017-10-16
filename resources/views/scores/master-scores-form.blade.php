@@ -238,12 +238,18 @@
 
         $.get('/grades/grade-subjects/'+grade)
         .done(function (data) {
-          // body...
-          $('select[name="subject_id"]').empty();
-          $('select[name="subject_id"]').append('<option value="">Select Subjects</option>');
-          $.each(data, function(key, value) {
-              $('select[name="subject_id"]').append('<option value="'+ key +'">'+ value +'</option>');
-          });
+          if (data.none) {
+            $("#result").html(data.none);
+            $("#subject").val('');
+            $("#subject").attr('disabled','disabled');
+
+          } else {
+            $('select[name="subject_id"]').empty();
+            $('select[name="subject_id"]').append('<option value="">Select Subjects</option>');
+              $.each(data, function(key, value) {
+                $('select[name="subject_id"]').append('<option value="'+ key +'">'+ value +'</option>');
+              });
+          }
         })
         .fail(function (data) {
           // body...
