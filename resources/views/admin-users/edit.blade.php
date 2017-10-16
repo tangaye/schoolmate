@@ -214,7 +214,7 @@
 				<div class="panel-heading">
 					<div class="container-fluid">
 						<span class="panel-title">Edit User</span>
-						<!-- button that triggers modal -->
+            
 						<a role="button" class="pull-right" href="{{route('users.home')}}" title="students table">
 							<span class="badge label-primary"><i class="glyphicon glyphicon-arrow-left"></i> </span>
 						</a>

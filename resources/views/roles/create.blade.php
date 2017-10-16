@@ -154,19 +154,19 @@
 @endsection
 
 @section('content')
-  <div class="row">
-    <div class="col-md-10 col-md-offset-1">
-      <a href="/roles" class="btn btn-primary pull-right btn-sm btn-flat">
-        <i class="glyphicon glyphicon-arrow-left"></i>
-        Back
-      </a>
-    </div>
-  </div><br>
   
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="panel panel-default">
-				<div class="panel-heading">Enter New Role</div>
+				<div class="panel-heading">
+          <div class="container-fluid">
+            <span> Enter New Role</span>
+            <a href="" onclick="history.back()" class="btn btn-primary pull-right btn-sm">
+              <i class="glyphicon glyphicon-arrow-left"></i>
+              Back
+            </a>
+          </div>
+       </div>
 
 				<div class="panel-body">
 					<!-- Table -->

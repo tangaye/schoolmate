@@ -78,6 +78,9 @@
 		<div class="col-md-12">
 
          	<div class="panel">
+         		@component('components.loader')
+          		@endcomponent
+          		
          		<div class="panel-body">
          			<div class="form-group">
          				<div class="input-group">
@@ -90,8 +93,6 @@
 	         				</select>
 	         			</div>
 	         		</div>
-	         		@component('components.loader')
-          			@endcomponent
 	         		<div id="result">
 	         		</div>
 	         	</div>

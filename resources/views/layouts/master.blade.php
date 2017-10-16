@@ -53,7 +53,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-black sidebar-mini">
   <div class="wrapper">
 
     <!-- Main Header -->
@@ -95,10 +95,12 @@ desired effect
       <strong>Copyright &copy; <a href="#">Company</a>.</strong> All rights reserved.
     </footer>
 
+    @include('layouts.partials.control-sidebar')
+
 </div>  
   <!-- REQUIRED JS SCRIPTS -->
 
-  <script src="{{ asset ("/js/app.js") }}"></script>
+    <script src="{{ asset ("/js/app.js") }}"></script>
 
     <!-- adding optional page lavel scripts -->
     @yield('page-scripts')
@@ -107,5 +109,7 @@ desired effect
     <!-- AdminLTE App -->
     <!-- this should be the last to be loaded -->
     <script src="{{ asset ("/bower_components/AdminLTE/dist/js/app.min.js") }}" type="text/javascript"></script>
+    <script src="{{ asset ("/bower_components/AdminLTE/dist/js/demo.js") }}" type="text/javascript"></script>
+</body>
 </body>
 </html>

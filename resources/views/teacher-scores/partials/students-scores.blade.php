@@ -5,6 +5,7 @@
 		<h2 style="margin-bottom: 0px"><strong>{{$grade}}</strong></h2>
 		<h3 style="margin-top: 0px"><strong> <u>{{$term}} <span class="text-primary">{{$subject}}</span> Scores</u> </strong></h3>
 	</div>
+	
 	<thead>
 		<th>Name</th>
 		<th>Score</th>

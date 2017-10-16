@@ -158,19 +158,20 @@
 
 
 @section('content')
-    <div class="row">
-      <div class="col-md-8 col-md-offset-2">
-        <a href="{{route('users.home')}}" class="btn btn-sm btn-flat btn-primary pull-right">
-          <i class="glyphicon glyphicon-arrow-left"></i>
-          Back
-        </a>
-      </div>
-    </div> <br>
 
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">User Details</div>
+                <div class="panel-heading">
+                  <div class="container-fluid">
+                    <span>User Details</span>
+                    <a href="{{route('users.home')}}" class="btn btn-sm btn-primary pull-right">
+                      <i class="glyphicon glyphicon-arrow-left"></i>
+                      Back
+                    </a>
+                  </div>
+                  
+                </div>
                 <div class="panel-body">
                     <form role="form" method="POST" action="{{ route('users.create') }}">
                         {{ csrf_field() }}

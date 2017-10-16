@@ -169,8 +169,8 @@
 					<div class="container-fluid">
 						<span class="panel-title">Enter Student Details</span>
 						<!-- button that triggers modal -->
-						<a role="button" href="/students" class="pull-right" title="students table">
-							<span class="badge label-primary"><i class="glyphicon glyphicon-arrow-left"></i> </span>
+						<a role="button" onclick="history.back()" class="btn btn-primary btn-sm pull-right">
+							<i class="glyphicon glyphicon-arrow-left"></i> Back
 						</a>
 					</div>
 					
@@ -182,9 +182,9 @@
           	<!-- personal information -->  
           	<div class="form-group">
           		<p>
-                      <b>PERSONAL INFOMATION:</b>
-                      <hr>
-                  </p>
+                  <b>PERSONAL INFOMATION:</b>
+                  <hr>
+              </p>
           	</div>
 
             <div class="row">

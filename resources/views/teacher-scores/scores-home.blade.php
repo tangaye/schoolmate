@@ -3,12 +3,10 @@
 @section('page-title', 'Students Scores')
 
 @section('page-css')
-	<!-- Animate css -->
-	<link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
-	<!-- swal alert css -->
-	<link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.css") }}" rel="stylesheet" type="text/css" />
 	<!-- datatables -->
-	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css") }}" rel="stylesheet" type="text/css" />
+	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.css") }}" rel="stylesheet" type="text/css" />
+
+  	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/buttons.bootstrap.min.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page-header', 'Students Scores')
@@ -45,7 +43,6 @@
 
 @section('content')
 
-	
 	<!-- edit score modal form start -->
 	@include('scores.edit')
 	<!-- edit score modal form end -->
@@ -88,11 +85,19 @@
 
 @section('page-scripts')
 
-	<script src="{{ asset ("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.min.js") }}"></script>
-
-
 	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jquery.dataTables.min.js") }}"></script>
-	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
+  <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.buttons.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.bootstrap.min.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jszip.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/pdfmake.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/vfs_fonts.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.print.min.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.html5.min.js") }}"></script>
 
 	<script type="text/javascript">
 
@@ -116,6 +121,15 @@
 	      var term = $('#term').val();
 
 	      if (grade != "") {
+
+	      	$(document).ajaxStart(function() {
+                $(".overlay").css("display", "block");
+              });
+
+              $(document).ajaxStop(function() {
+                $(".overlay").css("display", "none");
+              });
+
 	        $("#subject").removeAttr('disabled');
 
 	        $.get('/teacher/grade-subjects/'+grade)
@@ -178,13 +192,50 @@
 	      var term = $('#term').val();
 
 	      if (subject != "" && term != "" && subject != "") {
+
+	      	$(document).ajaxStart(function() {
+                $(".overlay").css("display", "block");
+              });
+
+              $(document).ajaxStop(function() {
+                $(".overlay").css("display", "none");
+              });
+
 	        $.ajax({
 	            url:"/teacher/students-scores",
 	            method:"GET",
 	            data:{"grade_id":grade, "subject_id":subject, "term_id":term},
 	            success:function(data){
 	              $("#result").html(data);
-	              $('#scores-table').DataTable();
+	              $('#scores-table').DataTable({
+	              	dom: 'Bfrtip',
+				      buttons: [
+				        {
+				          extend: 'excel',
+				          title: 'Scores Report',
+				          text: '<i class="fa fa-file-excel-o"></i> Excel',
+				          exportOptions: {
+				            columns: ':not(.noExport)'
+				          }
+				        },
+				        {
+				          extend: 'pdf',
+				          title: 'Scores Report',
+				          text: '<i class="fa fa-file-pdf-o"></i> PDF',
+				          exportOptions: {
+				           columns: ':not(.noExport)'
+				          }
+				        },
+				        {
+				          extend: 'print',
+				          title: 'Scores Report',
+				          text: '<i class="fa fa-print"></i> Print',
+				          exportOptions: {
+				            columns: ':not(.noExport)'
+				          }
+				        }
+				      ]
+	              });
 	            },
 	            error:function(){
 	              $("#result").html('There was an error please contact administrator');
