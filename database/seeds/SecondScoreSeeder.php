@@ -27,55 +27,55 @@ class SecondScoreSeeder extends Seeder
     	$physics = Subject::where('name', 'Physics')->first();
     	$geo = Subject::where('name', 'Geography')->first();
 
-    	$student = Student::where('student_code', 0002)->first();
+    	$student = Student::where('student_code', 0011)->first();
 
 
         $score = new Score();
-            $score->student_id = $student->id;
-            $score->grade_id = $student->grade_id;
-            $score->subject_id = $maths->id;
-            $score->term_id = $periodOne->id;
-            $score->score = 99;
-            $score->save();
+        $score->student_id = $student->id;
+        $score->grade_id = $student->grade_id;
+        $score->subject_id = $maths->id;
+        $score->term_id = $periodOne->id;
+        $score->score = 99;
+        $score->save();
 
-            $score = new Score();
-            $score->student_id = $student->id;
-            $score->grade_id = $student->grade_id;
-            $score->subject_id = $maths->id;
-            $score->term_id = $periodFour->id;
-            $score->score = 65;
-            $score->save();
+        $score = new Score();
+        $score->student_id = $student->id;
+        $score->grade_id = $student->grade_id;
+        $score->subject_id = $maths->id;
+        $score->term_id = $periodFour->id;
+        $score->score = 65;
+        $score->save();
 
-            $score = new Score();
-            $score->student_id = $student->id;
-            $score->grade_id = $student->grade_id;
-            $score->subject_id = $biology->id;
-            $score->term_id = $periodThere->id;
-            $score->score = 60;
-            $score->save();
+        $score = new Score();
+        $score->student_id = $student->id;
+        $score->grade_id = $student->grade_id;
+        $score->subject_id = $biology->id;
+        $score->term_id = $periodThere->id;
+        $score->score = 60;
+        $score->save();
 
-            $score = new Score();
-            $score->student_id = $student->id;
-            $score->grade_id = $student->grade_id;
-            $score->subject_id = $geo->id;
-            $score->term_id = $periodOne->id;
-            $score->score = 57;
-            $score->save();
+        $score = new Score();
+        $score->student_id = $student->id;
+        $score->grade_id = $student->grade_id;
+        $score->subject_id = $geo->id;
+        $score->term_id = $periodOne->id;
+        $score->score = 57;
+        $score->save();
 
-            $score = new Score();
-            $score->student_id = $student->id;
-            $score->grade_id = $student->grade_id;
-            $score->subject_id = $physics->id;
-            $score->term_id = $periodFour->id;
-            $score->score = 87;
-            $score->save();
+        $score = new Score();
+        $score->student_id = $student->id;
+        $score->grade_id = $student->grade_id;
+        $score->subject_id = $physics->id;
+        $score->term_id = $periodFour->id;
+        $score->score = 87;
+        $score->save();
 
-            $score = new Score();
-            $score->student_id = $student->id;
-            $score->grade_id = $student->grade_id;
-            $score->subject_id = $biology->id;
-            $score->term_id = $periodOne->id;
-            $score->score = 70;
-            $score->save();
+        $score = new Score();
+        $score->student_id = $student->id;
+        $score->grade_id = $student->grade_id;
+        $score->subject_id = $biology->id;
+        $score->term_id = $periodOne->id;
+        $score->score = 70;
+        $score->save();
     }
 }
