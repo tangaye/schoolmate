@@ -35,7 +35,7 @@ class StudentsTableSeeder extends Seeder
             $student_one->date_of_birth = Carbon::parse('1997-02-04')->format('d/m/Y');
             $student_one->gender = 'Male';
             $student_one->address = 'Kpelle Town';
-            $student_one->phone = '0770700700';
+            $student_one->phone = '0770800800';
             $student_one->county = 'Bong';
             $student_one->country = 'Liberia';
             $student_one->religion = 'Christian';
@@ -59,7 +59,7 @@ class StudentsTableSeeder extends Seeder
             $student_two->date_of_birth =  Carbon::parse('1998-02-04')->format('d/m/Y');
             $student_two->gender = 'Female';
             $student_two->address = 'Bassa Town';
-            $student_two->phone = '0770700700';
+            $student_two->phone = '0770900900';
             $student_two->county = 'Grand Bassa';
             $student_two->country = 'Liberia';
             $student_two->religion = 'Christian';
@@ -84,7 +84,7 @@ class StudentsTableSeeder extends Seeder
             $student_three->date_of_birth = Carbon::parse('1998-02-04')->format('d/m/Y');
             $student_three->gender = 'Male';
             $student_three->address = 'Bassa Town';
-            $student_three->phone = '0770700700';
+            $student_three->phone = '0770600600';
             $student_three->county = 'Grand Bassa';
             $student_three->country = 'Liberia';
             $student_three->religion = 'Christian';
