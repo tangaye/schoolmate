@@ -27,6 +27,8 @@ class ThirdScoreSeeder extends Seeder
     	$physics = Subject::where('name', 'Physics')->first();
     	$geo = Subject::where('name', 'Geography')->first();
 
+        // had to select the student this way because of heroku.
+        // Heroku's cleardb doesn't increment normally as mysql does
     	$student = Student::where('phone', 'like', '%0770600600%')->first();
         
         $score = new Score();

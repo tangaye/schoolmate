@@ -90,9 +90,10 @@ desired effect
     <footer class="main-footer">
     <!-- To the right -->
       <div class="pull-right hidden-xs">
+        <span class="text-danger"><b>This is currently for demo purpose only!</b></span>
       </div>
       <!-- Default to the left -->
-      <strong>Copyright &copy; <a href="#">Company</a>.</strong> All rights reserved.
+      <strong>Copyright &copy; <a href="javascript:"><b>School</b>MATE</a>.</strong> All rights reserved.
     </footer>
 
     @include('layouts.partials.control-sidebar')

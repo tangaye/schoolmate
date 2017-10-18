@@ -63,7 +63,7 @@ class TeachersController extends Controller
             'gender' => 'required|string',
             'date_of_birth' => 'bail|required',
             'qualification' => 'required|string',
-            'address' => 'required|string|max:255|regex:/^[a-z ,.\'-]+$/i',
+            'address' => 'required|string',
             'phone' => 'required',
             'user_name' => 'required|string|unique:teachers|max:20',
             'email' => 'bail|required|email|unique:teachers',
@@ -99,9 +99,11 @@ class TeachersController extends Controller
     {
         //
         $teacher = Teacher::findOrfail($id);
+        $subjects = Teacher::teacherSubjects($teacher->id);
+        $grades = Teacher::teacherGrades($teacher->id); 
         $genders = Common::genders();
 
-        return view('admin-teachers.edit', compact('teacher', 'genders'));
+        return view('admin-teachers.edit', compact('teacher', 'genders', 'subjects', 'grades'));
     }
 
     /**
@@ -120,7 +122,7 @@ class TeachersController extends Controller
             'gender' => 'required|string',
             'date_of_birth' => 'bail|required',
             'qualification' => 'required|string',
-            'address' => 'required|string|max:255|regex:/^[a-z ,.\'-]+$/i',
+            'address' => 'required|string',
             'phone' => 'required',
             'user_name' => 'required|string|max:30|unique:teachers,user_name,'.$id,
             'email' => 'bail|required|email|unique:teachers,email,'.$id
@@ -166,5 +168,24 @@ class TeachersController extends Controller
     public function destroy($id)
     {
         //
+         try {
+            $teacher = Teacher::findOrFail($id);
+            $teacher->delete();
+
+            return response()->json ( array (
+                'message' => "Teacher deleted!"
+            ) );
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            $error_code = $e->errorInfo[1];
+
+            // Integrity constraint violation: 1451
+            if($error_code  == 1451){
+                return response()->json ( array (
+                    'error' => "Sorry! Seems like this teacher is reference in other tables. To continue this please make sure a teacher isn't reference in any other table."
+                ) );
+            }
+            
+        }
     }
 }

@@ -164,8 +164,9 @@
 				<div class="panel-heading">
 					<div class="container-fluid">
 						<span class="panel-title">Teachers</span>
-						<a role="button" title="New Guardian" data-toggle="title" href="{{route('teachers.form')}}" class="pull-right">
-							<span class="badge label-primary"><i class="fa fa-pencil"></i> </span>
+
+						<a role="button"  href="{{route('teachers.form')}}" class="btn btn-primary pull-right">
+							<i class="glyphicon glyphicon-plus"></i> New Teacher
 						</a>
 					</div>
 				</div>
@@ -273,7 +274,7 @@
     });
 
 		// deleting a student
-		$(document).on('click', '.delete-guardian', function(event) {
+		$(document).on('click', '.delete-teacher', function(event) {
 			event.preventDefault();
 			/* Act on the event */
 
@@ -283,7 +284,7 @@
 		    // row to be deleted
 		    var row = $(this).parent("td").parent("tr");
 
-			var message = "Deleting this teacher will disassociate it from others records if related.";
+			var message = "You won't be able to retrieve this teacher if you continue!";
 
 			var route = "/admin/teachers/delete/"+id;
 

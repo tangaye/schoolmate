@@ -198,12 +198,25 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body no-padding">
-            <ul class="users-list clearfix">
-              <ul class="users-list clearfix">
-                  <li class="text-danger">COMMING SOON</li>
-              </ul>
-            </ul>
-            <!-- /.users-list -->
+            <div class="box-body">
+              <p><strong><i class="fa fa-book margin-r-5"></i> Subjects</strong></p>
+
+              @foreach($subjects as $subject)
+                <span class="label label-primary">{{$subject->name}}</span>
+              @endforeach
+
+              <hr>
+
+              <p><strong><i class="fa fa-map-marker margin-r-5"></i>Grades</strong></p>
+
+              @foreach($grades as $grade)
+                <span class="label badge bg-aqua">{{$grade->name}}</span>
+              @endforeach
+
+              <hr>
+
+            </div>
+            <!-- /.box-body -->
           </div>
         </div>
         <!--/.box -->

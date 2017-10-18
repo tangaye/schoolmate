@@ -316,7 +316,7 @@
                 </div>                
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary pull-left">Register</button>
+                    <button type="submit" class="btn btn-primary pull-left">Save Teacher</button>
                     <a href="javascript:void(0)" onclick="history.back()" class="btn btn-default pull-right">Cancel</a>
                 </div>
               </div>

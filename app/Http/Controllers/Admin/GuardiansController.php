@@ -65,7 +65,7 @@ class GuardiansController extends Controller
             'surname' => 'required|string|max:200|regex:/^[a-z ,.\'-]+$/i',
             'gender' => 'required|string',
             'relationship' => 'required|string',
-            'address' => 'required|string|max:255|regex:/^[a-z ,.\'-]+$/i',
+            'address' => 'required|string|max:255',
             'phone' => 'required|unique:guardians',
             'user_name' => 'required|string|unique:guardians|max:20',
             'email' => 'sometimes|email|unique:guardians|nullable',
@@ -127,7 +127,7 @@ class GuardiansController extends Controller
             'surname' => 'required|string|max:200|regex:/^[a-z ,.\'-]+$/i',
             'gender' => 'required|string',
             'relationship' => 'required|string',
-            'address' => 'required|string|max:255|regex:/^[a-z ,.\'-]+$/i',
+            'address' => 'required|string|max:255',
             'phone' => 'required|unique:guardians,phone,'.$id,
             'user_name' => 'required|string|max:30|unique:guardians,user_name,'.$id,
             'email' => 'sometimes|nullable|email|unique:guardians,email,'.$id

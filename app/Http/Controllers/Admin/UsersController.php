@@ -58,7 +58,7 @@ class UsersController extends Controller
         $this->validate(request(),[
             'name' => 'required|string|max:255|regex:/^[a-z ,.\'-]+$/i',
             'gender' => 'required|string|regex:/^[a-z ,.\'-]+$/i',
-            'address' => 'required|string|regex:/^[a-z ,.\'-]+$/i',
+            'address' => 'required|string',
             'phone' => 'required|string',
             'user_name' => 'required|string|unique:users|max:20',
             'email' => 'required|string|email|max:255|unique:users',
@@ -116,7 +116,7 @@ class UsersController extends Controller
         $this->validate(request(), [
             'name' => 'required|string|max:200|regex:/^[a-z ,.\'-]+$/i',
             'gender' => 'required|string',
-            'address' => 'required|string|max:255|regex:/^[a-z ,.\'-]+$/i',
+            'address' => 'required|string|max:255',
             'phone' => 'required|unique:users,phone,'.$id,
             'role_id' => 'required',
             'user_name' => 'required|string|max:30|unique:users,user_name,'.$id,
