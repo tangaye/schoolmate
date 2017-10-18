@@ -155,6 +155,10 @@ class GradesController extends Controller
 
         $subjects = $grade->subjects->pluck('name', 'id');
 
-        return response()->json($subjects);
+        if (count($subjects) > 0) {
+            return response()->json($subjects);
+        } else {
+            return response()->json(array('none' => 'No subjects assigned to the selected grade!'));
+        }
     }
 }

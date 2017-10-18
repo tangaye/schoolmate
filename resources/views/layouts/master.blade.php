@@ -14,11 +14,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-   <link rel="stylesheet" type="text/css" href="{{ asset("/css/media-print.css") }}" media="print">
+  <link rel="stylesheet" type="text/css" href="{{ asset("/css/media-print.css") }}" media="print">
   <!-- Bootstrap 3.3.2 -->
   <link href="{{ asset("/css/app.css") }}" rel="stylesheet" type="text/css" />
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  <!-- custom page css -->
+  @yield('page-css')
 
   <!-- Theme style -->
   <link href="{{ asset("/bower_components/AdminLTE/dist/css/AdminLTE.min.css")}}" rel="stylesheet" type="text/css" />
@@ -27,17 +31,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect.
   -->
-  <link href="{{ asset("/bower_components/AdminLTE/dist/css/skins/skin-blue.min.css")}}" rel="stylesheet" type="text/css" />
-
-  <!-- custom page css -->
-  @yield('page-css')
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+  <link href="{{ asset("/bower_components/AdminLTE/dist/css/skins/_all-skins.min.css")}}" rel="stylesheet" type="text/css" />
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -59,7 +53,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-black sidebar-mini">
   <div class="wrapper">
 
     <!-- Main Header -->
@@ -101,10 +95,12 @@ desired effect
       <strong>Copyright &copy; <a href="#">Company</a>.</strong> All rights reserved.
     </footer>
 
+    @include('layouts.partials.control-sidebar')
+
 </div>  
   <!-- REQUIRED JS SCRIPTS -->
 
-  <script src="{{ asset ("/js/app.js") }}"></script>
+    <script src="{{ asset ("/js/app.js") }}"></script>
 
     <!-- adding optional page lavel scripts -->
     @yield('page-scripts')
@@ -113,5 +109,7 @@ desired effect
     <!-- AdminLTE App -->
     <!-- this should be the last to be loaded -->
     <script src="{{ asset ("/bower_components/AdminLTE/dist/js/app.min.js") }}" type="text/javascript"></script>
+    <script src="{{ asset ("/bower_components/AdminLTE/dist/js/demo.js") }}" type="text/javascript"></script>
+</body>
 </body>
 </html>

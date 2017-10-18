@@ -292,7 +292,7 @@
               <div class="row">
                 <div class="col-sm-4 border-right">
                   <div class="description-block">
-                    <h5 class="description-header">3,200</h5>
+                    <h5 class="description-header">{{$students_total}}</h5>
                     <span class="description-text">STUDENT</span>
                   </div>
                   <!-- /.description-block -->
@@ -300,7 +300,7 @@
                 <!-- /.col -->
                 <div class="col-sm-4 border-right">
                   <div class="description-block">
-                    <h5 class="description-header">13,000</h5>
+                    <h5 class="description-header">{{$teachers_total}}</h5>
                     <span class="description-text">TEACHERS</span>
                   </div>
                   <!-- /.description-block -->

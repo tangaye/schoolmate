@@ -44,17 +44,15 @@
 
 	<div class="row">
 		<div class="col-md-12">
-
-			<!-- div to display errors returned by server-->
-            <div class="errors alert hidden">
-            </div>
-            <!-- end of errors div -->
-
          	<div class="panel">
+
+            @component('components.loader')
+            @endcomponent
+
          		<div class="panel-body">
          			<div class="form-group">
          				<div class="input-group">
-                  <span class="input-group-addon">Grades/Class</span>
+                  <span class="input-group-addon">Grade/Class</span>
                   <select name="grade_id" class="form-control" id="grade">
                     <option value="">Select Grade/Class</option>
                     @foreach($teacher_grades as $grade)
@@ -107,6 +105,15 @@
       var term = $('#term').val();
 
       if (grade != "") {
+
+        $(document).ajaxStart(function() {
+          $(".overlay").css("display", "block");
+        });
+
+        $(document).ajaxStop(function() {
+          $(".overlay").css("display", "none");
+        });
+
         $("#subject").removeAttr('disabled');
 
         $.get('/teacher/grade-subjects/'+grade)
@@ -169,6 +176,15 @@
       var term = $('#term').val();
 
       if (subject != "" && term != "" && subject != "") {
+
+        $(document).ajaxStart(function() {
+          $(".overlay").css("display", "block");
+        });
+
+        $(document).ajaxStop(function() {
+          $(".overlay").css("display", "none");
+        });
+
         $.ajax({
           url:"/teacher/manage-scores/create",
           method:"GET",

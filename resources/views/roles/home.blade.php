@@ -152,20 +152,18 @@
 @endsection
 
 @section('content')
-  <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-      <a href="/roles/create" class="btn btn-sm btn-flat btn-primary pull-right">
-      <i class="glyphicon glyphicon-plus"></i>
-      New Role
-      </a>
-    </div>
-  </div> <br>
   
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
+		<div class="col-md-10 col-md-offset-1">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-          User Roles
+          <div class="container-fluid">
+            <span>User Roles</span>
+            <a href="/roles/create" class="btn btn-sm btn-primary pull-right">
+              <i class="glyphicon glyphicon-plus"></i>
+              New Role
+            </a>
+          </div>
         </div>
 
 				<div class="panel-body">

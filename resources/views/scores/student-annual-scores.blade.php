@@ -151,6 +151,10 @@
 		<div class="col-md-12">
 
          	<div class="panel">
+            
+            @component('components.loader')
+            @endcomponent
+
          		<div class="panel-body">
          			<div class="form-group">
          				<div class="input-group">
@@ -160,12 +164,9 @@
 	         			</div>
 	         		</div>
 	         		<div id="result">
-                <div id="loader" class="text-center" style="display: none;">
-                  <img src="{{ asset("images/Loading_icon.gif") }}" alt="loader">
-                </div>  
               </div>
               <div>
-                <button class="btn btn-primary print-btn" onclick="printReport('result')">
+                <button class="btn btn-primary print-btn">
                  <i class="fa fa-print"></i> Print
                 </button>
               </div>
@@ -180,23 +181,6 @@
 
 	<script type="text/javascript">
 
-    function printReport (section){
-        var printContent = document.getElementById(section);
-        var WinPrint = window.open();
-
-        WinPrint.document.write('<link rel="stylesheet" type="text/css" href="{{ asset("/css/app.css") }}">');
-        WinPrint.document.write('<link rel="stylesheet" type="text/css" href="{{ asset("/css/media-print.css") }}" media="print">');
-        WinPrint.document.write(printContent.innerHTML);
-        WinPrint.document.write('<footer>Courtesy of <b>School</b>Mate</footer>');
-        WinPrint.document.close();
-        WinPrint.setTimeout(function(){
-          WinPrint.focus();
-          WinPrint.print();
-          WinPrint.close();
-        }, 1000);
-    }
-
-
 		$(document).ready(function() {
 
 			$.ajaxSetup({
@@ -204,6 +188,12 @@
 			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			    }
 			});
+
+      $(document).on('click', '.print-btn', function(event) {
+        event.preventDefault();
+        /* Act on the event */
+        printReport('result');
+      });
 			
 			$("#code").keyup(function(event){
 				event.preventDefault();
@@ -211,23 +201,24 @@
 		        var code = $('#code').val();
 
 		        if (code != '' && code.length === 4) {
+
+              $(document).ajaxStart(function() {
+                $(".overlay").css("display", "block");
+              });
+
+              $(document).ajaxStop(function() {
+                $(".overlay").css("display", "none");
+              });
+
 		          $.ajax({
 		          	url:"/scores/report/annual",
 		            method:"POST",
 		           	data:{"student_code":code},
-                beforeSend: function(){
-                  // Show image container
-                  $("#loader").show();
-                },
                 success:function(data){
                   $("#result").html(data);
                 },
                 error:function() {
                   $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
-                },
-                complete:function(){
-                  // Hide image container
-                  $("#loader").hide();
                 }
 		          });
 		        } else {

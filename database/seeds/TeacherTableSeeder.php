@@ -24,7 +24,7 @@ class TeacherTableSeeder extends Seeder
             $teacher->address = '20th Street, Sinkor';
             $teacher->phone = '0770700700';
             $teacher->qualification = 'High School Diploma';
-            $teacher->user_name = 'johnflomokue';
+            $teacher->user_name = 'perpercala';
             $teacher->email = 'teacher@example.com';
             $teacher->password = bcrypt('teacher');
             $teacher->save();

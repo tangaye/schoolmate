@@ -24,8 +24,9 @@ class ScoresController extends Controller
     public function index()
     {
         $terms = Term::all();
+        $grades = Grade::all();
 
-        return view('user-scores.home', compact('terms'));
+        return view('user-scores.home', compact('terms', 'grades'));
     }
 
     /**
@@ -33,16 +34,18 @@ class ScoresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function scoreTerm(Request $request, Score $score)
+    public function studentScores(Request $request, Score $score)
     {
        $term = Term::findOrFail($request->term_id);
+       $grade = Grade::findOrFail($request->grade_id);
+       $subject = Subject::findOrFail($request->subject_id);
 
-       $students = $score->termTables($term->id);
+       $students = $score->findScores($grade->id, $subject->id, $term->id);
+       //dd($students);
 
-       return \View::make('user-scores.partials.term-tables')->with(array(
+        return \View::make('user-scores.partials.students-scores')->with(array(
                 'students'=>$students
             ));
-
     }
 
 }

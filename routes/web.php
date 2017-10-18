@@ -30,30 +30,6 @@ Route::group(['prefix' => 'admin'], function () {
 
 
 
-// routes for teacher login and dashboard
-Route::group(['prefix' => 'teacher'], function () {
-	Route::get('/', 'TeachersController@index')->name('teacher.dashboard');
-	Route::get('login', 'Auth\TeacherLoginController@showLoginForm')->name('teacher.login');
-	Route::post('login', 'Auth\TeacherLoginController@login')->name('teacher.login.submit');
-	Route::post('logout', 'Auth\TeacherLoginController@logout')->name('teacher.logout');
-
-	// routes teacher uses to access scores resources
-	Route::get('/scores', 'Teacher\ScoresController@index')->name('teacher.scores-home');
-	Route::get('/manage-scores', 'Teacher\ScoresController@master')->name('teacher.manage-scores');
-	Route::get('/grade-subjects/{id}', 'Teacher\ScoresController@gradeSubjects');
-	Route::get('/manage-scores/create', 'Teacher\ScoresController@create');
-	Route::post('/manage-scores', 'Teacher\ScoresController@store' );
-
-	Route::get('/students-scores', 'Teacher\ScoresController@studentsScores');
-});
-
-//charts
-Route::group(['prefix' => 'charts'], function () {
-	Route::get('gender', 'ChartsController@genderChart')->name('charts.gender');
-	Route::get('grades', 'ChartsController@gradesChart')->name('charts.grades');
-});
-
-
 
 // the routes below have gates and polices assigned to them as to what a user
 // can do with a given student resource
@@ -79,7 +55,9 @@ Route::group(['prefix' => 'users/students',  'middleware' => 'auth:web'], functi
 
 Route::group(['prefix' => 'users/scores', 'middleware' => 'auth:web'], function () {
 	Route::get('/', 'User\ScoresController@index');
-	Route::get('terms', 'User\ScoresController@scoreTerm');
+	Route::get('/students-scores', 'User\ScoresController@studentScores');
+
+	Route::get('/grade-subjects/{id}', 'GradesController@gradeSubjects');
 });
 
 // the routes below have gates and polices assigned to them as to what a user
@@ -150,7 +128,7 @@ Route::group(['middleware' => ['auth:admin', 'preventBackHistory']], function() 
 
 	//scores
 	Route::get('/scores', 'ScoresController@index');
-	Route::get('/scores/terms', 'ScoresController@scoreTerm'); // display score table for each term/period
+	Route::get('/scores/students-scores', 'ScoresController@studentScores'); // display score table for each term/period
 	Route::put('/scores/terms/update/{id}', 'ScoresController@update'); // update term score
 	Route::delete('/scores/terms/delete/{id}', 'ScoresController@destroy'); // update term score
 
@@ -248,4 +226,28 @@ Route::group(['prefix' => '/guardian/students'], function() {
 	Route::get('annual', 'GuardianController@annualForm');
 	Route::post('annual', 'GuardianController@annualResults');
 	
+});
+
+
+// routes for teacher login and dashboard
+Route::group(['prefix' => 'teacher'], function () {
+	Route::get('/', 'TeachersController@index')->name('teacher.dashboard');
+	Route::get('login', 'Auth\TeacherLoginController@showLoginForm')->name('teacher.login');
+	Route::post('login', 'Auth\TeacherLoginController@login')->name('teacher.login.submit');
+	Route::post('logout', 'Auth\TeacherLoginController@logout')->name('teacher.logout');
+
+	// routes teacher uses to access scores resources
+	Route::get('/scores', 'Teacher\ScoresController@index')->name('teacher.scores-home');
+	Route::get('/manage-scores', 'Teacher\ScoresController@master')->name('teacher.manage-scores');
+	Route::get('/grade-subjects/{id}', 'Teacher\ScoresController@gradeSubjects');
+	Route::get('/manage-scores/create', 'Teacher\ScoresController@create');
+	Route::post('/manage-scores', 'Teacher\ScoresController@store' );
+
+	Route::get('/students-scores', 'Teacher\ScoresController@studentsScores');
+});
+
+//charts
+Route::group(['prefix' => 'charts'], function () {
+	Route::get('gender', 'ChartsController@genderChart')->name('charts.gender');
+	Route::get('grades', 'ChartsController@gradesChart')->name('charts.grades');
 });

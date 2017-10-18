@@ -43,29 +43,34 @@ class Score extends Model
     }
 
 
-    // this function fetches a particular term/ period table by accepting
-    // the id of the term/period table
-    public function termTables($id){
+    /*
+    * This function fetches students scores for specific subjects
+    * and grades
+    */
+    public function findScores($grade, $subject, $term){
         return \DB::table('scores')
-                ->join('subjects', 'subjects.id', '=', 'scores.subject_id')
-                ->join('terms', 'terms.id', '=', 'scores.term_id')
-                ->join('grades', 'grades.id', '=', 'scores.grade_id')
-                ->join('students', 'students.id', '=', 'scores.student_id')
-                ->select(
-                    'subjects.name as subject', 
-                    'grades.name as grade', 
-                    'students.surname', 
-                    'students.first_name', 
-                    'terms.name as term', 
-                    'scores.id as score_id',
-                    'scores.student_id', 
-                    'scores.grade_id',
-                    'scores.subject_id',
-                    'scores.term_id',  
-                    'score'
-                )
-                ->where('scores.term_id', $id)
-                ->get();
+            ->join('subjects', 'subjects.id', '=', 'scores.subject_id')
+            ->join('terms', 'terms.id', '=', 'scores.term_id')
+            ->join('grades', 'grades.id', '=', 'scores.grade_id')
+            ->join('students', 'students.id', '=', 'scores.student_id')
+            ->select(
+                'students.id as student_id',
+                'students.student_code as code',
+                'students.surname', 
+                'students.first_name', 
+                'grades.id as grade_id',
+                'grades.name as grade',
+                'subjects.id as subject_id',
+                'subjects.name as subject',
+                'terms.id as term_id',
+                'terms.name as term',
+                'scores.id as score_id',
+                'score'
+            )
+            ->where('scores.grade_id', $grade)
+            ->where('scores.subject_id', $subject)
+            ->where('scores.term_id', $term)
+            ->get();
     }
 
     // this function fetches the a term/period report report for a specific student

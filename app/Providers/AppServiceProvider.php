@@ -49,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with(compact('academics'));
         });
 
-        view()->composer('layouts.partials.stats-bar', function ($view){
+        view()->composer(['layouts.partials.stats-bar','institution.edit'], function ($view){
             
             $students_total = \App\Student::students_count();
             $guardians_total = \App\Guardian::guardians_count();
@@ -59,6 +59,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
+        // customize the field name lenth to allow about 191 characters
+        // mainly for heroku cleardb
         Schema::defaultStringLength(191);
 
         

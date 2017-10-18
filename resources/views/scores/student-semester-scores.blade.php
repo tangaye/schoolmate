@@ -151,6 +151,10 @@
 		<div class="col-md-12">
 
          	<div class="panel">
+
+            @component('components.loader')
+            @endcomponent
+
          		<div class="panel-body">
          			<div class="form-group">
          				<div class="input-group">
@@ -165,13 +169,11 @@
 	         				</select>
 	         			</div>
 	         		</div>
-	         		<div id="result">
-                <div id="loader" class="text-center" style="display: none;">
-                  <img src="{{ asset("images/Loading_icon.gif") }}" alt="loader">
-                </div>   
+              
+	         		<div id="result">  
               </div>
               <div>
-                <button class="btn btn-primary print-btn" onclick="printReport('result')">
+                <button class="btn btn-primary print-btn">
                  <i class="fa fa-print"></i> Print
                 </button>
               </div>
@@ -185,55 +187,47 @@
 @section('page-scripts')
 	<script type="text/javascript">
 
-    function printReport (section){
-        var printContent = document.getElementById(section);
-        var WinPrint = window.open();
-
-        WinPrint.document.write('<link rel="stylesheet" type="text/css" href="{{ asset("/css/app.css") }}">');
-        WinPrint.document.write('<link rel="stylesheet" type="text/css" href="{{ asset("/css/media-print.css") }}" media="print">');
-        WinPrint.document.write(printContent.innerHTML);
-        WinPrint.document.write('<footer>Courtesy of <b>School</b>Mate</footer>');
-        WinPrint.document.close();
-        WinPrint.setTimeout(function(){
-          WinPrint.focus();
-          WinPrint.print();
-          WinPrint.close();
-        }, 1000);
-    }
-
-
 		$(document).ready(function() {
+
+      $(document).on('click', '.print-btn', function(event) {
+        event.preventDefault();
+        /* Act on the event */
+        printReport('result');
+      });
 
 			$.ajaxSetup({
 			    headers: {
 			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			    }
 			});
+
 			
 			$("#code").keyup(function(event){
 				event.preventDefault();
+
+            
 
 		        var code = $('#code').val();
 		        var semester = $('#semester').val();
 
 		        if (code != '' && code.length === 4) {
+              $(document).ajaxStart(function() {
+                $(".overlay").css("display", "block");
+              });
+
+              $(document).ajaxStop(function() {
+                $(".overlay").css("display", "none");
+              });
+
 		          $.ajax({
 		          	url:"/scores/report/semesters",
 		            method:"POST",
 		           	data:{"student_code":code, "semester_id":semester},
-		           	beforeSend: function(){
-                  // Show image container
-                  $("#loader").show();
-                },
                 success:function(data){
                   $("#result").html(data);
                 },
                 error:function() {
                   $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
-                },
-                complete:function(){
-                  // Hide image container
-                  $("#loader").hide();
                 }
 		          });
 		        } else {
@@ -245,28 +239,30 @@
 			$('#semester').on('change', function(event) {
 		      	event.preventDefault();
 
+
 		      	/* Act on the event */
 		        var code = $('#code').val();
 		        var semester = $('#semester').val();
 
 		        if (code != '' && code.length === 4) {
+
+              $(document).ajaxStart(function() {
+                $(".overlay").css("display", "block");
+              });
+
+              $(document).ajaxStop(function() {
+                $(".overlay").css("display", "none");
+              });
+
 		          $.ajax({
 		          	url:"/scores/report/semesters",
 		            method:"POST",
 		           	data:{"student_code":code, "semester_id":semester},
-		           	beforeSend: function(){
-                  // Show image container
-                  $("#loader").show();
-                },
                 success:function(data){
                   $("#result").html(data);
                 },
                 error:function() {
                   $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
-                },
-                complete:function(){
-                  // Hide image container
-                  $("#loader").hide();
                 }
 		          });
 		        } else {

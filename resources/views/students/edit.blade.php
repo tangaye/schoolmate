@@ -211,34 +211,34 @@
             <!-- /.box -->
 
             <!-- Widget: Student guardian -->
-              <div class="box box-widget widget-user-2">
-                <!-- Add the bg color to the header using any of the bg-* classes -->
-                @if($student->guardian)
-                    <div class="widget-user-header bg-yellow">
-                      <h3><a style="color: white;" href="/admin/guardians/edit/{{$student->guardian->id}}">{{$student->guardian->first_name}} {{$student->guardian->surname}}</a></h3>
-                      <h5>{{$student->guardian->relationship}}</h5>
-                    </div>
-                    <div class="box-footer no-padding">
-                      <ul class="nav nav-stacked">
-                        <li>
-                            <a href="javascript:void(0)">Phone
-                                <span class="pull-right badge bg-blue">
-                                    {{$student->guardian->phone}}
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)">Address 
-                                <span class="pull-right badge bg-aqua">
-                                    {{$student->guardian->address}}
-                                </span>
-                            </a>
-                        </li>
-                      </ul>
-                    </div>
-                @endif
-              </div>
-              <!-- /.widget-user -->
+            <div class="box box-widget widget-user-2">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              @if($student->guardian)
+                  <div class="widget-user-header bg-yellow">
+                    <h3><a style="color: white;" href="/admin/guardians/edit/{{$student->guardian->id}}">{{$student->guardian->first_name}} {{$student->guardian->surname}}</a></h3>
+                    <h5>{{$student->guardian->relationship}}</h5>
+                  </div>
+                  <div class="box-footer no-padding">
+                    <ul class="nav nav-stacked">
+                      <li>
+                          <a href="javascript:void(0)">Phone
+                              <span class="pull-right badge bg-blue">
+                                  {{$student->guardian->phone}}
+                              </span>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="javascript:void(0)">Address 
+                              <span class="pull-right badge bg-aqua">
+                                  {{$student->guardian->address}}
+                              </span>
+                          </a>
+                      </li>
+                    </ul>
+                  </div>
+              @endif
+            </div>
+            <!-- /.widget-user -->
         </div>
 		<div class="col-md-9">
 
@@ -248,8 +248,8 @@
 					<div class="container-fluid">
 						<span class="panel-title">Edit Student</span>
 						<!-- button that triggers modal -->
-						<a role="button" class="pull-right" href="/students" title="students table">
-							<span class="badge label-primary"><i class="glyphicon glyphicon-arrow-left"></i> </span>
+						<a role="button" class="pull-right btn btn-primary" href="" onclick="history.back()">
+						<i class="glyphicon glyphicon-arrow-left"></i> Back
 						</a>
 					</div>
 					

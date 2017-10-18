@@ -160,57 +160,44 @@
 
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-			<div class="box box-default collapsed-box">
-				<div class="box-header with-border">
-	              	<h3 class="box-title">Semesters</h3>
-
-		            <div class="box-tools pull-right">
-		            	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-		            </div>
-		        </div>
-
-	            <div class="box-body container-fluid text-center">
-	            	<form action="" method="POST" class="form-inline" role="form" id="semesters-form">
-						<p class="name-error text-danger hidden"></p>
-						<div class="form-group">
-							<div class="input-group margin">
-								<input type="text" name="name" id="name" class="form-control" placeholder="Enter semester name">
-				                <span class="input-group-btn">
-				                    <button type="submit" id="add-semester" class="btn btn-info btn-flat form-control">Save</button>
-				                </span>
-				             </div>
-						</div>
-					</form>
-				</div>
-
-				<div class="panel-body">
-					<!-- Table -->
-					<table class="table table-bordered table-condensed table-striped" id="semester-table">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th colspan="2">Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($semesters as $semester)
-								<tr class="semester{{$semester->id}}">
-									<td>{{$semester->name}}</td>
-									<td>
-										<a id="edit-semester" data-id="{{$semester->id}}" data-name="{{$semester->name}}" data-toggle="tooltip" title="Edit" href="#" role="button">
-											<i class="glyphicon glyphicon-edit text-info"></i>
-										</a>
-									</td>
-									<td>
-										<a id="delete-semester" data-id="{{$semester->id}}" data-toggle="tooltip" title="Delete" href="#" role="button">
-											<i class="glyphicon glyphicon-trash text-danger"></i>
-										</a>
-									</td>
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+	              <li class="active"><a href="#semester_details" data-toggle="tab">Details</a></li>
+	              <li><a href="#new_semester" data-toggle="tab">Add Semester</a></li>
+	            </ul>
+	            <div class="tab-content">
+	            	<div class="tab-pane active" id="semester_details">
+	            		<!-- Table -->
+						<table class="table table-bordered table-condensed table-striped" id="semester-table">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th colspan="2">Actions</th>
 								</tr>
-							@endforeach
-						</tbody>
-					</table>
-				</div>
+							</thead>
+							<tbody>
+								@foreach($semesters as $semester)
+									<tr class="semester{{$semester->id}}">
+										<td>{{$semester->name}}</td>
+										<td>
+											<a id="edit-semester" data-id="{{$semester->id}}" data-name="{{$semester->name}}" data-toggle="tooltip" title="Edit" href="#" role="button">
+												<i class="glyphicon glyphicon-edit text-info"></i>
+											</a>
+										</td>
+										<td>
+											<a id="delete-semester" data-id="{{$semester->id}}" data-toggle="tooltip" title="Delete" href="#" role="button">
+												<i class="glyphicon glyphicon-trash text-danger"></i>
+											</a>
+										</td>
+									</tr>
+								@endforeach
+							</tbody>
+						</table>
+	            	</div>
+	            	<div class="tab-pane" id="new_semester">
+	            		@include('semesters.partials.create')
+	            	</div>
+	            </div>
 			</div>
 		</div>	
 	</div>
@@ -230,7 +217,7 @@
 			});
 
 			// inserting semester
-			$(document).on('click', '#add-semester', function(event) {
+			$(document).on('click', '#insert-semester', function(event) {
 				event.preventDefault();
 				/* Act on the event */
 				var name = $('#name').val();
@@ -239,13 +226,13 @@
 					$('.name-error').removeClass('hidden');
 					$('.name-error').show().html('Please enter semester name.'); 
 				} else {
-					$.post('/semesters', $("#semesters-form").serialize())
+					$.post('/semesters', $("#add-form").serialize())
 					.done(function (data) {
 						// body...
 
 						// if the validator bag returns error display error in modal
 						if (data.errors) {
-			        		$('.errors').removeClass('hidden');
+			        		$('.alert-danger').removeClass('hidden');
 			    			var errors = '';
 			                for(datum in data.errors){
 			                    errors += data.errors[datum] + '<br>';
@@ -254,7 +241,10 @@
 
 			            } else {
 			            	// reset the form
-			            	$("#semesters-form")[0].reset();
+			            	$("#add-form")[0].reset();
+
+			            	$('.alert-danger').addClass('hidden');
+			            	$('.name-error').addClass('hidden');
 
 			            	// prepare row of division details to append to table
 			            	var row = '<tr class="semester'+data.id+'">';
@@ -384,7 +374,7 @@
 			    // row to be deleted
 			    var row = $(this).parent("td").parent("tr");
 
-				var message = "semester";
+				var message = "If you continue you won't be able to retrieve this semester!";
 
 				var route = "/semesters/delete/"+id;
 

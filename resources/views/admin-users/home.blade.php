@@ -10,10 +10,13 @@
 
 @section('page-css')
 	<!-- Animate css -->
-	<link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
-	<!-- swal alert css -->
-	<link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.css") }}" rel="stylesheet" type="text/css" />
-@endsection
+  <link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
+  <!-- swal alert css -->
+  <link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.css") }}" rel="stylesheet" type="text/css" />
+  <!-- datatables -->
+  <link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.css") }}" rel="stylesheet" type="text/css" />
+
+  <link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/buttons.bootstrap.min.css") }}" rel="stylesheet" type="text/css" />
 
 @section('user-logout')
   @component('components.user-logout')
@@ -159,21 +162,26 @@
 
   <div class="row">
     <div class="col-md-10 col-md-offset-1">
-      <a href="{{route('users.form')}}" class="btn btn-sm btn-flat btn-primary pull-right">
-        <i class="glyphicon glyphicon-plus"></i>
-        New User
-      </a>
+      
     </div>
   </div> <br>
 
 	<div class="row">
-		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-md-offset-1">
+		<div class="col-md-12">
 			<div class="panel panel-default">
-				<div class="panel-heading">User</div>
+				<div class="panel-heading">
+          <div class="container-fluid">
+            <span>User Listing</span>
+            <a href="{{route('users.form')}}" class="btn btn-sm btn-primary pull-right">
+              <i class="glyphicon glyphicon-plus"></i>
+              New User
+            </a>
+          </div>    
+        </div>
 
 				<div class="panel-body">
 					<!-- Table -->
-					<table class="table table-bordered table-condensed table-striped" id="guardian-table">
+					<table class="table table-bordered table-condensed table-striped" id="user-table">
 						<thead>
 							<tr>
 								<th>Name</th>
@@ -183,7 +191,7 @@
                 <th>User Name</th>
 								<th>Email</th>
 								<th>Role</th>
-								<th colspan="2">Actions</th>
+								<th class="actions noExport">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -202,8 +210,6 @@
 										<a data-toggle="tooltip" title="Edit" href="/admin/users/edit/{{$user->id}}" role="button">
 											<i class="glyphicon glyphicon-edit text-info"></i>
 										</a>
-									</td>
-									<td>
 										<a data-id="{{$user->id}}" data-toggle="tooltip" class="delete-user" title="Delete" href="#" role="button">
 											<i class="glyphicon glyphicon-trash text-danger"></i>
 										</a>
@@ -221,6 +227,19 @@
 
 @section('page-scripts')
 	<script src="{{ asset ("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.min.js") }}"></script>
+  <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jquery.dataTables.min.js") }}"></script>
+  <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.buttons.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.bootstrap.min.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jszip.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/pdfmake.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/vfs_fonts.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.print.min.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.html5.min.js") }}"></script>
 
 	@if($flash = session('message'))
       <script type="text/javascript">
@@ -230,6 +249,44 @@
   @endif
 
   <script type="text/javascript">
+
+    $('#user-table').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'excel',
+          title: 'User Listing',
+          text: '<i class="fa fa-file-excel-o"></i> Excel',
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        },
+        {
+          extend: 'pdf',
+          title: 'User Listing',
+          text: '<i class="fa fa-file-pdf-o"></i> PDF',
+          exportOptions: {
+           columns: ':not(.noExport)'
+          }
+        },
+        {
+          extend: 'print',
+          title: 'User Listing',
+          text: '<i class="fa fa-print"></i> Print',
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        }
+      ],
+
+      "aoColumnDefs" : [
+       {
+         'bSortable' : false,
+         'aTargets' : ['actions', 'text-holder' ]
+       }]
+
+    });
+
 
     $.ajaxSetup({
         headers: {

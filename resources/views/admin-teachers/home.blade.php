@@ -5,13 +5,16 @@
 @section('page-header', 'Teachers Table')
 
 @section('page-css')
-	<!-- Animate css -->
-	<link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
-	<!-- swal alert css -->
-	<link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.css") }}" rel="stylesheet" type="text/css" />
-	<!-- datatables -->
-	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css") }}" rel="stylesheet" type="text/css" />
+  <!-- Animate css -->
+  <link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
+  <!-- swal alert css -->
+  <link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.css") }}" rel="stylesheet" type="text/css" />
+  <!-- datatables -->
+  <link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.css") }}" rel="stylesheet" type="text/css" />
+
+  <link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/buttons.bootstrap.min.css") }}" rel="stylesheet" type="text/css" />
 @endsection
+
 
 @section('user-logout')
   @component('components.user-logout')
@@ -178,7 +181,7 @@
 								<th>Address</th>
 								<th>Phone</th>
 								<th>Qualification</th>
-								<th>Actions</th>
+								<th class="actions noExport">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -212,10 +215,19 @@
 @section('page-scripts')
 
 	<script src="{{ asset ("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.min.js") }}"></script>
+  <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jquery.dataTables.min.js") }}"></script>
+  <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
 
-	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jquery.dataTables.min.js") }}"></script>
-	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.buttons.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.bootstrap.min.js") }}"></script>
 
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jszip.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/pdfmake.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/vfs_fonts.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.print.min.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.html5.min.js") }}"></script>
 	<script type="text/javascript">
 
 		$.ajaxSetup({
@@ -224,7 +236,41 @@
 		    }
 		});
 
-		$('#teacher-table').DataTable();
+		$('#teacher-table').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'excel',
+          title: 'Teacher Listing',
+          text: '<i class="fa fa-file-excel-o"></i> Excel',
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        },
+        {
+          extend: 'pdf',
+          title: 'Teacher Listing',
+          text: '<i class="fa fa-file-pdf-o"></i> PDF',
+          exportOptions: {
+           columns: ':not(.noExport)'
+          }
+        },
+        {
+          extend: 'print',
+          title: 'Teacher Listing',
+          text: '<i class="fa fa-print"></i> Print',
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        }
+      ],
+
+      "aoColumnDefs" : [
+       {
+         'bSortable' : false,
+         'aTargets' : ['actions', 'text-holder' ]
+       }]
+    });
 
 		// deleting a student
 		$(document).on('click', '.delete-guardian', function(event) {

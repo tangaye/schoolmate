@@ -64,7 +64,7 @@
             <!-- /.col -->
           </div>
           <div class="row">
-              <a class="btn btn-link pull-left" href="{{ route('password.request') }}">Forgot Your Password?</a>
+              <a class="btn btn-link pull-left disabled" href="{{ route('password.request') }}">Forgot Your Password?</a>
           </div>
     </form>
   </div>

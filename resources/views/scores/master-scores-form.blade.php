@@ -163,6 +163,10 @@
             <!-- end of errors div -->
 
          	<div class="panel">
+
+            @component('components.loader')
+            @endcomponent
+            
          		<div class="panel-body">
          			<div class="form-group">
          				<div class="input-group">
@@ -187,10 +191,8 @@
 	         				</select>
 	         			</div>
 	         		</div>
+
 	         		<div id="result">
-                <div id="loader" class="text-center" style="display: none;">
-                  <img src="{{ asset("images/Loading_icon.gif") }}" alt="loader">
-                </div>  
               </div>
 	         	</div>
          	</div>
@@ -223,16 +225,31 @@
       var term = $('#term').val();
 
       if (grade != "") {
+
+        $(document).ajaxStart(function() {
+          $(".overlay").css("display", "block");
+        });
+
+        $(document).ajaxStop(function() {
+          $(".overlay").css("display", "none");
+        });
+        
         $("#subject").removeAttr('disabled');
 
         $.get('/grades/grade-subjects/'+grade)
         .done(function (data) {
-          // body...
-          $('select[name="subject_id"]').empty();
-          $('select[name="subject_id"]').append('<option value="">Select Subjects</option>');
-          $.each(data, function(key, value) {
-              $('select[name="subject_id"]').append('<option value="'+ key +'">'+ value +'</option>');
-          });
+          if (data.none) {
+            $("#result").html(data.none);
+            $("#subject").val('');
+            $("#subject").attr('disabled','disabled');
+
+          } else {
+            $('select[name="subject_id"]').empty();
+            $('select[name="subject_id"]').append('<option value="">Select Subjects</option>');
+              $.each(data, function(key, value) {
+                $('select[name="subject_id"]').append('<option value="'+ key +'">'+ value +'</option>');
+              });
+          }
         })
         .fail(function (data) {
           // body...
@@ -285,24 +302,24 @@
       var term = $('#term').val();
 
       if (subject != "" && term != "" && subject != "") {
+        $(document).ajaxStart(function() {
+          $(".overlay").css("display", "block");
+        });
+
+        $(document).ajaxStop(function() {
+          $(".overlay").css("display", "none");
+        });
+
         $.ajax({
           url:"/scores/master/create",
           method:"GET",
           data:{"subject_id":subject, "grade_id":grade, "term_id":term},
           dataType:"text",
-          beforeSend: function(){
-            // Show image container
-            $("#loader").show();
-          },
           success:function(data){
             $("#result").html(data);
           },
           error:function(){
             $("#result").html('There was an error please contact administrator');
-          },
-          complete:function(){
-            // Hide image container
-            $("#loader").hide();
           }
 
         });
