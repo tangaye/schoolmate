@@ -45,10 +45,8 @@ class Student extends Model
         return [
             "Choose not to mention" => "",
             "Of no religion" => "none",
-            "Christian" => "Christian", 
-            "Adventist" => "Adventist",
+            "Christian" => "Christian",
             "Muslim" => "Muslim",
-            "Bahai Faith" => "Bahai Faith",
             "Jehovah Witness" => "Jehovah Witness"
         ];
     }

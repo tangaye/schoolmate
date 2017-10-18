@@ -39,6 +39,12 @@ class Teacher extends Authenticatable
     	return $this->hasMany(Grade::class);
     }
 
+    // returns the grade a teacher is sponsor of
+    public function sponsor_grade()
+    {
+        return  $this->hasOne(Grade::class);
+    }
+
     // this helps get a readable format for the date of birth field
     protected $dates = ['date_of_birth'];
 
