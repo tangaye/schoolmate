@@ -29,7 +29,7 @@ class ScoreTableSeeder extends Seeder
     	$physics = Subject::where('name', 'Physics')->first();
     	$geo = Subject::where('name', 'Geography')->first();
 
-    	$student = Student::where('student_code', 0001)->first();
+    	$student = Student::where('id', 1)->first();
 
 
         if(DB::table('scores')->get()->count() == 0){

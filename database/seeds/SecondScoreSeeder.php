@@ -27,7 +27,7 @@ class SecondScoreSeeder extends Seeder
     	$physics = Subject::where('name', 'Physics')->first();
     	$geo = Subject::where('name', 'Geography')->first();
 
-    	$student = Student::where('phone', 0770900900)->first();
+    	$student = Student::where('phone', 'like', '%0770900900%')->first();
 
 
         $score = new Score();

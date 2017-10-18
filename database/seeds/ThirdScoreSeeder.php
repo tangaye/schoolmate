@@ -27,7 +27,7 @@ class ThirdScoreSeeder extends Seeder
     	$physics = Subject::where('name', 'Physics')->first();
     	$geo = Subject::where('name', 'Geography')->first();
 
-    	$student = Student::where('phone', 0770600600)->first();
+    	$student = Student::where('phone', 'like', '%0770600600%')->first();
         
         $score = new Score();
         $score->student_id = $student->id;
