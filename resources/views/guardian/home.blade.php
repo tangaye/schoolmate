@@ -60,8 +60,12 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <span>GUARDIAN WARD Hello: </span>
-          <strong>{{Auth::guard('guardian')->user()->first_name }} {{Auth::guard('guardian')->user()->surname }}</strong>
+            @if($guardian->gender === "Male")
+              <h3> <span>Good day! </span> <strong>Mr. {{$guardian->first_name}} {{$guardian->surname}}</strong></h3>
+            @else
+              <h3><span>Good day! </span> <strong> Mrs/Ms. {{$guardian->first_name}} {{$guardian->surname}}</strong></h3>
+            @endif
+            
         </div>
 
         <div class="panel-body">
@@ -102,6 +106,9 @@
               @endforeach
             @endforeach
           </div>
+        </div>
+        <div class="panel-footer">
+          <p><strong>Guardian Ward</strong></p>
         </div>
       </div>
     </div>  

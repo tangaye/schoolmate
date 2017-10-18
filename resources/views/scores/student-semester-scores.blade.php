@@ -224,7 +224,11 @@
 		            method:"POST",
 		           	data:{"student_code":code, "semester_id":semester},
                 success:function(data){
-                  $("#result").html(data);
+                  if (data.none) {
+                    $("#result").html(data.none);
+                  } else {
+                    $("#result").html(data);
+                  }
                 },
                 error:function() {
                   $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
@@ -259,7 +263,11 @@
 		            method:"POST",
 		           	data:{"student_code":code, "semester_id":semester},
                 success:function(data){
-                  $("#result").html(data);
+                  if (data.none) {
+                    $("#result").html(data.none);
+                  } else {
+                    $("#result").html(data);
+                  }
                 },
                 error:function() {
                   $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');

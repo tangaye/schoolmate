@@ -51,14 +51,14 @@
   @include('layouts.partials.stats-bar')
 
   <div class="row">
-    <section class="col-lg-8 connectedSortable">
+    <section class="col-lg-8">
       <!-- calendar -->
       @component('components.calendar')
       @endcomponent
       <!-- /.calender -->
     </section>
     <!-- /.Left col -->
-    <section class="col-lg-4 connectedSortable">
+    <section class="col-lg-4">
 
       <div class="box box-widget widget-user-2">    
           <div class="widget-user-header bg-green">

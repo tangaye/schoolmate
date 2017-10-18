@@ -38,9 +38,12 @@ class GuardianController extends Controller
      */
     public function index()
     {   
+        // passes the logged in guardian details
+        $guardian = Guardian::findOrFail(Auth::guard('guardian')->user()->id);
+        // passes students related to the logged in guardian
         $guardians = Guardian::with('student')->where('id', Auth::guard('guardian')->user()->id)->get();
 
-        return view('guardian.home', compact('guardians'));
+        return view('guardian.home', compact('guardians', 'guardian'));
     }
 
     /**

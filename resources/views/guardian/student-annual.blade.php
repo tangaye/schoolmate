@@ -4,12 +4,16 @@
 
 @section('page-header', 'Annual Report')
 
+@section('page-css')
+<link href="{{ asset("/bower_components/AdminLTE/plugins/select2/select2.min.css") }}" rel="stylesheet" type="text/css" />
+@endsection
+
 @section('user-logout')
   @component('components.user-logout')
       @slot('user_name')
-          {{Auth::guard('admin')-> user()->user_name}}
+          {{Auth::guard('guardian')-> user()->user_name}}
       @endslot
-      {{route('admin.logout')}}
+      {{route('guardian.logout')}}
   @endcomponent
 @endsection
 
@@ -82,9 +86,13 @@
 @endsection
 
 @section('page-scripts')
+  <script src="{{ asset ("/bower_components/AdminLTE/plugins/select2/select2.full.min.js") }}"></script>
 	<script type="text/javascript">
 
 		$(document).ready(function() {
+
+      //Initialize Select2 Elements
+      $("#student").select2();
 
       $(document).on('click', '.print-btn', function(event) {
         event.preventDefault();

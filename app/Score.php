@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException as ModelNotFoundException;
 use Carbon\Carbon;
 use App\Term;
 use App\Subject;
@@ -77,7 +78,12 @@ class Score extends Model
     // by passing both the student id and term id
     public function termReport($term, $student){
 
-        $student = Student::findOrFail($student);
+        try {
+            $student = Student::findOrFail($student);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(array('none' => 'No student found!'));
+        }
+
         $term = Term::findOrFail($term);
         $date = Score::date();
 
@@ -112,7 +118,12 @@ class Score extends Model
     // by passing both the student id and term id
     public function semesterReport($student, $semester){
 
-        $student = Student::findOrFail($student);
+        try {
+            $student = Student::findOrFail($student);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(array('none' => 'No student found!'));
+        }
+
         $semester = Semester::findOrFail($semester);
         $date = Score::date();
         $institution = Institution::where('id', 1)->first();
@@ -153,7 +164,14 @@ class Score extends Model
 
     public function annualReport($student)
     {
-        $student = Student::findOrFail($student);
+
+        try {
+            $student = Student::findOrFail($student);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(array('none' => 'No student found!'));
+        }
+        
+
         $date = Score::date();
         $institution = Institution::where('id', 1)->first();
 
@@ -185,6 +203,7 @@ class Score extends Model
             'scoreTable'=>$scoreTable,
             'institution' => $institution
         ));
+        
     }
 
     // this function returns a student cummulated semester avb
