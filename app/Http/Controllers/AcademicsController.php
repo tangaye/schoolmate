@@ -21,7 +21,7 @@ class AcademicsController extends Controller
     {
         //
         $academics = Academic::all();
-        return view('academics.home', compact('academics'));
+        return view('admin.academics.home', compact('academics'));
 
     }
 
@@ -209,7 +209,7 @@ class AcademicsController extends Controller
         $status_active = Academic::where('status', 1)->exists();
         $statuses = Academic::statuses();
 
-        return \View::make('academics.partials.status-assigned')->with(array(
+        return \View::make('admin.academics.partials.status-assigned')->with(array(
             'status' => $academic_status->status, // returns 1 or zero
             'status_active' => $status_active, // returns true if 1 and false if 0
             'statuses' => $statuses // returns a collection all statuses

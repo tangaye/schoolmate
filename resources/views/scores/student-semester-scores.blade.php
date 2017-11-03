@@ -84,6 +84,21 @@
     </ul>
   </li>
 
+  <!-- attendence -->
+  <li class="treeview">
+    <a href="#">
+      <i class="glyphicon glyphicon-stats"></i><span>Attendence</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+    <ul class="treeview-menu">
+      <li><a href="{{route('attendence')}}"><i class="glyphicon glyphicon-list-alt"></i>Manage Attendence</a></li>
+      <li><a href="{{route('attendence.create')}}"><i class="fa fa-pencil"></i>New Attendence</a></li>      
+    </ul>
+  </li>
+
+  <!-- users -->
   <li class="treeview">
     <a href="#">
       <i class="glyphicon glyphicon-user"></i><span>Users</span>
@@ -94,19 +109,7 @@
     <ul class="treeview-menu">
       <li><a href="{{route('users.home')}}"><i class="glyphicon glyphicon-list-alt"></i>User List</a></li>
       <li><a href="{{route('users.form')}}"><i class="fa fa-pencil"></i>New User</a></li>
-    </ul>
-  </li>
-
-   <!-- users roles-->
-  <li class="treeview">
-    <a href="#">
-      <i class="glyphicon glyphicon-user"></i><span>Users Roles</span>
-      <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-      </span>
-    </a>
-    <ul class="treeview-menu">
-      <li><a href="{{route('roles.home')}}"><i class="glyphicon glyphicon-list-alt"></i>Roles</a></li>
+      <li><a href="{{route('roles.home')}}"><i class="glyphicon glyphicon-tasks"></i>Roles</a></li>
       <li><a href="{{route('roles.form')}}"><i class="fa fa-pencil"></i>New Role</a></li>
     </ul>
   </li>
@@ -156,19 +159,26 @@
             @endcomponent
 
          		<div class="panel-body">
-         			<div class="form-group">
-         				<div class="input-group">
-                	<span class="input-group-addon">Student Code</span>
-                	<input class="form-control" type="text" maxlength="4" name="student_code" id="code" placeholder="Enter student code">
 
-            		<span class="input-group-addon">Semester</span>
-            		<select name="semester_id" class="form-control" id="semester">
-              			@foreach($semesters as $semester)
-              			<option value="{{$semester->id}}">{{$semester->name}}</option>
-              		@endforeach
-	         				</select>
-	         			</div>
-	         		</div>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <div class="input-group">
+                    <span class="input-group-addon">Student Code</span>
+                    <input class="form-control" type="text" maxlength="4" name="student_code" id="code" placeholder="Enter four(4) digits student code">
+                  </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <div class="input-group">
+                    <span class="input-group-addon">Semester</span>
+                    <select name="semester_id" class="form-control" id="semester">
+                        @foreach($semesters as $semester)
+                        <option value="{{$semester->id}}">{{$semester->name}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
               
 	         		<div id="result">  
               </div>
@@ -185,101 +195,5 @@
 @endsection
 
 @section('page-scripts')
-	<script type="text/javascript">
-
-		$(document).ready(function() {
-
-      $(document).on('click', '.print-btn', function(event) {
-        event.preventDefault();
-        /* Act on the event */
-        printReport('result');
-      });
-
-			$.ajaxSetup({
-			    headers: {
-			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			    }
-			});
-
-			
-			$("#code").keyup(function(event){
-				event.preventDefault();
-
-            
-
-		        var code = $('#code').val();
-		        var semester = $('#semester').val();
-
-		        if (code != '' && code.length === 4) {
-              $(document).ajaxStart(function() {
-                $(".overlay").css("display", "block");
-              });
-
-              $(document).ajaxStop(function() {
-                $(".overlay").css("display", "none");
-              });
-
-		          $.ajax({
-		          	url:"/scores/report/semesters",
-		            method:"POST",
-		           	data:{"student_code":code, "semester_id":semester},
-                success:function(data){
-                  if (data.none) {
-                    $("#result").html(data.none);
-                  } else {
-                    $("#result").html(data);
-                  }
-                },
-                error:function() {
-                  $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
-                }
-		          });
-		        } else {
-		          $("#result").html('');
-
-		        }   
-		    });  
-
-			$('#semester').on('change', function(event) {
-		      	event.preventDefault();
-
-
-		      	/* Act on the event */
-		        var code = $('#code').val();
-		        var semester = $('#semester').val();
-
-		        if (code != '' && code.length === 4) {
-
-              $(document).ajaxStart(function() {
-                $(".overlay").css("display", "block");
-              });
-
-              $(document).ajaxStop(function() {
-                $(".overlay").css("display", "none");
-              });
-
-		          $.ajax({
-		          	url:"/scores/report/semesters",
-		            method:"POST",
-		           	data:{"student_code":code, "semester_id":semester},
-                success:function(data){
-                  if (data.none) {
-                    $("#result").html(data.none);
-                  } else {
-                    $("#result").html(data);
-                  }
-                },
-                error:function() {
-                  $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
-                }
-		          });
-		        } else {
-		          $("#result").html('');
-
-		        }   
-
-		    });
-		});
-
-	</script>
+	<script type="text/javascript" src="{{asset("/js/scores/student-semester-scores.js")}}"></script>
 @endsection

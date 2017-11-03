@@ -36,7 +36,7 @@ class ScoresController extends Controller
         // returns all grades teacher is teaching
         $teacher_grades = Teacher::teacherGrades(Auth::guard('teacher')->user()->id); 
 
-        return view('teacher-scores.scores-home', compact('teacher_grades', 'terms'));
+        return view('teacher.scores.home', compact('teacher_grades', 'terms'));
 
     }
 
@@ -50,7 +50,7 @@ class ScoresController extends Controller
         $terms = Term::all();
         $teacher_grades = Teacher::teacherGrades(Auth::guard('teacher')->user()->id); 
         //dd($teacher_grades);
-        return view('teacher-scores.master-scores-form', compact('teacher_grades', 'terms'));
+        return view('teacher.scores.master-scores-form', compact('teacher_grades', 'terms'));
     }
 
 
@@ -77,7 +77,7 @@ class ScoresController extends Controller
        $students = Teacher::teacherStudentsScores($grade->id, $subject->id, $term->id);
        //dd($students);
 
-        return \View::make('teacher-scores.partials.students-scores')->with(array(
+        return \View::make('teacher.scores.partials.students-scores')->with(array(
                 'students'=>$students,
                 'grade' => $grade->name,
                 'term' => $term->name,

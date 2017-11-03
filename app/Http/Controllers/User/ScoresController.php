@@ -26,7 +26,7 @@ class ScoresController extends Controller
         $terms = Term::all();
         $grades = Grade::all();
 
-        return view('user-scores.home', compact('terms', 'grades'));
+        return view('user.scores.home', compact('terms', 'grades'));
     }
 
     /**
@@ -43,7 +43,7 @@ class ScoresController extends Controller
        $students = $score->findScores($grade->id, $subject->id, $term->id);
        //dd($students);
 
-        return \View::make('user-scores.partials.students-scores')->with(array(
+        return \View::make('user.scores.partials.students-scores')->with(array(
                 'students'=>$students
             ));
     }

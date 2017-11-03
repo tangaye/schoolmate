@@ -2,6 +2,10 @@
 
 @section('page-title', 'Guardian Student Term Report')
 
+@section('page-css')
+<link href="{{ asset("/bower_components/AdminLTE/plugins/select2/select2.min.css") }}" rel="stylesheet" type="text/css" />
+@endsection
+
 @section('user-logout')
   @component('components.user-logout')
       @slot('user_name')
@@ -55,26 +59,34 @@
 
 
          		<div class="panel-body">
-         			<div class="form-group">
-         				<div class="input-group">
-                        	<span class="input-group-addon">Students</span>
-                        	<select id="student" class="search-fields form-control" name="student_id" class="form-control">
-                        		<option value="" selected="">Select Student(s)</option>
-                        		@foreach($guardians as $guardian)
-			                  		@foreach($guardian->student as $student)
-					                	<option value="{{$student->id}}">{{$student->first_name}} {{$student->surname}}</option>
-					                @endforeach
-				                @endforeach
-                        	</select>
 
-	                  		<span class="input-group-addon">Semesters</span>
-	                  		<select class="search-fields form-control" name="semester_id" class="form-control" id="semester">
-                      			@foreach($semesters as $semester)
-		                  			<option value="{{$semester->id}}">{{$semester->name}}</option>
-		                  		@endforeach
-	         				</select>
-	         			</div>
-	         		</div>
+         			<div class="row">
+         				<div class="form-group col-md-6">
+         					<div class="input-group">
+         						<span class="input-group-addon">Students</span>
+	                        	<select id="student" class="search-fields form-control" name="student_id" class="form-control">
+	                        		<option value="" selected="">Select Student(s)</option>
+	                        		@foreach($guardians as $guardian)
+				                  		@foreach($guardian->student as $student)
+						                	<option value="{{$student->id}}">{{$student->first_name}} {{$student->surname}}</option>
+						                @endforeach
+					                @endforeach
+	                        	</select>
+         					</div>
+         				</div>
+
+         				<div class="form-group col-md-6">
+         					<div class="input-group">
+         						<span class="input-group-addon">Semesters</span>
+		                  		<select class="search-fields form-control" name="semester_id" class="form-control" id="semester">
+	                      			@foreach($semesters as $semester)
+			                  			<option value="{{$semester->id}}">{{$semester->name}}</option>
+			                  		@endforeach
+		         				</select>
+         					</div>
+         				</div>
+         			</div>
+         			
 	         		<div id="result"></div>
 	         		<div>
 	                	<button class="btn btn-primary print-btn" onclick="printReport('result')">
@@ -89,9 +101,13 @@
 @endsection
 
 @section('page-scripts')
+	<script src="{{ asset ("/bower_components/AdminLTE/plugins/select2/select2.full.min.js") }}"></script>
 	<script type="text/javascript">
 
 		$(document).ready(function() {
+
+			
+			$("#student").select2();
 
 			$(document).on('click', '.print-btn', function(event) {
 		        event.preventDefault();

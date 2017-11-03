@@ -31,7 +31,7 @@ class TeachersController extends Controller
     {
         //
         $teachers = Teacher::all();
-        return view('admin-teachers.home', compact('teachers'));
+        return view('admin.teachers.home', compact('teachers'));
     }
 
     /**
@@ -44,7 +44,7 @@ class TeachersController extends Controller
         //
         $genders = Common::genders();
 
-        return view('admin-teachers.create', compact('genders'));
+        return view('admin.teachers.create', compact('genders'));
 
     }
 
@@ -103,7 +103,7 @@ class TeachersController extends Controller
         $grades = Teacher::teacherGrades($teacher->id); 
         $genders = Common::genders();
 
-        return view('admin-teachers.edit', compact('teacher', 'genders', 'subjects', 'grades'));
+        return view('admin.teachers.edit', compact('teacher', 'genders', 'subjects', 'grades'));
     }
 
     /**

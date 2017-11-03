@@ -25,7 +25,7 @@ class Score extends Model
      // define relationship and select only values that I want to use
     public function student()
     {
-        return $this->belongsTo(Student::class)->select(['id', 'first_name', 'surname']);
+        return $this->belongsTo(Student::class)->select(['id', 'student_code', 'first_name', 'surname']);
     }
 
     public function grade()

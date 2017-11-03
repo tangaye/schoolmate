@@ -24,7 +24,7 @@ class GradesTeacherController extends Controller
         //
         $grades_teacher = GradeTeacher::gradeTeachers();
         //dd($grades_teacher);
-        return view('grades-teacher.home', compact('grades_teacher'));
+        return view('admin.grades-teacher.home', compact('grades_teacher'));
     }
 
     /**
@@ -39,7 +39,7 @@ class GradesTeacherController extends Controller
         $grades = Grade::all();
         $teachers = Teacher::all();
         //dd($teachers);
-        return view('grades-teacher.create', compact('subjects', 'grades', 'teachers'));
+        return view('admin.grades-teacher.create', compact('subjects', 'grades', 'teachers'));
     }
 
     /**

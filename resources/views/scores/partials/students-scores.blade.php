@@ -21,7 +21,7 @@
 					<td>{{$student->score}}</td>
 				@endif
 				<td>
-					<a class="edit-score" data-name="{{$student->first_name." ".$student->surname}}" data-grade="{{$student->grade}}" data-subject="{{$student->subject}}" data-score="{{$student->score}}" data-id="{{$student->score_id}}" data-studentid="{{$student->student_id}}" data-gradeid={{$student->grade_id}} data-subjectid="{{$student->subject_id}}" data-termid="{{$student->term_id}}" data-toggle="tooltip" title="Edit" href="#" role="button">
+					<a class="edit-score" data-name="{{$student->first_name." ".$student->surname}}" data-grade="{{$student->grade}}" data-subject="{{$student->subject}}" data-score="{{$student->score}}" data-id="{{$student->score_id}}" data-studentid="{{$student->student_id}}" data-toggle="tooltip" title="Edit" href="#" role="button">
 						<i class="glyphicon glyphicon-edit text-info"></i>
 					</a> &nbsp;
 

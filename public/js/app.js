@@ -12031,16 +12031,6 @@ window.big_notify = function (message) {
     });
 };
 
-// this function displays a small alert for bootbox that is used 
-// on the student score page
-window.bootbox_small_alert = function (custom_message) {
-    bootbox.alert({
-        message: custom_message,
-        size: 'small',
-        backdrop: true
-    });
-};
-
 window.printReport = function (section) {
     var printContent = document.getElementById(section);
     var WinPrint = window.open();

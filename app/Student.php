@@ -103,9 +103,18 @@ class Student extends Model
     }
     
 
+    // relationship between student and scores
+    // a student has many scores
     public function score()
     {
         return $this->hasMany(Score::class);
+    }
+
+    // student attendence relation
+    // a student has many attendence records
+    public function attendence()
+    {
+        return $this->hasMany(Attendence::class);
     }
 
     // gets the total number of students
@@ -114,6 +123,7 @@ class Student extends Model
         return Student::count();
     }
 
+    // this function returns the total number of students base on their gender
     public static function students_gender_count()
     {
         return \DB::select('SELECT gender, count(gender) as total FROM students group by gender');

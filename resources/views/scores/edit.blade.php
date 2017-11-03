@@ -11,7 +11,6 @@
             <div class="modal-body">
 
                 <form action="" method="PUT" id='score-form'>
-                	{{csrf_field()}}
                 	
                     <div class="box-body">
                     	<!-- div to display errors returned by server-->
@@ -43,28 +42,14 @@
                         <div class="form-group hidden">
                             <input type="number" name="student_id" id="student-id" class="form-control hidden">
                         </div>
-                        <div class="form-group hidden">
-                            <input type="number" name="subject_id" id="subject-id" class="form-control hidden">
-                        </div>
-                        <div class="form-group hidden">
-                            <input type="number" name="grade_id" id="grade-id" class="form-control hidden">
-                        </div>
-                        <div class="form-group hidden">
-                            <input type="number" name="term_id" id="term-id" class="form-control hidden">
-                        </div>
                         <!-- /.end of hidden values -->
 
                     </div>
-                    <div class="box-footer">
-                        <div class="form-group">
-                        	<button name="edit-btn" id="update-score" class="btn btn-success form-control"> <i class="glyphicon glyphicon-edit"></i> Update</button>
-                        </div>
-                    </div>
-
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button name="edit-btn" id="update-score" class="btn btn-success"> Update</button>
             </div>
         </div>
 	</div>  

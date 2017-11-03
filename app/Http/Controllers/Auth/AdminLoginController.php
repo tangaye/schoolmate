@@ -19,7 +19,65 @@ class AdminLoginController extends Controller
     	return view('auth.admin-login');
     }
 
-    public function login(Request $request)
+    public function 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    login(Request $request)
     {
         // validate login data
         $this->validate($request, [

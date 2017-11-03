@@ -36,7 +36,7 @@ class GuardiansController extends Controller
         //
         $guardians = Guardian::all();
 
-        return view('admin-guardians.home', compact('guardians'));
+        return view('admin.guardians.home', compact('guardians'));
         
     }
 
@@ -49,7 +49,7 @@ class GuardiansController extends Controller
     {
         $relationships = Guardian::relationships();
 
-        return view('admin-guardians.create', compact('relationships'));
+        return view('admin.guardians.create', compact('relationships'));
     }
 
      /**
@@ -107,7 +107,7 @@ class GuardiansController extends Controller
         $genders = Common::genders();
         $relationships = Guardian::relationships();
 
-        return view('admin-guardians.edit', compact('guardian', 'guardians', 'genders', 'relationships'));
+        return view('admin.guardians.edit', compact('guardian', 'guardians', 'genders', 'relationships'));
 
         
     }

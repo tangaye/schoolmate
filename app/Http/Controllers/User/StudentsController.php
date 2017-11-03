@@ -25,7 +25,7 @@ class StudentsController extends Controller
         //
         $students = Student::with('grade')->get();
 
-        return view('user-students.home', compact('students'));
+        return view('user.students.home', compact('students'));
     }
 
     /**
@@ -36,7 +36,7 @@ class StudentsController extends Controller
     public function create()
     {
 
-        return view('user-students.create');
+        return view('user.students.create');
     
     }
 
@@ -127,7 +127,7 @@ class StudentsController extends Controller
         //
         $student = Student::findOrfail($id);
 
-        return view('user-students.edit', compact('student'));
+        return view('user.students.edit', compact('student'));
     }
 
     /**

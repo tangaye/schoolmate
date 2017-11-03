@@ -24,6 +24,7 @@ window.swal_delete = function(message, route, row) {
                 if (data.message) {
                     swal("Deleted!", data.message, "success");
                     jQuery(row).fadeOut('slow');
+
                 } else if (data.error){
                     swal("Oops...", data.error, "error");
                 }
@@ -112,16 +113,6 @@ window.big_notify = function(message) {
                 <span data-notify="message" style="padding-right:15px">{2}</span>\
             </div>'
     });
-}
-
-// this function displays a small alert for bootbox that is used 
-// on the student score page
-window.bootbox_small_alert = function(custom_message){
-  bootbox.alert({
-    message: custom_message,
-    size: 'small',
-    backdrop: true
-  });
 }
 
 window.printReport = function(section){

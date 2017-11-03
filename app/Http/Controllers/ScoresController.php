@@ -219,10 +219,6 @@ class ScoresController extends Controller
     {
         //
         $validator = Validator::make ( $request->all(), [
-            'student_id' => 'required',
-            'subject_id' => 'required',
-            'grade_id' => 'required',
-            'term_id' => 'required',
             'score' => 'bail|required|min:2|max:3'
         ] );
         // if validation fails return error
@@ -242,13 +238,7 @@ class ScoresController extends Controller
         $subject = Subject::findOrFail($score->subject_id);
         $term = Term::findOrFail($score->term_id);
 
-        $score->update(request([
-            'student_id', 
-            'subject_id', 
-            'grade_id', 
-            'term_id', 
-            'score'
-        ]));
+        $score->update(request(['score']));
 
         return response ()->json ( array( 
 

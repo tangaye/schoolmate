@@ -9,16 +9,6 @@ use App\Role;
 class RolesController extends Controller
 {
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:admin');
-    }
-
 
     /**
      * Display a listing of the resource.
@@ -29,7 +19,7 @@ class RolesController extends Controller
     {
         //
         $roles = Role::all();
-        return view('roles.home', compact('roles'));
+        return view('admin.roles.home', compact('roles'));
     }
 
     /**
@@ -41,7 +31,7 @@ class RolesController extends Controller
     {
         //
         $permissions = Role::permissions();
-        return view('roles.create', compact('permissions'));
+        return view('admin.roles.create', compact('permissions'));
     }
 
     /**
@@ -74,17 +64,7 @@ class RolesController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
+    
     /**
      * Show the form for editing the specified resource.
      *

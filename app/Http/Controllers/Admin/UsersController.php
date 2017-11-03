@@ -32,7 +32,7 @@ class UsersController extends Controller
         //
         $users = User::all();
         //dd($users);
-        return view('admin-users.home', compact('users'));
+        return view('admin.users.home', compact('users'));
     }
 
     /**
@@ -43,7 +43,7 @@ class UsersController extends Controller
     public function create()
     {
         $roles = Role::orderBy('name')->pluck('name', 'id');
-        return view('admin-users.create', compact('roles'));
+        return view('admin.users.create', compact('roles'));
     }
 
      /**
@@ -100,7 +100,7 @@ class UsersController extends Controller
         $genders = User::genders();
         $roles = Role::orderBy('name')->pluck('name', 'id');
 
-        return view('admin-users.edit', compact('user', 'genders', 'roles'));
+        return view('admin.users.edit', compact('user', 'genders', 'roles'));
     }
 
     /**

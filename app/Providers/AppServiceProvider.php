@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        view()->composer(['students.create', 'user-students.create'], function ($view){
+        view()->composer(['admin.students.create', 'user-students.create'], function ($view){
             $counties = \App\Student::counties();
             $religions = \App\Student::religions();
             $grades =  \App\Grade::all();
@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
 
         });
 
-        view()->composer(['students.edit', 'user-students.edit'], function ($view){
+        view()->composer(['admin.students.edit', 'user-students.edit'], function ($view){
             $types = \App\Student::types();
             $genders = \App\Common::genders();
             $counties = \App\Student::counties();
@@ -49,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with(compact('academics'));
         });
 
-        view()->composer(['layouts.partials.stats-bar','institution.edit'], function ($view){
+        view()->composer(['layouts.partials.stats-bar','admin.institution.edit'], function ($view){
             
             $students_total = \App\Student::students_count();
             $guardians_total = \App\Guardian::guardians_count();

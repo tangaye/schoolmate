@@ -13,7 +13,7 @@
 <table class="table table-responsive table-condensed table-striped table-bordered">
 	<thead>
 		<tr>
-			<th>Subject</th>
+			<th>Student</th>
 			<th>Score</th>
 			<th>Operations</th>
 		</tr>
