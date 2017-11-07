@@ -1,18 +1,15 @@
 <table class="table table-condensed table-responsive table-striped table-bordered">
 	<thead>
 		<tr>
-			<th>Student Code</th>
-			<th>Name</th>
+			<th>Subject</th>
 			<th>Status</th>
 			<th>Remarks</th>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach($attendences as $attendence)
-			<tr class="attendence{{$attendence->id}}">
-				<td><a href="javascript:void(0)" title="student code" data-toggle="tooltip">{{$attendence->student_code}}</a></td>
-
-				<td>{{$attendence->first_name." ".$attendence->middle_name." ".$attendence->surname}}</td>
+			<tr>
+				<td>{{$attendence->subject}}</td>
 
 				@if($attendence->status === "Present")
 					<td><span class="badge label-success">{{$attendence->status}}</span></td>
@@ -24,4 +21,7 @@
 			</tr>
 		@endforeach
 	</tbody>
+	<tfoot>
+		<td class="text-center" colspan="3">Showing attendence for: <strong>{{$student}}</strong> on <strong>{{$date->toFormattedDateString()}}</strong> </td>
+	</tfoot>
 </table>

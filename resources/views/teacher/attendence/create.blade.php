@@ -102,5 +102,5 @@
 @endsection
 
 @section('page-scripts')
-  <script src="{{ asset ("/js/attendence/create.js") }}"></script>
+  <script src="{{ asset ("/js/attendence/admin/create.js") }}"></script>
 @endsection

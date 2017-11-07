@@ -81,6 +81,22 @@ class Attendence extends Model
             ->get();
     }
 
+    public function guardian_student_attendence($student, $date)
+    {
+        return \DB::table('attendences')
+            ->join('subjects', 'subjects.id', '=', 'attendences.subject_id')
+            ->join('grades', 'grades.id', '=', 'attendences.grade_id')
+            ->join('students', 'students.id', '=', 'attendences.student_id')
+            ->select(
+                'subjects.name as subject',
+                'attendences.status',
+                'attendences.remarks'
+            )
+            ->where('attendences.student_id', $student)
+            ->where('attendences.date', $date)
+            ->get();
+    }
+
     /**
      * Return a collection of unique/non-repeating years in the attendence table.
      *

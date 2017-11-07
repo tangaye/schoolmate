@@ -41,6 +41,10 @@
       <li><a href="/guardian/students/semester"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
       <li class="active"><a href="/guardian/students/annual"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
+    <li>
+      <a href="{{route('guardian.attendence')}}"><i class="glyphicon glyphicon-stats"></i> <span>Students Attendence</span>
+      </a>
+    </li>
   </li>
 </ul>
 <!-- /.sidebar-menu -->
@@ -62,7 +66,7 @@
          			<div class="form-group">
          				<div class="input-group">
                   <span class="input-group-addon">Students</span>
-                    <select id="student" class="search-fields form-control" name="student_id" class="form-control">
+                    <select id="student" class="search-fields form-control" name="student_id" style="width: 100%">
                       <option value="" selected="">Select Student(s)</option>
                       @foreach($guardians as $guardian)
                         @foreach($guardian->student as $student)

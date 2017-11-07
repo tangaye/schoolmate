@@ -1,52 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Guardian;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Guardian;
 use App\Term;
 use App\Semester;
 use App\Score;
 
-
-
-/**
- * This controller handles redirecting logged in guardians
- * to the home or guardian dashboard page.
- * It also posses functions that allows a guardian to view scores
- * of student(s) assigned to them.
- */
-
-class GuardianController extends Controller
+class ScoresController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:guardian');
-        $this->middleware('preventBackHistory');
-    }
+    //
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {   
-        // passes the logged in guardian details
-        $guardian = Guardian::findOrFail(Auth::guard('guardian')->user()->id);
-        // passes students related to the logged in guardian
-        $guardians = Guardian::with('student')->where('id', Auth::guard('guardian')->user()->id)->get();
-
-        return view('guardian.home', compact('guardians', 'guardian'));
-    }
-
-    /**
+     /**
      * Show the form to search for a specific.
      * student term(periodic) report
      *
@@ -57,8 +25,10 @@ class GuardianController extends Controller
         //
         $terms = Term::all();
         $guardians = Guardian::with('student')->where('id', Auth::guard('guardian')->user()->id)->get();
-        return view('guardian.student-term', compact('terms', 'guardians'));
+        return view('guardian.scores.student-term', compact('terms', 'guardians'));
     }
+
+
     /**
      * Show the form to search for a specific.
      * student term(periodic) report
@@ -82,7 +52,7 @@ class GuardianController extends Controller
         //
         $semesters = Semester::all();
         $guardians = Guardian::with('student')->where('id', Auth::guard('guardian')->user()->id)->get();
-        return view('guardian.student-semester', compact('semesters', 'guardians'));
+        return view('guardian.scores.student-semester', compact('semesters', 'guardians'));
     }
 
     /**
@@ -104,7 +74,7 @@ class GuardianController extends Controller
     {
         //
         $guardians = Guardian::with('student')->where('id', Auth::guard('guardian')->user()->id)->get();
-        return view('guardian.student-annual', compact('guardians'));
+        return view('guardian.scores.student-annual', compact('guardians'));
     }
 
     /**
@@ -117,7 +87,4 @@ class GuardianController extends Controller
 
         return $score->annualReport($request->student_id, $request->semester_id);
     }
-
-
-
 }

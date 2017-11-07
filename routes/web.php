@@ -11,18 +11,19 @@
 |
 */
 
-// user login view
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+
+
+/*
+|--------------------------------------------------------------------------
+| User Routes
+|--------------------------------------------------------------------------
+*/
+// user login view
+Route::get('/', function () {return view('auth.login');});
 
 Auth::routes();
 Route::post('users/logout', 'Auth\LoginController@userLogout')->name('user.logout');
-
-// query out subjects assigned to a grade or class
-Route::get('/grades/grade-subjects/{id}', 'GradesController@gradeSubjects');
-
 // routes that are only accessible to users
 Route::group(['middleware' => ['auth:web', 'preventBackHistory']], function() {
 
@@ -79,6 +80,11 @@ Route::group(['middleware' => ['auth:web', 'preventBackHistory']], function() {
 
 
 
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
 
 // routes for admin login and dashboard
 Route::group(['prefix' => 'admin'], function () {
@@ -86,11 +92,6 @@ Route::group(['prefix' => 'admin'], function () {
 	Route::post('login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
 	Route::post('logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
 });
-
-
-
-
-
 
 // routes that are only accessible to admin
 Route::group(['middleware' => ['auth:admin', 'preventBackHistory']], function() {
@@ -224,20 +225,20 @@ Route::group(['middleware' => ['auth:admin', 'preventBackHistory']], function() 
 	Route::group(['prefix' => '/attendence'], function (){
 		Route::get('/', 'AttendenceController@index')->name('attendence');
 		Route::get('create', 'AttendenceController@create')->name('attendence.create');
-		Route::post('/', 'AttendenceController@store')->name('attendence.submit');
 		Route::get('/edit/{id}', 'AttendenceController@edit')->name('attendence.edit');
 		Route::put('/update/{id}', 'AttendenceController@update');
 		Route::delete('/delete/{id}', 'AttendenceController@destroy');
-
-		// an ajax accessible route that returns a listing of dates in a particular year
-		Route::get('/years/{year}', 'AttendenceController@datesInYear')->name('attendence.datesInYear');
-		// an ajax accessible route that returns a listing of students in a particular grade
-		Route::get('/students', 'AttendenceController@students');
 
 		Route::get('/students-attendence', 'AttendenceController@attendence')->name('attendence.students-attendence');
 	});
 });
 
+
+/*
+|--------------------------------------------------------------------------
+| Guardian Routes
+|--------------------------------------------------------------------------
+*/
 // routes for guardian login
 Route::get('/guardian/login', 'Auth\GuardianLoginController@showLoginForm')->name('guardian.login');
 Route::post('/guardian/login', 'Auth\GuardianLoginController@login')->name('guardian.login.submit');
@@ -246,27 +247,38 @@ Route::post('/guardian/login', 'Auth\GuardianLoginController@login')->name('guar
 Route::group(['middleware' => ['auth:guardian', 'preventBackHistory']], function() {
 
 	Route::group(['prefix' => 'guardian'], function () {
-		Route::get('/', 'GuardianController@index')->name('guardian.dashboard');
+		Route::get('/', 'Guardian\DashboardController@index')->name('guardian.dashboard');
 		Route::post('logout', 'Auth\GuardianLoginController@logout')->name('guardian.logout');
+
+		Route::get('/attendence', 'Guardian\AttendenceController@index')->name('guardian.attendence');
+
+		//ajax route
+		Route::get('/attendence/students', 'Guardian\AttendenceController@student_attendence')->name('guardian.attendence-student');
 	});
 
 
 	Route::group(['prefix' => '/guardian/students'], function() {
 
-		Route::get('term', 'GuardianController@termForm');
-		Route::post('term', 'GuardianController@termResults');
+		Route::get('term', 'Guardian\ScoresController@termForm');
+		Route::post('term', 'Guardian\ScoresController@termResults');
 
-		Route::get('semester', 'GuardianController@semesterForm');
-		Route::post('semester', 'GuardianController@semesterResults');
+		Route::get('semester', 'Guardian\ScoresController@semesterForm');
+		Route::post('semester', 'Guardian\ScoresController@semesterResults');
 
-		Route::get('annual', 'GuardianController@annualForm');
-		Route::post('annual', 'GuardianController@annualResults');
+		Route::get('annual', 'Guardian\ScoresController@annualForm');
+		Route::post('annual', 'Guardian\ScoresController@annualResults');
 		
 	});
+
 
 });
 
 
+/*
+|--------------------------------------------------------------------------
+| Teacher Routes
+|--------------------------------------------------------------------------
+*/
 // teacher login routes
 Route::get('teacher/login', 'Auth\TeacherLoginController@showLoginForm')->name('teacher.login');
 Route::post('teacher/login', 'Auth\TeacherLoginController@login')->name('teacher.login.submit');
@@ -303,8 +315,31 @@ Route::group(['middleware' => ['auth:teacher', 'preventBackHistory']], function(
 });
 
 
+/*
+|--------------------------------------------------------------------------
+| Others unauthenticated Routes
+|--------------------------------------------------------------------------
+*/
+
 //charts
 Route::group(['prefix' => 'charts'], function () {
 	Route::get('gender', 'ChartsController@genderChart')->name('charts.gender');
 	Route::get('grades', 'ChartsController@gradesChart')->name('charts.grades');
 });
+
+// query out subjects assigned to a grade or class
+Route::get('/grades/grade-subjects/{id}', 'GradesController@gradeSubjects');
+
+
+Route::group(['middleware' => ['auth:teacher,admin']], function() {
+
+	// an ajax accessible route that returns a listing of dates in a particular year
+	Route::get('/attendence/years/{year}', 'AttendenceController@datesInYear')->name('attendence.datesInYear');
+
+	// an ajax accessible route that returns a listing of students in a particular grade
+	Route::get('/attendence/students', 'AttendenceController@students');
+	Route::post('/attendence', 'AttendenceController@store')->name('attendence.submit');
+
+});
+
+

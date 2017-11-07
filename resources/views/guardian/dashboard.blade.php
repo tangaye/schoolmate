@@ -32,7 +32,7 @@
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
   <li class="header">MAIN NAVIGATION</li>
-  <li class="">
+  <li class="active">
     <a href="{{route('guardian.dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
     </a>
   </li>
@@ -50,6 +50,10 @@
       <li><a href="/guardian/students/semester"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
       <li><a href="/guardian/students/annual"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
+    <li>
+      <a href="{{route('guardian.attendence')}}"><i class="glyphicon glyphicon-stats"></i> <span>Students Attendence</span>
+      </a>
+    </li>
   </li>
 </ul>
 <!-- /.sidebar-menu -->

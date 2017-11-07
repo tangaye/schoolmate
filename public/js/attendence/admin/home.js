@@ -192,7 +192,7 @@ $(document).on('change', '#date', function(event) {
     // remove fading and animation for divs
     $('.hidden-dates-div').removeClass('fadeInRight').addClass('hidden');
     $('.hidden-subject-div').removeClass('fadeInRight').addClass('hidden');
-    $('.hidden-search-div').removeClass('shake').addClass('hidden');
+    $('.hidden-search-div').removeClass('fadeIn').addClass('hidden');
     $('.grade-div').removeClass('col-md-4 col-md-3').addClass('fadeOut col-md-12 animated zoomIn');
 
 
@@ -249,7 +249,7 @@ $(document).on('click', '.search-btn', function(event) {
     $("#date").val("");
     $("#date").attr('disabled','disabled');
     $(".search-btn").attr('disabled','disabled');
-    $("#result").html('');
+    $("#result").html('Please make sure you have date, grade, years and subject specify! All are required to view attendence');
   }
 });
 

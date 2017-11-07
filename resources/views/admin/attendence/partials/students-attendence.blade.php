@@ -11,7 +11,7 @@
 	<tbody>
 		@foreach($attendences as $attendence)
 			<tr class="attendence{{$attendence->id}}">
-				<td class="text-right"><a href="/students/edit/{{$attendence->student_id}}" title="View student" data-toggle="tooltip">{{$attendence->student_code}}</a></td>
+				<td><a href="/students/edit/{{$attendence->student_id}}" title="View student" data-toggle="tooltip">{{$attendence->student_code}}</a></td>
 
 				<td>{{$attendence->first_name." ".$attendence->middle_name." ".$attendence->surname}}</td>
 

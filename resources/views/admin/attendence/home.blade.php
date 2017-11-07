@@ -240,5 +240,5 @@
 	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jquery.dataTables.min.js") }}"></script>
 	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
 
-  <script src="{{ asset ("/js/attendence/home.js") }}"></script>
+  <script src="{{ asset ("/js/attendence/admin/home.js") }}"></script>
 @endsection

@@ -15,7 +15,7 @@
   @endcomponent
 @endsection
 
-@section('page-header', 'Guardian Student Term Report')
+@section('page-header', 'Guardian Student Semester Report')
 
 @section('sidebar-navigation')
 <!-- Sidebar Menu -->
@@ -36,10 +36,14 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li class="active"><a href="/guardian/students/term"><i class="fa fa-file-text-o"></i>Term Report</a></li>
-      <li><a href="/guardian/students/semester"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
+      <li><a href="/guardian/students/term"><i class="fa fa-file-text-o"></i>Term Report</a></li>
+      <li class="active"><a href="/guardian/students/semester"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
       <li><a href="/guardian/students/annual"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
+    <li>
+      <a href="{{route('guardian.attendence')}}"><i class="glyphicon glyphicon-stats"></i> <span>Students Attendence</span>
+      </a>
+    </li>
   </li>
 </ul>
 <!-- /.sidebar-menu -->
@@ -51,10 +55,12 @@
 
 	<div class="row">
 		<div class="col-md-12">
+
          	<div class="panel">
 
          		@component('components.loader')
             	@endcomponent
+
 
          		<div class="panel-body">
 
@@ -62,23 +68,23 @@
          				<div class="form-group col-md-6">
          					<div class="input-group">
          						<span class="input-group-addon">Students</span>
-	                        	<select id="student" class="search-fields form-control" name="student_id" class="form-control">
+	                        	<select id="student" class="search-fields form-control" name="student_id" style="width: 100%">
 	                        		<option value="" selected="">Select Student(s)</option>
-			                  		@foreach($guardians as $guardian)
-						                @foreach($guardian->student as $student)
+	                        		@foreach($guardians as $guardian)
+				                  		@foreach($guardian->student as $student)
 						                	<option value="{{$student->id}}">{{$student->first_name}} {{$student->surname}}</option>
 						                @endforeach
-						            @endforeach
+					                @endforeach
 	                        	</select>
          					</div>
          				</div>
 
          				<div class="form-group col-md-6">
          					<div class="input-group">
-         						<span class="input-group-addon">Term</span>
-		                  		<select class="search-fields form-control" name="term_id" class="form-control" id="term">
-	                      			@foreach($terms as $term)
-			                  			<option value="{{$term->id}}">{{$term->name}}</option>
+         						<span class="input-group-addon">Semesters</span>
+		                  		<select class="search-fields form-control" name="semester_id" class="form-control" id="semester">
+	                      			@foreach($semesters as $semester)
+			                  			<option value="{{$semester->id}}">{{$semester->name}}</option>
 			                  		@endforeach
 		         				</select>
          					</div>
@@ -87,10 +93,10 @@
          			
 	         		<div id="result"></div>
 	         		<div>
-		                <button class="btn btn-primary print-btn" onclick="printReport('result')">
-		                 <i class="fa fa-print"></i> Print
-		                </button>
-		            </div>
+	                	<button class="btn btn-primary print-btn" onclick="printReport('result')">
+	                 		<i class="fa fa-print"></i> Print
+	                	</button>
+	              	</div>
 	         	</div>
          	</div>
 	    </div>
@@ -99,13 +105,12 @@
 @endsection
 
 @section('page-scripts')
-
 	<script src="{{ asset ("/bower_components/AdminLTE/plugins/select2/select2.full.min.js") }}"></script>
-
 	<script type="text/javascript">
 
 		$(document).ready(function() {
 
+			
 			$("#student").select2();
 
 			$(document).on('click', '.print-btn', function(event) {
@@ -123,24 +128,23 @@
 			$('.search-fields').on('change', function(event) {
 		      	event.preventDefault();
 
+		      	$(document).ajaxStart(function() {
+                	$(".overlay").css("display", "block");
+              	});
+
+              	$(document).ajaxStop(function() {
+                	$(".overlay").css("display", "none");
+              	});
+
 		      	/* Act on the event */
 		        var student = $('#student').val();
-		        var term = $('#term').val();
+		        var semester = $('#semester').val();
 
-		        if (student != '' && term != '') {
-
-		        	$(document).ajaxStart(function() {
-	                	$(".overlay").css("display", "block");
-	              	});
-
-	              	$(document).ajaxStop(function() {
-	                	$(".overlay").css("display", "none");
-	              	});
-
+		        if (student != '' && semester != '') {
 		          $.ajax({
-		          	url:"/guardian/students/term",
+		          	url:"/guardian/students/semester",
 		            method:"POST",
-		           	data:{"student_id":student, "term_id":term},
+		           	data:{"student_id":student, "semester_id":semester},
 		           	success:function(data){
 		            	$("#result").html(data);
 		           	}
