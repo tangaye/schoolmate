@@ -6,6 +6,14 @@ $.ajaxSetup({
 
 $("#student").select2();
 
+$(document).ajaxStart(function() {
+  $(".overlay").css("display", "block");
+});
+
+$(document).ajaxStop(function() {
+  $(".overlay").css("display", "none");
+});
+
 $('#student').on('change', function(event) {
   	event.preventDefault();
 
