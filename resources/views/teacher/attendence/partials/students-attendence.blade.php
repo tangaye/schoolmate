@@ -1,7 +1,7 @@
 <table class="table table-condensed table-responsive table-striped table-bordered">
 	<thead>
 		<tr>
-			<th>Student Code</th>
+			<th>Code</th>
 			<th>Name</th>
 			<th>Status</th>
 			<th>Remarks</th>

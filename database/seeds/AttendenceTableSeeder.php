@@ -70,7 +70,7 @@ class AttendenceTableSeeder extends Seeder
             $attendence->subject_id = $biology->id;
             $attendence->date = Carbon::parse('2017-10-25')->format('d/m/Y');
             $attendence->status = "Absent";
-             $attendence->status = "Was involve in a fight.";
+            $attendence->remarks = "Was involve in a fight.";
             $attendence->save();
 
             $attendence = new Attendence();

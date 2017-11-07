@@ -127,6 +127,7 @@ $(document).on('change', '#subject', function(event) {
     $("#result").html('');
   }
 });
+
 // on change of years query out all dates within that year and populate
 // the dates select element with data gotten
 $(document).on('change', '#years', function(event) {
@@ -174,6 +175,7 @@ $(document).on('change', '#years', function(event) {
     $("#result").html('');
   }
 });
+
 // on change of display the search button
 $(document).on('change', '#date', function(event) {
   event.preventDefault();

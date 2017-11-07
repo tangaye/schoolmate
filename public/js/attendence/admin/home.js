@@ -356,7 +356,7 @@ $(document).on('click', '#update-attendence', function(event) {
 
       // prepare row of attendence details to append to the table
       var row = '<tr class="attendence'+attendence_id+'">';
-        row += '<td class="text-right"><a href="/students/edit/'+student_id+'">'+student_code+'</a></td>';
+        row += '<td><a href="/students/edit/'+student_id+'">'+student_code+'</a></td>';
         row += '<td>'+name+'</td>';
         if (status === "Present") {
           row += '<td><span class="badge label-success">'+status+'</span></td>';

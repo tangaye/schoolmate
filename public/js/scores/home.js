@@ -84,8 +84,6 @@ $(document).on('change', '#subject', function(event) {
 	$('.errors').addClass('hidden');
 
 	var subject = $('#subject').val();
-	var grade = $('#grade').val();
-	var term = $('#term').val();
 
 
 	if (subject != '') {
@@ -236,11 +234,11 @@ $(document).on('click', '#update-score', function(event) {
 
 	        	// prepare row of grade details to append to table
 	        	var row = '<tr class="score'+score_id+'">';
-
-	        		row += '<td class="text-right"><a href="/students/edit/'+student_id+'">'+student_code+'</a></td>';
+	        		row += '<td><a href="/students/edit/'+student_id+'">'+student_code+'</a></td>';
 	        		row += '<td>'+name+'</td>';
 	        		row += '<td>'+grade+'</td>';
 	        		row += '<td>'+subject+'</td>';
+
 	        		if (score <= 69) {
 	        			row += '<td style="color:red;">'+score+'</td>';
 	        		} else {
@@ -250,7 +248,6 @@ $(document).on('click', '#update-score', function(event) {
 	        		row += '<td><a class="edit-score" data-id="'+score_id+'" data-name="'+name+'" data-grade="'+grade+'" data-subject="'+subject+'" data-score="'+score+'" data-studentid="'+student_id+'" data-toggle="tooltip" title="Edit" href="#" role="button"><i class="glyphicon glyphicon-edit text-info"></i></a>  &nbsp;';
 
 	        		row += '<a class="delete-score" data-id="'+score_id+'" data-toggle="tooltip" title="Delete" href="#" role="button"><i class="glyphicon glyphicon-trash text-danger"></i></a></td>';
-
 	        	row += '</tr>';
 		
 				// replace subject row with updated details of subject

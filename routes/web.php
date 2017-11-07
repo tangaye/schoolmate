@@ -331,7 +331,7 @@ Route::group(['prefix' => 'charts'], function () {
 Route::get('/grades/grade-subjects/{id}', 'GradesController@gradeSubjects');
 
 
-Route::group(['middleware' => ['auth:teacher,admin']], function() {
+Route::group(['middleware' => ['auth:teacher,admin,guardian']], function() {
 
 	// an ajax accessible route that returns a listing of dates in a particular year
 	Route::get('/attendence/years/{year}', 'AttendenceController@datesInYear')->name('attendence.datesInYear');

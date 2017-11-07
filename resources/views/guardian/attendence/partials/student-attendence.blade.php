@@ -12,9 +12,13 @@
 				<td>{{$attendence->subject}}</td>
 
 				@if($attendence->status === "Present")
-					<td><span class="badge label-success">{{$attendence->status}}</span></td>
+					<td>
+						<span class="badge label-success">{{$attendence->status}}</span>
+					</td>
 				@else
-					<td><span class="badge label-danger">{{$attendence->status}}</span></td>
+					<td>
+						<span class="badge label-danger">{{$attendence->status}}</span>
+					</td>
 				@endif
 
 				<td>{{$attendence->remarks}}</td>

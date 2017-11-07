@@ -9,7 +9,7 @@
 	<tbody>
 		@foreach($students as $student)
 			<tr class="score{{$student->score_id}}">
-				<td class="text-right"><a href="javascript:void(0)">{{$student->code}}</a></td>
+				<td><a href="javascript:void(0)">{{$student->code}}</a></td>
 				<td>{{$student->first_name." ".$student->surname}}</td>
 				<td>{{$student->grade}}</td>
 				<td>{{$student->subject}}</td>
