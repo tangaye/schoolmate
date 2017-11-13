@@ -77,7 +77,7 @@ class RolesController extends Controller
         $role = Role::findOrFail($id);
         $permissions = Role::permissions();
         
-        return view('roles.edit', compact('role', 'permissions'));
+        return view('admin.roles.edit', compact('role', 'permissions'));
     }
 
     /**

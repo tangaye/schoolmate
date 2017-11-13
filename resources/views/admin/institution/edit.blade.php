@@ -258,7 +258,10 @@
                             <div class="form-group{{ $errors->has('logo') ? ' has-error' : '' }} col-md-12">
                                 <label for="logo" class="control-label">Logo</label>
 
-                                <input id="logo" type="file" class="form-control" name="logo" value="{{ old('email') }}">
+                                <input id="logo" type="file" class="form-control" name="logo" value="{{ old('email') }}" disabled="">
+                                <span class="help-block">
+                                    <strong class="text-warning">Sorry Institution logo upload feature isn't fully available yet.</strong>
+                                </span>
 
                                 @if ($errors->has('logo'))
                                     <span class="help-block">

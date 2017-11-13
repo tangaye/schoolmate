@@ -236,8 +236,6 @@ $(document).on('click', '#update-score', function(event) {
 	        	var row = '<tr class="score'+score_id+'">';
 	        		row += '<td><a href="/students/edit/'+student_id+'">'+student_code+'</a></td>';
 	        		row += '<td>'+name+'</td>';
-	        		row += '<td>'+grade+'</td>';
-	        		row += '<td>'+subject+'</td>';
 
 	        		if (score <= 69) {
 	        			row += '<td style="color:red;">'+score+'</td>';

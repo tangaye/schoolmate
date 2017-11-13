@@ -107,7 +107,7 @@
   </li>
 
   <!-- users -->
-  <li class="treeview">
+  <li class="treeview active">
     <a href="#">
       <i class="glyphicon glyphicon-user"></i><span>Users</span>
       <span class="pull-right-container">
@@ -117,7 +117,7 @@
     <ul class="treeview-menu">
       <li><a href="{{route('users.home')}}"><i class="glyphicon glyphicon-list-alt"></i>User List</a></li>
       <li><a href="{{route('users.form')}}"><i class="fa fa-pencil"></i>New User</a></li>
-      <li><a href="{{route('roles.home')}}"><i class="glyphicon glyphicon-tasks"></i>Roles</a></li>
+      <li class="active"><a href="{{route('roles.home')}}"><i class="glyphicon glyphicon-tasks"></i>Roles</a></li>
       <li><a href="{{route('roles.form')}}"><i class="fa fa-pencil"></i>New Role</a></li>
     </ul>
   </li>

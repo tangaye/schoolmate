@@ -163,7 +163,7 @@ class ScoresController extends Controller
                 // if a duplicate entry error(1062) is caught display custom message
                 if($error_code == 1062){
                     return response()->json ( array (
-                        'duplicate' => "A score already exists for <b>".$student->surname."</b> in <b>".$subject->name."</b> for <b>".$term->name."</b>. If you want to make changes to the score Please go to the <a href='#'>Scores</a> table to do the modification."
+                        'duplicate' => "A score already exists for <b>".$student->surname."</b> in <b>".$subject->name."</b> for <b>".$term->name."</b>."
                     ) );
                 }
             }
