@@ -189,10 +189,10 @@
           </div>
         </div>
 
-        <!-- STUDENTS ASSIGNED TO GUARDIAN -->
+        <!-- teacher grades and subjects -->
         <div class="box box-danger">
           <div class="box-header with-border">
-            <h3 class="box-title">Teacher Class(es)</h3>
+            <h3 class="box-title">Grades and Subjects</h3>
 
             <div class="box-tools pull-right">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -202,22 +202,20 @@
           <!-- /.box-header -->
           <div class="box-body no-padding">
             <div class="box-body">
-              <p><strong><i class="fa fa-book margin-r-5"></i> Subjects</strong></p>
-
-              @foreach($subjects as $subject)
-                <span class="label label-primary">{{$subject->name}}</span>
-              @endforeach
-
-              <hr>
-
-              <p><strong><i class="fa fa-map-marker margin-r-5"></i>Grades</strong></p>
-
-              @foreach($grades as $grade)
-                <span class="label badge bg-aqua">{{$grade->name}}</span>
-              @endforeach
-
-              <hr>
-
+              <table class="table table-responsive table-bordered table-condensed">
+                <tbody>
+                  @foreach($grades as $grade)
+                    <tr>
+                      <td>{{$grade->name}}</td>
+                      <td>
+                        @foreach(App\Teacher::teacherGradeSubjects($grade->id, $teacher->id) as $subject)
+                          <span class="badge label-default">{{$subject}}</span>
+                        @endforeach
+                      </td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
             </div>
             <!-- /.box-body -->
           </div>

@@ -94,7 +94,7 @@
               </li>
               <li>
                   <a href="javascript:void(0)">Phone
-                      <span class="pull-right badge bg-blue">
+                      <span class="pull-right badge label-warning">
                           {{$teacher->phone}}
                       </span>
                   </a>
@@ -110,28 +110,27 @@
           </div>
         </div>
 
-       <!-- About Me Box -->
-        <div class="box box-primary">
+        <div class="box box-danger">
             <div class="box-header with-border">
-              <h3 class="box-title">Subjects and Grades</h3>
+              <h3 class="box-title">Grades and Subjects</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <p><strong><i class="fa fa-book margin-r-5"></i> Subjects</strong></p>
 
-              @foreach($subjects as $subject)
-                <span class="label label-primary">{{$subject->name}}</span>
-              @endforeach
-
-              <hr>
-
-              <p><strong><i class="fa fa-map-marker margin-r-5"></i>Grades</strong></p>
-
-              @foreach($grades as $grade)
-                <span class="label badge bg-aqua">{{$grade->name}}</span>
-              @endforeach
-
-              <hr>
+              <table class="table table-responsive table-bordered table-condensed">
+                <tbody>
+                  @foreach($grades as $grade)
+                    <tr>
+                      <td>{{$grade->name}}</td>
+                      <td>
+                        @foreach(App\Teacher::teacherGradeSubjects($grade->id, $teacher->id) as $subject)
+                          <span class="badge label-default">{{$subject}}</span>
+                        @endforeach
+                      </td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
 
             </div>
             <!-- /.box-body -->

@@ -111,9 +111,9 @@ class Teacher extends Authenticatable
             ->get();
     }
 
-    // this function returns all the subjects assigned to a particular class
-    // a teacher is teaching
-    public static function teacherGradeSubjects($id, $teacher_id)
+    // this function returns all the subjects assigned to a particular grade
+    // that a teacher is teaching
+    public static function teacherGradeSubjects($grade, $teacher)
     {
         return \DB::table('grade_teachers')
             ->join('subjects', 'subjects.id', '=', 'grade_teachers.subject_id')
@@ -124,8 +124,8 @@ class Teacher extends Authenticatable
                 'subjects.id as id'
             )
             ->distinct()
-            ->where('grades.id', $id)
-            ->where('grade_teachers.teacher_id', $teacher_id)
+            ->where('grades.id', $grade)
+            ->where('grade_teachers.teacher_id', $teacher)
             ->pluck('name', 'id');
     }
 
