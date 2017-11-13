@@ -10,6 +10,9 @@
 
             <div class="modal-body">
 
+                @component('components.loader')
+                @endcomponent
+
                 <form action="" method="PUT" id='score-form'>
                 	
                     <div class="box-body">

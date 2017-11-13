@@ -202,6 +202,15 @@ $(document).on('click', '#update-score', function(event) {
 	var score = $("#edit-score").val();
 
 	if (score >= 59 && score <= 100){
+
+		$(document).ajaxStart(function() {
+	      $(".overlay").css("display", "block");
+	    });
+
+	    $(document).ajaxStop(function() {
+	      $(".overlay").css("display", "none");
+	    });
+    
 		$.ajax({
 			url: '/scores/terms/update/'+id,
 			type: 'PUT',
