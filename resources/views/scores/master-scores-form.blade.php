@@ -159,11 +159,6 @@
 	<div class="row">
 		<div class="col-md-12">
 
-			<!-- div to display errors returned by server-->
-            <div class="errors alert hidden">
-            </div>
-            <!-- end of errors div -->
-
          	<div class="panel">
 
             @component('components.loader')
@@ -205,6 +200,11 @@
                 </div>
               </div>
 
+              <!-- div to display errors returned by server-->
+              <div class="errors alert hidden">
+              </div>
+              <!-- end of errors div -->
+              
 	         		<div id="result">
               </div>
 	         	</div>

@@ -226,9 +226,14 @@ Route::group(['middleware' => ['auth:admin', 'preventBackHistory']], function() 
 		Route::get('/', 'AttendenceController@index')->name('attendence');
 		Route::get('create', 'AttendenceController@create')->name('attendence.create');
 		Route::get('/edit/{id}', 'AttendenceController@edit')->name('attendence.edit');
+
 		Route::put('/update/{id}', 'AttendenceController@update');
 		Route::delete('/delete/{id}', 'AttendenceController@destroy');
 
+		// an ajax accessible route that returns a listing of students in a particular grade for attendence recording
+		Route::get('/students', 'AttendenceController@students');
+
+		// route for returning recorded students attendence
 		Route::get('/students-attendence', 'AttendenceController@attendence')->name('attendence.students-attendence');
 	});
 });
@@ -309,7 +314,13 @@ Route::group(['middleware' => ['auth:teacher', 'preventBackHistory']], function(
 
 		Route::get('/attendence/create', 'Teacher\AttendenceController@create')->name('teacher-attendence.create');
 
+		// route for returning recorded students attendence
 		Route::get('/attendence/students-attendence', 'Teacher\AttendenceController@attendence');
+
+		// an ajax accessible route that returns a listing of students in a particular grade for attendence recording
+		Route::get('/attendence/students', 'Teacher\AttendenceController@students');
+
+
 	});
 
 });
@@ -317,7 +328,7 @@ Route::group(['middleware' => ['auth:teacher', 'preventBackHistory']], function(
 
 /*
 |--------------------------------------------------------------------------
-| Others unauthenticated Routes
+| Other Routes
 |--------------------------------------------------------------------------
 */
 
@@ -336,8 +347,12 @@ Route::group(['middleware' => ['auth:teacher,admin,guardian']], function() {
 	// an ajax accessible route that returns a listing of dates in a particular year
 	Route::get('/attendence/years/{year}', 'AttendenceController@datesInYear')->name('attendence.datesInYear');
 
-	// an ajax accessible route that returns a listing of students in a particular grade
-	Route::get('/attendence/students', 'AttendenceController@students');
+});
+
+
+Route::group(['middleware' => ['auth:teacher,admin']], function() {
+
+	// both teacher and admin can store attendence
 	Route::post('/attendence', 'AttendenceController@store')->name('attendence.submit');
 
 });

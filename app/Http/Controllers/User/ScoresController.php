@@ -43,9 +43,14 @@ class ScoresController extends Controller
        $students = $score->findScores($grade->id, $subject->id, $term->id);
        //dd($students);
 
-        return \View::make('user.scores.partials.students-scores')->with(array(
-                'students'=>$students
-            ));
+        return \View::make('user.scores.partials.students-scores')->with(
+            [
+                'students' => $students,
+                'grade' => $grade->name,
+                'term' => $term->name,
+                'subject' => $subject->name
+            ]
+        );
     }
 
 }

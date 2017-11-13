@@ -13,6 +13,7 @@
   <link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.css") }}" rel="stylesheet" type="text/css" />
 
   <link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/buttons.bootstrap.min.css") }}" rel="stylesheet" type="text/css" />
+@endsection
 
 @section('user-logout')
   @component('components.user-logout')
@@ -159,15 +160,11 @@
 
 @section('content')
 
-  <div class="row">
-    <div class="col-md-10 col-md-offset-1">
-      
-    </div>
-  </div> <br>
-
 	<div class="row">
 		<div class="col-md-12">
+
 			<div class="panel panel-default">
+
 				<div class="panel-heading">
           <div class="container-fluid">
             <span>User Listing</span>
@@ -201,7 +198,7 @@
 									<td>{{$user->address}}</td>
 									<td>{{$user->phone}}</td>
                   <td>{{$user->user_name}}</td>
-									<td>{{$user->email}}</td>
+									<td><span class="label label-info">{{$user->email}}</span></td>
                   <td>
                       <span class="label label-default">{{$user->role->name}}</span>
                   </td>

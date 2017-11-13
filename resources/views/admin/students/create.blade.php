@@ -436,7 +436,7 @@
             <div class="row">
                 <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }} photoWarning col-md-12">
                     <label class="control-label">Student Photo</label>
-                    <input type="file" class="form-control photo" name="photo">
+                    <input type="file" class="form-control photo" name="photo" disabled="true">
 
                     @if ($errors->has('photo'))
                         <span class="help-block">
@@ -447,12 +447,16 @@
                     <span class="help-block hidden photoWarningMsg">
                         <strong class="photoWarningMsg"></strong>
                     </span>
+                    <span class="help-block">
+                        <strong class="text-warning">Sorry the Student photo upload feature isn't fully available yet.</strong>
+                    </span>
                 </div>
             </div>
 
+            <!-- student guardian -->
             <div class="row">
                 <div class="form-group{{ $errors->has('guardian_id') ? ' has-error' : '' }} col-sm-12">
-                    <label id="guardian" class="control-label">Guardian</label>
+                    <label id="guardian" class="control-label">Student Guardian</label>
                     <select name="guardian_id" id="guardian" class="form-control guardians" style="width: 100%;" required="">
                         <option>Select Guardian</option>
                         @foreach($guardians as $guardian)

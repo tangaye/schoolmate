@@ -1,15 +1,4 @@
-<table class="table table-responsive table-condensed 	table-bordered">	
-	<tr>
-		<th scope="row">Subject</th>
-		<td>{{$subject->name}}</td>
 
-		<th scope="row">Grade/Class</th>
-		<td>{{$grade}}</td>
-
-		<th scope="row">Term</th>
-		<td>{{$term->name}}</td>
-	</tr>
-</table>
 <table class="table table-responsive table-condensed table-striped table-bordered">
 	<thead>
 		<tr>
@@ -41,4 +30,7 @@
 			</form>
 		@endforeach
 	</tbody>
+	<tfoot>
+		<td colspan="3" class="text-center">Enter <strong>{{$grade}} <u>{{$subject->name}}</u></strong> scores for <strong>{{$term->name}}</strong></td>
+	</tfoot>
 </table>

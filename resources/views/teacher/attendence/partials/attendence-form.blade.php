@@ -31,7 +31,7 @@
 
 					{{-- end of hidden values to be sent--}}
 					<td>
-						<a href="/students/edit/{{$student->id}}" title="View student" data-toggle="tooltip">{{$student->student_code}}</a>
+						<a href="javascript:void(0)" title="View student" data-toggle="tooltip">{{$student->student_code}}</a>
 					</td>
 
 					<td>

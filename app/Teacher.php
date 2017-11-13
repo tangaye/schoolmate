@@ -65,7 +65,7 @@ class Teacher extends Authenticatable
     }
 
     //this function returns all grades/classes assigned to a teacher
-   public static function teacherGrades($teacher_id){
+    public static function teacherGrades($teacher_id){
         return \DB::table('grade_teachers')
             ->join('teachers', 'teachers.id', '=', 'grade_teachers.teacher_id')
             ->join('grades', 'grades.id', '=', 'grade_teachers.grade_id')
@@ -79,16 +79,20 @@ class Teacher extends Authenticatable
     }
 
     /**public static function teacherGrades($teacher_id){
+
+
         return \DB::table('grade_teachers')
             ->join('teachers', 'teachers.id', '=', 'grade_teachers.teacher_id')
             ->join('grades', 'grades.id', '=', 'grade_teachers.grade_id')
             ->join('subjects', 'subjects.id', '=', 'grade_teachers.subject_id')
             ->select(
-                \DB::raw('count(subject_id) as subject'),
-                'grades.name as name',
+                \DB::raw('count(*)  '),
+                'subjects.name as subject',
+                'grades.name as grade'
             )
             ->where('grade_teachers.teacher_id', $teacher_id)
-            ->groupBy('grades.name')
+            ->groupBy('grades.name', 'subjects.name')
+            ->distinct('grades.name')
             ->get();
     }**/
 

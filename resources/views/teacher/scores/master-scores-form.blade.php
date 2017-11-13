@@ -64,37 +64,43 @@
 
          		<div class="panel-body">
 
-              <div class="alert errors hidden"></div>
-
-         			<div class="form-group col-md-12 grade-div">
-                <div class="input-group">
-                  <span class="input-group-addon">Grades/Class</span>
-                  <select name="grade_id" class="form-control" id="grade">
-                    <option value="">Select Grade/Class</option>
-                    @foreach($teacher_grades as $grade)
-                        <option value="{{$grade->id}}">{{$grade->name}}</option>
-                    @endforeach
-                  </select> 
+              <div class="row">
+                <div class="form-group col-md-12 grade-div">
+                  <div class="input-group">
+                    <span class="input-group-addon">Grades/Class</span>
+                    <select name="grade_id" class="form-control" id="grade">
+                      <option value="">Select Grade/Class</option>
+                      @foreach($teacher_grades as $grade)
+                          <option value="{{$grade->id}}">{{$grade->name}}</option>
+                      @endforeach
+                    </select> 
+                  </div>
                 </div>
-              </div>
-              <div class="form-group col-md-4 hidden-subjectTerm-div hidden">
-                <div class="input-group">
-                  <span class="input-group-addon">Subject</span>
-                    <select disabled="true" name="subject_id" id="subject" class="form-control subjects-terms">
+                <div class="form-group col-md-4 hidden-subjectTerm-div hidden">
+                  <div class="input-group">
+                    <span class="input-group-addon">Subject</span>
+                      <select disabled="true" name="subject_id" id="subject" class="form-control subjects-terms">
+                      </select>
+                  </div>
+                </div>
+                <div class="form-group col-md-4 hidden-subjectTerm-div hidden">
+                  <div class="input-group">
+                    <span class="input-group-addon">Term</span>
+                    <select disabled="true" name="term_id" class="form-control subjects-terms" id="term">
+                      <option value="">Select term</option>
+                      @foreach($terms as $term)
+                        <option value="{{$term->id}}">{{$term->name}}</option>
+                      @endforeach
                     </select>
+                  </div>
                 </div>
               </div>
-              <div class="form-group col-md-4 hidden-subjectTerm-div hidden">
-                <div class="input-group">
-                  <span class="input-group-addon">Term</span>
-                  <select disabled="true" name="term_id" class="form-control subjects-terms" id="term">
-                    <option value="">Select term</option>
-                    @foreach($terms as $term)
-                      <option value="{{$term->id}}">{{$term->name}}</option>
-                    @endforeach
-                  </select>
-                </div>
+
+              <!-- div to display errors returned by server-->
+              <div class="errors alert hidden">
               </div>
+              <!-- end of errors div -->
+
 	         		<div id="result"></div>
 	         	</div>
          	</div>

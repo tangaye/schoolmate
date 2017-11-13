@@ -195,7 +195,7 @@
 						<tbody>
 							@foreach($students as $student)
 								<tr>
-                  <td class="text-right"><a href="javascript:void(0)">{{$student->student_code}}</a></td>
+                  <td><a href="javascript:void(0)">{{$student->student_code}}</a></td>
 									<td>{{$student->first_name}} {{$student->surname}}</td>
                   <td>{{$student->gender}}</td>
 									<td>{{$student->date_of_birth->toFormattedDateString()}}</td>

@@ -3,8 +3,6 @@
 	<thead>
 		<th>Code</th>
 		<th>Name</th>
-		<th>Class</th>
-		<th>Subject</th>
 		<th>Score</th>
 		<th class="actions">Actions</th>
 	</thead>
@@ -13,8 +11,6 @@
 			<tr class="score{{$student->score_id}}">
 				<td><a href="/students/edit/{{$student->student_id}}" title="View student" data-toggle="tooltip">{{$student->code}}</a></td>
 				<td>{{$student->first_name." ".$student->surname}}</td>
-				<td>{{$student->grade}}</td>
-				<td>{{$student->subject}}</td>
 				@if($student->score <= 69)
 					<td style="color: red;">{{$student->score}}</td>
 				@else 
@@ -32,4 +28,7 @@
 			</tr>
 		@endforeach
 	</tbody>
+	<tfoot>
+		<td colspan="4" class="text-center">Viewing <strong>{{$grade}} <u>{{$subject}}</u></strong> score(s) for <strong>{{$term}}</strong></td>
+	</tfoot>
 </table>
