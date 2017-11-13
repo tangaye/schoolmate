@@ -124,7 +124,7 @@ class AttendenceController extends Controller
             }
             
         } else {
-            return 'No studens found in the seleted grade!';
+            return 'No student found in the seleted grade!';
         }  
     }
 }

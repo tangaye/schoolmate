@@ -33,7 +33,7 @@ $(document).on('change', '#grade', function(event) {
     
     $("#subject").removeAttr('disabled');
 
-    $.get('/grades/grade-subjects/'+grade)
+    $.get('/teacher/grade-subjects/'+grade)
     .done(function (data) {
 
       /*************************************************************************************

@@ -27,7 +27,7 @@ $(document).on('change', '#grade', function(event) {
     $('.hidden-div').removeClass('hidden').show().addClass('animated fadeInRight');
     $("#subject").removeAttr('disabled');
 
-    $.get('/grades/grade-subjects/'+grade)
+    $.get('/teacher/grade-subjects/'+grade)
     .done(function (data) {
 
       if (data.none) {
