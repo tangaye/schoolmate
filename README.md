@@ -1,6 +1,6 @@
 # SchoolMate #
 
-A Hig School Management System for Schools in __Liberia__.
+A High School Management System for Schools in __Liberia__.
 
 # Features #
 
