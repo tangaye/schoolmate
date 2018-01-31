@@ -36,7 +36,7 @@ class GradeSubjectTableSeeder extends Seeder
             ->first()
             ->id;
 
-        grade_eignt = DB::table('grades')
+        $grade_eignt = DB::table('grades')
             ->select('id')
             ->where('name', '8th Grade')
             ->first()
@@ -93,6 +93,7 @@ class GradeSubjectTableSeeder extends Seeder
                     'subject_id' => $maths,
                     'grade_id' => $grade_eignt
                 ],
+
                 [
                     'subject_id' => $english,
                     'grade_id' => $grade_eignt
@@ -152,10 +153,6 @@ class GradeSubjectTableSeeder extends Seeder
                 [
                     'subject_id' => $maths,
                     'grade_id' => $grade_ten 
-                ],
-                [
-                    'subject_id' => $physics,
-                    'grade_id' => $grade_eleven
                 ],
                 [
                     'subject_id' => $biology,
