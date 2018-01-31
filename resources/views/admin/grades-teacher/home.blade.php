@@ -7,8 +7,6 @@
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
 	<!-- swal alert css -->
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.css") }}" rel="stylesheet" type="text/css" />
-	<!-- datatables -->
-	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('user-logout')
@@ -44,7 +42,7 @@
     </ul>
   </li>
 
-  <!-- teachres -->
+  <!-- teachers -->
   <li class="treeview active">
     <a href="#"><i class="glyphicon glyphicon-education"></i> <span>Teachers</span>
       <span class="pull-right-container">
@@ -54,10 +52,12 @@
     <ul class="treeview-menu">
       <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
       <li><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
-      <li class="active"><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-asterisk"></i>Teacher Grades</a></li>
+      <li class="active"><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-align-left""></i>Teacher Grades</a></li>
       <li><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
+      <li><a href="{{route('admin.ponsor.home')}}"><i class="glyphicon glyphicon-knight"></i>Sponsors</a></li>
     </ul>
   </li>
+
 
   <!-- Settings -->
   <li class="treeview">
@@ -86,8 +86,9 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li><a href="/students"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
-      <li><a href="/students/create"><i class="fa fa-pencil"></i>Student Admission</a></li>
+      <li><a href="{{route('students.home')}}"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
+      <li><a href="{{route('students.create')}}"><i class="glyphicon glyphicon-pencil"></i>Student Admission</a></li>
+      <li><a href="{{route('enrollments.home')}}"><i class="glyphicon glyphicon-saved"></i>Student Enrollment</a></li>
     </ul>
   </li>
 
@@ -151,6 +152,11 @@
       <li><a href="{{route('annual-scores')}}"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
+  <!-- transcript -->
+  <li>
+    <a href="{{route('transcripts.home')}}"><i class="fa fa-file-text-o"></i> <span>Student Transcript</span>
+    </a>
+  </li>
 </ul>
 @endsection
 
@@ -158,10 +164,10 @@
 @section('content')
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			<div class="panel panel-default ol-md-offset-2">
+			<div class="panel panel-default">
 				<div class="panel-heading">
 					<div class="container-fluid">
-						<span class="panel-title">Grades and Classes assigned to Teachers</span>
+						<span class="panel-title">Grades and Subjects assigned to Teachers</span>
 
 						<a class="btn btn-primary pull-right btn-sm" title="New Guardian" data-toggle="title" href="{{route('admin-gradesTeacher.form')}}">
 							<i class="glyphicon glyphicon-plus"></i> Add Another
@@ -170,31 +176,43 @@
 				</div>
 
 				<div class="panel-body">
-					<!-- Table -->
-					<table class="table table-bordered table-condensed table-striped" id="teacher-table">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Subject</th>
-                <th>Grade/Class</th>
-								<th>Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($grades_teacher as $teacher)
-								<tr>
-									<td>{{$teacher->first_name}} {{$teacher->surname}}</td>
-                  <td>{{$teacher->subject}}</td>
-                  <td>{{$teacher->grade}}</td>
-									<td>
-										<a data-toggle="tooltip" data-id="{{$teacher->id}}" class="delete-gradeTeacher" title="Delete" href="#" role="button">
-											<i class="glyphicon glyphicon-trash text-danger"></i>
-										</a>
-									</td>
-								</tr>
-							@endforeach
-						</tbody>
-					</table>
+          <div class="row col-md-12">
+            <p>Select academic year and teacher to view grades and subjects assigned to the teacher.</p>
+          </div>
+          <div class="row">
+
+            <div class="form-group col-md-6">
+              <label class="control-label">Academic Years</label>
+              <select class="form-control" id="academic_years">
+
+                @if(count($academics) > 0)
+                  <option selected="" value="">Select Academic Year</option>
+
+                  @foreach($academics as $academic)
+                    @if($academic->status)
+                      <option class="text-danger" selected="" style="font-weight: bold;" value="{{$academic->id}}">
+                        {{$academic->full_year}}
+                        <span>- Current Academic Year</span>
+                      </option>
+                    @else 
+                      <option value="{{$academic->id}}">{{$academic->full_year}}</option>
+                    @endif
+                  @endforeach
+
+                @else
+                  <option selected="" value="">Seems like no academic year have been set yet.</option>
+                @endif
+              </select>
+
+            </div>
+
+            <div class="form-group col-md-6">
+              <label class="control-label">Teachers</label>
+              <select class="form-control" id="teachers" name="teacher_id" disabled=""></select>
+            </div>
+
+          </div>
+          <div id="result"></div>
 				</div>
 			</div>
 		</div>	
@@ -206,37 +224,5 @@
 
 	<script src="{{ asset ("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.min.js") }}"></script>
 
-	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jquery.dataTables.min.js") }}"></script>
-	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
-
-	<script type="text/javascript">
-
-		$.ajaxSetup({
-		    headers: {
-		        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		    }
-		});
-
-		$('#teacher-table').DataTable();
-
-		// deleting a student
-		$(document).on('click', '.delete-gradeTeacher', function(event) {
-			event.preventDefault();
-			/* Act on the event */
-
-			// id of the row to be deleted
-			var id = $(this).attr('data-id');
-
-		    // row to be deleted
-		  var row = $(this).parent("td").parent("tr");
-
-			var message = "If you continue the subject and grade assigned will be unassigned.";
-
-			var route = "/grades-teacher/delete/"+id;
-
-
-			swal_delete(message, route, row);
-			
-		});	
-	</script>
+	<script type="text/javascript" src="{{asset("/js/grades-teacher/admin/home.js")}}"></script>
 @endsection

@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Auth;
 use App\Guardian;
+use App\Academic;
+
+use App\Repositories\GuardianRepository;
 
 class DashboardController extends Controller
 {
@@ -16,13 +19,30 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(GuardianRepository $guardian)
     {   
         // passes the logged in guardian details
-        $guardian = Guardian::findOrFail(Auth::guard('guardian')->user()->id);
-        // passes students related to the logged in guardian
-        $guardians = Guardian::with('student')->where('id', Auth::guard('guardian')->user()->id)->get();
+        $logged_in_guardian = Guardian::findOrFail(Auth::guard('guardian')->user()->id);
 
-        return view('guardian.dashboard', compact('guardians', 'guardian'));
+        $academics = $guardian->guardian_student_dashboard_academic_years($logged_in_guardian->id);
+
+        return view('guardian.dashboard', compact('guardians', 'logged_in_guardian', 'academics'));
+    }
+
+    public function guardianAcademicStudents($academic_year, GuardianRepository $guardian)
+    {
+        $logged_in_guardian = Guardian::findOrFail(Auth::guard('guardian')->user()->id);
+        $academic = Academic::findOrFail($academic_year);
+
+        $students = $guardian->guardian_dashboard_academic_students($logged_in_guardian->id, $academic->id);
+
+        if (count($students) > 0) {
+            return \View::make('guardian.partials.academic-students')->with(array(
+                'students' => $students,
+                'academic' => $academic
+            ));
+        } else {
+            return response()->json(array('none' => 'No enrolled student found for the academic year selected!'));
+        }
     }
 }

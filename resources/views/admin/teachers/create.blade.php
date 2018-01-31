@@ -39,7 +39,7 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="{{route('guardians.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
-      <li><a href="{{route('guardians.form')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
+      <li><a href="{{route('guardians.form')}}"><i class="glyphicon glyphicon-pencil"></i>New Guardian</a></li>
     </ul>
   </li>
 
@@ -53,10 +53,12 @@
     <ul class="treeview-menu">
       <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
       <li class="active"><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
-      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-asterisk"></i>Teacher Grades</a></li>
+      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-align-left""></i>Teacher Grades</a></li>
       <li><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
+      <li><a href="{{route('admin.ponsor.home')}}"><i class="glyphicon glyphicon-knight"></i>Sponsors</a></li>
     </ul>
   </li>
+
 
   <!-- Settings -->
   <li class="treeview">
@@ -85,8 +87,9 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li><a href="/students"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
-      <li><a href="/students/create"><i class="fa fa-pencil"></i>Student Admission</a></li>
+      <li><a href="{{route('students.home')}}"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
+      <li><a href="{{route('students.create')}}"><i class="glyphicon glyphicon-pencil"></i>Student Admission</a></li>
+      <li><a href="{{route('enrollments.home')}}"><i class="glyphicon glyphicon-saved"></i>Student Enrollment</a></li>
     </ul>
   </li>
 
@@ -100,7 +103,7 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="{{route('attendence')}}"><i class="glyphicon glyphicon-list-alt"></i>Manage Attendence</a></li>
-      <li><a href="{{route('attendence.create')}}"><i class="fa fa-pencil"></i>New Attendence</a></li>      
+      <li><a href="{{route('attendence.create')}}"><i class="glyphicon glyphicon-pencil"></i>New Attendence</a></li>      
     </ul>
   </li>
 
@@ -114,9 +117,9 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="{{route('users.home')}}"><i class="glyphicon glyphicon-list-alt"></i>User List</a></li>
-      <li><a href="{{route('users.form')}}"><i class="fa fa-pencil"></i>New User</a></li>
+      <li><a href="{{route('users.form')}}"><i class="glyphicon glyphicon-pencil"></i>New User</a></li>
       <li><a href="{{route('roles.home')}}"><i class="glyphicon glyphicon-tasks"></i>Roles</a></li>
-      <li><a href="{{route('roles.form')}}"><i class="fa fa-pencil"></i>New Role</a></li>
+      <li><a href="{{route('roles.form')}}"><i class="glyphicon glyphicon-pencil"></i>New Role</a></li>
     </ul>
   </li>
 
@@ -131,7 +134,7 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="/scores"><i class="glyphicon glyphicon-list-alt"></i>Score Tables</a></li>
-      <li><a href="/scores/master"><i class="fa fa-pencil"></i>Enter Score</a></li>
+      <li><a href="/scores/master"><i class="glyphicon glyphicon-pencil"></i>Enter Score</a></li>
     </ul>
   </li>
 
@@ -150,6 +153,11 @@
       <li><a href="{{route('annual-scores')}}"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
+  <!-- transcript -->
+  <li>
+    <a href="{{route('transcripts.home')}}"><i class="fa fa-file-text-o"></i> <span>Student Transcript</span>
+    </a>
+  </li>
 </ul>
 @endsection
 
@@ -161,7 +169,7 @@
               <div class="panel panel-default">
                   <!-- Default panel contents -->
                   <div class="panel-heading">
-                    Teacher Details
+                    <span class="panel-title">Teacher Details</span>
                   </div>
                   <div class="panel-body">
                     <div class="row">
@@ -266,7 +274,9 @@
           </div>
           <div class="col-md-5">
             <div class="panel panel-default">
-              <div class="panel-heading">Teacher Account Details</div>
+              <div class="panel-heading">
+                <span class="panel-title">Teacher Account Details</span>
+              </div>
               <div class="panel-body">
 
                 <div class="row">
@@ -317,11 +327,10 @@
                       <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                   </div>
                 </div>                
-
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary pull-left">Save Teacher</button>
-                    <a href="javascript:void(0)" onclick="history.back()" class="btn btn-default pull-right">Cancel</a>
-                </div>
+              </div>
+              <div class="panel-footer text-right">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{{route('teachers.home')}}" class="btn btn-default">Cancel</a>
               </div>
             </div>
           </div>

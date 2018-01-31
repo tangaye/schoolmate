@@ -29,45 +29,57 @@
 @section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
-  <li class="header">USER NAVIGATION</li>
+	<li class="header">USER NAVIGATION</li>
 
-  <li class="">
-    <a href="{{route('user.dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
-    </a>
-  </li>
+  	<li class="">
+    	<a href="{{route('user.dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
+    	</a>
+	</li>
 
-  <!-- guardians -->
-  <li class="treeview">
-    <a href="#"><i class="fa fa-user"></i> <span>Guardians</span>
-      <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-      </span>
-    </a>
-    <ul class="treeview-menu">
-      <li><a href="/users/guardians"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
-      <li><a href="/users/guardians/create"><i class="fa fa-pencil"></i>New Guardian</a></li>
-    </ul>
-  </li>
+  	<!-- guardians -->
+  	@if($user->canAccessGuardians())
+	    <li class="treeview">
+	      <a href="#"><i class="fa fa-user"></i> <span>Guardians</span>
+	        <span class="pull-right-container">
+	          <i class="fa fa-angle-left pull-right"></i>
+	        </span>
+	      </a>
+	      <ul class="treeview-menu">
+	        @can('view-guardian')
+	          <li><a href="{{route('users.guardians')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
+	        @endcan
+	        @can('create-guardian')
+	          <li><a href="{{route('users.guardians.create')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
+	        @endcan
+	      </ul>
+	    </li>
+	@endif
 
-  <!-- student -->
-  <li class="treeview active">
-    <a href="#">
-      <i class="fa fa-users"></i><span>Students</span>
-      <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-      </span>
-    </a>
-    <ul class="treeview-menu">
-      <li class="active"><a href="/users/students"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
-      <li><a href="/users/students/create"><i class="fa fa-pencil"></i>Student Admission</a></li>
-    </ul>
-  </li>
+	<!-- student -->
+  	@if($user->canAccessStudents())
+	    <li class="treeview active">
+	      <a href="#">
+	        <i class="fa fa-users"></i><span>Students</span>
+	        <span class="pull-right-container">
+	          <i class="fa fa-angle-left pull-right"></i>
+	        </span>
+	      </a>
+	      <ul class="treeview-menu">
+	        @can('view-student')
+	          <li class="active"><a href="{{route('users.students')}}"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
+	        @endcan
+	        @can('create-student')
+	          <li><a href="{{route('users.students.create')}}"><i class="fa fa-pencil"></i>Student Admission</a></li>
+	        @endcan
+	      </ul>
+	    </li>
+	@endif
 
-  <!-- score -->
-  <li class="">
-    <a href="/users/scores"><i class="glyphicon glyphicon-list-alt"></i> <span>Score Tables</span>
-    </a>
-  </li>
+	@if($user->canAccessScores())
+        <li class="">
+          <a href="{{route('users.scores')}}"><i class="glyphicon glyphicon-list-alt"></i> <span>Score Tables</span></a>
+        </li>
+    @endif
 </ul>
 @endsection
 
@@ -97,37 +109,39 @@
 								<th>Birth Date</th>
 								<th>Address</th>
 								<th>County</th>
-								<th>Grade</th>
-								<th class="actions noExport">Actions</th>
+								@if($user->can('view-student') || $user->can('delete-student'))
+									<th class="actions noExport text-center">Actions</th>
+								@else
+								@endif
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($students as $student)
 								<tr>
-									<td class="text-right"><a href="javascript:void(0)">{{$student->student_code}}</a></td>
+									<td><a href="javascript:void(0)">{{$student->student_code}}</a></td>
 									<td>{{$student->first_name}} {{$student->surname}}</td>
 									<td>{{$student->gender}}</td>
 									<td>{{$student->date_of_birth->toFormattedDateString()}}</td>
 									<td>{{$student->address}}</td>
 									<td>{{$student->county}}</td>
-									<td>{{$student->grade->name}}</td>
 
-									<td>
-										@can('view-student')
-						                	<a id="edit-student" href="/users/students/edit/{{$student->id}}" title="Edit" data-toggle="tooltip" style="padding-right: 5px">
-				                            	<i class="glyphicon glyphicon-edit text-info"></i>
-				                          	</a>
-					                        
-				                        @endcan
+									@if($user->can('view-student') || $user->can('delete-student'))
+										<td class="text-center">
+											@can('view-student')
+							                	<a id="edit-student" href="/users/students/edit/{{$student->id}}" title="Edit" data-toggle="tooltip" style="padding-right: 5px">
+					                            	<i class="glyphicon glyphicon-edit text-info"></i>
+					                          	</a>
+					                        @endcan
 
-			                        	@can('delete-student')
-			                        		<a id="delete-student" href="javascript:void(0)" data-id="{{$student->id}}" title="Delete" data-toggle="tooltip">
-					                            <i class="glyphicon glyphicon-trash text-danger"></i>
-					                            
-					                        </a>
-				                        @endcan
-									</td>
-
+				                        	@can('delete-student')
+				                        		<a id="delete-student" href="javascript:void(0)" data-id="{{$student->id}}" title="Delete" data-toggle="tooltip">
+						                            <i class="glyphicon glyphicon-trash text-danger"></i>
+						                            
+						                        </a>
+					                        @endcan
+										</td>
+									@else
+									@endif
 								</tr>
 							@endforeach
 						</tbody>

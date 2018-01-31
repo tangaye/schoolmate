@@ -7,8 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Teacher;
 use App\Common;
-
-
+use App\Academic;
+use App\Repositories\TeachersRepository;
 
 class TeachersController extends Controller
 {
@@ -95,15 +95,14 @@ class TeachersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, TeachersRepository $teacherRepo)
     {
         //
         $teacher = Teacher::findOrfail($id);
-        $subjects = Teacher::teacherSubjects($teacher->id);
-        $grades = Teacher::teacherGrades($teacher->id); 
+        $grades = $teacherRepo->teacher_grades($teacher->id); 
         $genders = Common::genders();
 
-        return view('admin.teachers.edit', compact('teacher', 'genders', 'subjects', 'grades'));
+        return view('admin.teachers.edit', compact('teacher', 'genders', 'grades'));
     }
 
     /**

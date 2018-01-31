@@ -20,9 +20,10 @@ class CreateScoresTable extends Migration
             $table->unsignedInteger('grade_id');
             $table->unsignedInteger('term_id');
             $table->double('score');
+            $table->integer('academic_id')->unsigned()->nullable();
             $table->timestamps();
 
-            $table->unique(array('student_id', 'subject_id', 'term_id'));
+            $table->unique(array('student_id', 'subject_id', 'term_id', 'academic_id'));
 
             $table->foreign('student_id')
               ->references('id')
@@ -45,6 +46,12 @@ class CreateScoresTable extends Migration
             $table->foreign('term_id')
               ->references('id')
               ->on('terms')
+              ->onDelete('restrict')
+              ->onUpdate('cascade');
+
+            $table->foreign('academic_id')
+              ->references('id')
+              ->on('academics')
               ->onDelete('restrict')
               ->onUpdate('cascade');
 

@@ -3,7 +3,6 @@
 use Illuminate\Database\Seeder;
 use App\Student;
 use App\Guardian;
-use App\Grade;
 use Carbon\Carbon;
 
 
@@ -19,10 +18,7 @@ class StudentsTableSeeder extends Seeder
      */
     public function run()
     {
-        //
-        $grade_ten = Grade::where('name', '10th Grade')->first();
-        $grade_twelve = Grade::where('name', '12th Grade')->first();
-        $grade_eleven = Grade::where('name', '11th Grade')->first();
+        
         $guardian = Guardian::where('user_name', 'johnflomokue')->first();
 
         if(DB::table('students')->get()->count() == 0){
@@ -39,11 +35,18 @@ class StudentsTableSeeder extends Seeder
             $student_one->county = 'Bong';
             $student_one->country = 'Liberia';
             $student_one->religion = 'Christian';
-            $student_one->student_type = 'Old Student';
             $student_one->last_school = 'Prime School System';
-            $student_one->last_grade = $grade_eleven->id;
-            $student_one->grade_id = $grade_twelve->id;
+            $student_one->last_school_address = 'Elwa Junction';
+            $student_one->principal_name = 'Morris Kollie';
+            $student_one->principal_number = '0886532565';
+            $student_one->father_name = "Eugene Nagbe";
+            $student_one->father_address = "Kpelle Town";
+            $student_one->father_number = "0886800800";
+            $student_one->mother_name = "Mary Nagbe";
+            $student_one->mother_address = "Kpelle Town";
+            $student_one->mother_number = "0886900800";
             $student_one->guardian_id = $guardian->id;
+            $student_one->admission_date = Carbon::parse('2016-08-08')->format('d/m/Y');
             $student_one->save();
 
             // get the student_one id and generate a unique code for the student_one
@@ -63,11 +66,18 @@ class StudentsTableSeeder extends Seeder
             $student_two->county = 'Grand Bassa';
             $student_two->country = 'Liberia';
             $student_two->religion = 'Christian';
-            $student_two->student_type = 'New Student';
             $student_two->last_school = 'Paynesville Community School';
-            $student_two->last_grade = $grade_eleven->id;
-            $student_two->grade_id = $grade_twelve->id;
+            $student_two->last_school_address = 'Elwa Junction';
+            $student_two->principal_name = 'Nancy Roberts';
+            $student_two->principal_number = '0776532565';
+            $student_two->father_name = "Oratio Doe";
+            $student_two->father_address = "Bass Town";
+            $student_two->father_number = "088100800";
+            $student_two->mother_name = "Esther Doe";
+            $student_two->mother_address = "Bassa Town";
+            $student_two->mother_number = "0886700800";
             $student_two->guardian_id = $guardian->id;
+            $student_two->admission_date = Carbon::parse('2017-08-08')->format('d/m/Y');
             $student_two->save();
 
             // get the student_two id and generate a unique code for the student_two
@@ -88,11 +98,18 @@ class StudentsTableSeeder extends Seeder
             $student_three->county = 'Grand Bassa';
             $student_three->country = 'Liberia';
             $student_three->religion = 'Christian';
-            $student_three->student_type = 'New Student';
             $student_three->last_school = 'Paynesville Community School';
-            $student_three->last_grade = $grade_ten->id;
-            $student_three->grade_id = $grade_eleven->id;
+            $student_three->last_school_address = 'Elwa Junction';
+            $student_three->principal_name = 'Nancy Roberts';
+            $student_three->principal_number = '0776532565';
+            $student_three->father_name = "Matthew Gbehzongar";
+            $student_three->father_address = "Bass Town";
+            $student_three->father_number = "088300800";
+            $student_three->mother_name = "Patience Kollie";
+            $student_three->mother_address = "Kpelle Town";
+            $student_three->mother_number = "0886400800";
             $student_three->guardian_id = $guardian->id;
+            $student_three->admission_date = Carbon::parse('2016-08-08')->format('d/m/Y');
             $student_three->save();
 
             // get the student_three id and generate a unique code for the student_three

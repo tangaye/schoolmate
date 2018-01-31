@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
         $this->registerStudentsPolicies();
         $this->registerGuardiansPolicies();
-
+        $this->registerScoresPolicies();
         //
     }
 
@@ -65,6 +65,13 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('update-guardian', function($user) {
             return $user->hasAccess(['update-guardian']); 
+        });
+    }
+
+    public function registerScoresPolicies()
+    {
+        Gate::define('view-scores', function($user) {
+            return $user->hasAccess(['view-scores']); 
         });
     }
 }

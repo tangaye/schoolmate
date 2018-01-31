@@ -1,22 +1,32 @@
 <div id="semester-report">
-	<div class="text-center">
-		<h2 style="margin-bottom: 1px">{{$institution->name}}</h2>
-		<h3 style="margin-bottom: 1px; margin-top: 1px">{{$institution->address}}</h3>
-		<p><strong>Motto:</strong> {{$institution->motto}}</p>
-	</div>
-
-	<div class="text-center">
-		<h3><u>{{$semester->name}} Student Report</u></h3>
-	</div> <br>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<h3 style="margin-bottom: 0px">{{$institution->name}}</h2>
+			<h4 style="margin-bottom: 0px; margin-top: 0px">{{$institution->address}}</h4>
+			<h4 style="margin-bottom: 0px; margin-top: 0px">Email: {{$institution->email}}</h4>
+		</div>
+		<div class="col-md-12" style="margin-top: 10px;">
+			<span class="pull-left"><b>{{$semester->name}}</b> STUDENT REPORT</span>
+			<span class="pull-right">Courtesy of School<b>MATE &copy;</b></span>
+			<hr style="width: 100%;">
+		</div>
+	</div> 
 	<table class="table table-bordered table-condensed table-responsive">
 		<thead>
 			<tr>
-				<th scope="row" colspan="2" class="text-center">Student Name</th>
-				<td colspan="4">{{$student->first_name." ".$student->middle_name." ".$student->surname}}</td>
+				<th scope="row" class="text-center">Name</th>
+				<td colspan="2">{{$student->full_name}}</td>
+
+				<th scope="row">Acad. Yr</th>
+				<td colspan="2">{{$academic->full_year}}</td>
 			</tr>
 			<tr>
 				<th scope="row">Grade</th>
-				<td>{{$student->grade->name}}</td>
+				<td>
+					@foreach($student->enrollments->where('academic_id', $academic->id) as $enrollment)
+						{{$enrollment->present_grade->name}}
+                    @endforeach
+				</td>
 
 				<th scope="row">Semester</th>
 				<td colspan="">{{$semester->name}}</td>
@@ -45,15 +55,15 @@
 		            @endforeach
 		            <!-- subjects averages -->
 		            <td class="text-center">
-		            	@if((App\Score::subjectAvg($subject, $student->id, $semester->id)) > 0 && (App\Score::subjectAvg($subject, $student->id, $semester->id)) <= 69)
+		            	@if((App\Repositories\ScoresRepository::subject_semester_avg($subject, $student->id, $semester->id, $academic->id)) > 0 && (App\Repositories\ScoresRepository::subject_semester_avg($subject, $student->id, $semester->id, $academic->id)) <= 69)
 		            		<span class="failure" style="color: red;">
-		            			{{round( App\Score::subjectAvg($subject, $student->id, $semester->id), 1)}}
+		            			{{App\Repositories\ScoresRepository::subject_semester_avg($subject, $student->id, $semester->id, $academic->id)}}
 		            		</span>
-		            	@elseif((App\Score::subjectAvg($subject, $student->id, $semester->id)) == 0)
+		            	@elseif((App\Repositories\ScoresRepository::subject_semester_avg($subject, $student->id, $semester->id, $academic->id)) == 0)
 		            		<span></span>
 		            	@else 
 		            		<strong>
-			            		{{round( App\Score::subjectAvg($subject, $student->id, $semester->id), 1)}}
+			            		{{App\Repositories\ScoresRepository::subject_semester_avg($subject, $student->id, $semester->id, $academic->id)}}
 			            	</strong>
 		            	@endif
 		            	
@@ -66,14 +76,14 @@
 	        	<th scope="row" class="text-right">Periodic Avg.</th>
 	        	@foreach($terms as $id => $name)
 	            	<td class="text-right">
-	            		@if((App\Score::periodicAvg($id, $student->id)) > 0 && (App\Score::periodicAvg($id, $student->id)) <= 69)
+	            		@if((App\Repositories\ScoresRepository::periodic_avg($id, $student->id, $academic->id)) > 0 && (App\Repositories\ScoresRepository::periodic_avg($id, $student->id, $academic->id)) <= 69)
 		            		<span class="failure" style="color: red;">
-		            			{{round( App\Score::periodicAvg($id, $student->id), 1)}}
+		            			{{App\Repositories\ScoresRepository::periodic_avg($id, $student->id, $academic->id)}}
 		            		</span>
-		            	@elseif((App\Score::periodicAvg($id, $student->id)) == 0)
+		            	@elseif((App\Repositories\ScoresRepository::periodic_avg($id, $student->id, $academic->id)) == 0)
 		            		<span></span>
 		            	@else 
-		            		<strong>{{round( App\Score::periodicAvg($id, $student->id), 1)}}</strong>
+		            		<strong>{{App\Repositories\ScoresRepository::periodic_avg($id, $student->id, $academic->id)}}</strong>
 		            	@endif
 	            	</td>
 	            @endforeach
@@ -83,14 +93,14 @@
 	        	<!-- semester avg -->
 	        	<th class="text-right">Semester Avg.</th>
 	        	<td colspan="5" class="text-right">
-	        		@if((App\Score::semesterAvg($student->id, $semester->id)) > 0 && (App\Score::semesterAvg($student->id, $semester->id)) <= 69)
+	        		@if((App\Repositories\ScoresRepository::semester_avg($student->id, $semester->id, $academic->id)) > 0 && (App\Repositories\ScoresRepository::semester_avg($student->id, $semester->id, $academic->id)) <= 69)
 	        			<span class="failure" style="color: red;">
-	        				{{round(App\Score::semesterAvg($student->id, $semester->id), 1)}}
+	        				{{App\Repositories\ScoresRepository::semester_avg($student->id, $semester->id, $academic->id)}}
 	        			</span>
-	        		@elseif((App\Score::semesterAvg($student->id, $semester->id)) == 0)
+	        		@elseif((App\Repositories\ScoresRepository::semester_avg($student->id, $semester->id, $academic->id)) == 0)
 	        			<span></span>
 	        		@else
-	        			<strong>{{round(App\Score::semesterAvg($student->id, $semester->id), 1)}}</strong>
+	        			<strong>{{App\Repositories\ScoresRepository::semester_avg($student->id, $semester->id, $academic->id)}}</strong>
 	        		@endif
 	        		
 	        	</td>
@@ -98,3 +108,7 @@
 		</tbody>
 	</table>
 </div>
+<p  class="no-print">
+	<b>Printing Title</b>: 
+	<input type="text" readonly="" disabled="" class="title" value="{{$student->first_name}}-{{$student->surname}}-{{$academic->year_start}}-{{$academic->year_end}}-{{$semester->name}}-report">
+</p>

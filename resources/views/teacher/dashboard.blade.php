@@ -52,8 +52,24 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li><a href="{{route('teacher-attendence')}}"><i class="glyphicon glyphicon-list-alt"></i>Manage Attendence</a></li>
+      <li><a href="{{route('teacher-attendence')}}"><i class="glyphicon glyphicon-list-alt"></i>View Attendence</a></li>
       <li><a href="{{route('teacher-attendence.create')}}"><i class="fa fa-pencil"></i>New Attendence</a></li>      
+    </ul>
+  </li>
+
+  <!-- reports -->
+  <li class="treeview">
+    <a href="#">
+      <i class="fa fa-folder-open-o"></i>
+      <span>Scores Reports</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+    <ul class="treeview-menu">
+      <li><a href="{{route('teacher.term-scores')}}"><i class="fa fa-file-text-o"></i>Term Report</a></li>
+      <li><a href="{{route('teacher.semester-scores')}}"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
+      <li><a href="{{route('teacher.annual-scores')}}"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
 </ul>
@@ -99,13 +115,18 @@
                       </span>
                   </a>
               </li>
-              <li>
-                  <a href="javascript:void(0)">Address 
+             <li>
+                @if($teacher->grade_sponsoring())
+                   <a href="javascript:void(0)">Sponsoring 
                       <span class="pull-right badge bg-aqua">
-                          {{$teacher->address}}
+                          {{$teacher->grade_sponsoring()}}
                       </span>
                   </a>
-              </li>
+                @else
+                   <a href="javascript:void(0)"> No sponsor grade this year.
+                  </a>
+                @endif
+            </li>
             </ul>
           </div>
         </div>
@@ -123,7 +144,7 @@
                     <tr>
                       <td>{{$grade->name}}</td>
                       <td>
-                        @foreach(App\Teacher::teacherGradeSubjects($grade->id, $teacher->id) as $subject)
+                        @foreach(App\Repositories\TeachersRepository::teacher_grade_subjects($grade->id, $teacher->id) as $subject)
                           <span class="badge label-default">{{$subject}}</span>
                         @endforeach
                       </td>
@@ -158,7 +179,8 @@
     $(document).ready(function() {
 
       $('#calendar').fullCalendar({
-          // put your options and callbacks here
+        // put your options and callbacks here        
+        height:450
       });
 
     });

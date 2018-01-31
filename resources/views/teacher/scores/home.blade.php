@@ -46,8 +46,24 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li><a href="{{route('teacher-attendence')}}"><i class="glyphicon glyphicon-list-alt"></i>Manage Attendence</a></li>
+      <li><a href="{{route('teacher-attendence')}}"><i class="glyphicon glyphicon-list-alt"></i>View Attendence</a></li>
       <li><a href="{{route('teacher-attendence.create')}}"><i class="fa fa-pencil"></i>New Attendence</a></li>      
+    </ul>
+  </li>
+
+  <!-- reports -->
+  <li class="treeview">
+    <a href="#">
+      <i class="fa fa-folder-open-o"></i>
+      <span>Scores Reports</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+    <ul class="treeview-menu">
+      <li><a href="{{route('teacher.term-scores')}}"><i class="fa fa-file-text-o"></i>Term Report</a></li>
+      <li><a href="{{route('teacher.semester-scores')}}"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
+      <li><a href="{{route('teacher.annual-scores')}}"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
 
@@ -58,49 +74,58 @@
 
 @section('content')
 
-	<!-- edit score modal form start -->
-	@include('scores.edit')
-	<!-- edit score modal form end -->
-
 	<div class="row">
 		<div class="col-md-12">
 
          	<div class="panel">
          		
          		@component('components.loader')
-            	@endcomponent
+            @endcomponent
 
          		<div class="panel-body">
 
-         			<div class="form-group col-md-12 grade-div">
-         				<div class="input-group">
-         					<span class="input-group-addon">Grades/Class</span>
-		                  	<select name="grade_id" class="form-control" id="grade">
-		                    	<option value="">Select Grade/Class</option>
-		                    	@foreach($teacher_grades as $grade)
-		                      		<option value="{{$grade->id}}">{{$grade->name}}</option>
-		                   	 	@endforeach
-		                  	</select>	
-         				</div>
-         			</div>
-         			<div class="form-group col-md-4 hidden-subjectTerm-div hidden">
-         				<div class="input-group">
-         					<span class="input-group-addon">Subject</span>
-	            			<select disabled="true" name="subject_id" id="subject" class="form-control subjects-terms">
-	            			</select>
-         				</div>
-         			</div>
-         			<div class="form-group col-md-4 hidden-subjectTerm-div hidden">
-         				<div class="input-group">
-	                  		<span class="input-group-addon">Term</span>
-		            		<select disabled="true" name="term_id" class="form-control subjects-terms" id="term">
-		            			<option value="">Select term</option>
-	              			   	@foreach($terms as $term)
-	              			    	<option value="{{$term->id}}">{{$term->name}}</option>
-	              		    	@endforeach
-	         				</select>
-	         			</div>
-	         		</div>
+              <div class="row">
+                <div class="form-group col-md-3">
+                  <label class="control-label">Academic Years</label>
+                  <select name="academic_id" class="form-control" id="academic_id">
+                    @if(count($academics) > 0)
+                      <option selected="" value="">Select Academic Year</option>
+                      @foreach($academics as $academic)
+                        @if($academic->status)
+                          <option class="text-danger" style="font-weight: bold;" value="{{$academic->id}}">
+                            {{$academic->full_year}}
+                            <span>- Current</span>
+                          </option>
+                        @else 
+                          <option value="{{$academic->id}}">{{$academic->full_year}}</option>
+                        @endif
+                      @endforeach
+                    @else
+                      <option selected="" value="">You haven't yet been assigned to teach any grade.</option>
+                    @endif
+                  </select>
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label class="control-label">Grades</label>
+                  <select disabled="" name="grade_id" class="form-control" id="grade">
+                  </select> 
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label class="control-label">Subject</label>
+                  <select disabled="true" name="subject_id" id="subject" class="form-control search_fields"></select>
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label class="control-label">Term</label>
+                  <select disabled="true" name="term_id" class="form-control search_fields" id="term">
+                    @foreach($terms as $term)
+                      <option value="{{$term->id}}">{{$term->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
 	         		<div id="result"></div>
 	         	</div>
          	</div>

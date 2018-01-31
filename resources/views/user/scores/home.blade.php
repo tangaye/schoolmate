@@ -11,7 +11,7 @@
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
-@section('page-header', 'View students scores')
+@section('page-header', 'Students Scores')
 
 @section('user-logout')
   @component('components.user-logout')
@@ -26,45 +26,58 @@
 @section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
-  <li class="header">USER NAVIGATION</li>
+    <li class="header">USER NAVIGATION</li>
 
-  <li class="">
-    <a href="{{route('user.dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
-    </a>
-  </li>
+    <li class="">
+      <a href="{{route('user.dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
+        </a>
+    </li>
 
-  <!-- guardians -->
-  <li class="treeview">
-    <a href="#"><i class="fa fa-user"></i> <span>Guardians</span>
-      <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-      </span>
-    </a>
-    <ul class="treeview-menu">
-      <li><a href="/users/guardians"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
-      <li><a href="/users/guardians/create"><i class="fa fa-pencil"></i>New Guardian</a></li>
-    </ul>
-  </li>
+    <!-- guardians -->
+    @if($user->canAccessGuardians())
+      <li class="treeview">
+        <a href="#"><i class="fa fa-user"></i> <span>Guardians</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          @can('view-guardian')
+            <li><a href="{{route('users.guardians')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
+          @endcan
+          @can('create-guardian')
+            <li><a href="{{route('users.guardians.create')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
+          @endcan
+        </ul>
+      </li>
+    @endif
 
-  <!-- student -->
-  <li class="treeview">
-    <a href="#">
-      <i class="fa fa-users"></i><span>Students</span>
-      <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-      </span>
-    </a>
-    <ul class="treeview-menu">
-      <li><a href="/users/students"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
-      <li><a href="/users/students/create"><i class="fa fa-pencil"></i>Student Admission</a></li>
-    </ul>
-  </li>
+    <!-- student -->
+    @if($user->canAccessStudents())
+      <li class="treeview">
+        <a href="#">
+          <i class="fa fa-users"></i><span>Students</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          @can('view-student')
+            <li><a href="{{route('users.students')}}"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
+          @endcan
+          @can('create-student')
+            <li><a href="{{route('users.students.create')}}"><i class="fa fa-pencil"></i>Student Admission</a></li>
+          @endcan
+        </ul>
+      </li>
+    @endif
 
-  <li class=" active">
-    <a href="/users/scores"><i class="glyphicon glyphicon-list-alt"></i> <span>Score Tables</span>
-    </a>
-  </li>
-</ul>
+    @if($user->canAccessScores())
+      <li class="active">
+        <a href="{{route('users.scores')}}"><i class="glyphicon glyphicon-list-alt"></i> <span>Score Tables</span></a>
+      </li>
+    @endif
+  </ul>
 @endsection
 
 @section('content')	
@@ -74,47 +87,47 @@
 
 	<div class="row">
 		<div class="col-md-12">
+      <div class="panel">     
+        @component('components.loader')
+        @endcomponent
+          
+        <div class="panel-body">
+          <div class="row">
 
-         	<div class="panel">
+            <div class="form-group col-md-3">
+              <label class="control-label">Academic Years</label>
+              <select name="academic_id" class="form-control" id="academic">
+                <option value="">Select Academic Year</option>
+                  @foreach($academics as $academic)
+                  <option value="{{$academic->id}}">{{$academic->full_year}}</option>
+                @endforeach
+              </select>
+            </div>
 
-         		@component('components.loader')
-          		@endcomponent
-          		
-         		<div class="panel-body">
-         			<div class="form-group col-md-12 grade-div">
-         				<div class="input-group">
-         					<span class="input-group-addon">Grades/Class</span>
-         					<select name="grade_id" class="form-control" id="grade">
-			                    <option value="">Select Grade/Class</option>
-			                    @foreach($grades as $grade)
-			                      <option value="{{$grade->id}}">{{$grade->name}}</option>
-			                    @endforeach
-			                </select>
-         				</div>
-         			</div>
-         			<div class="form-group col-md-4 hidden-subjectTerm-div hidden">
-         				<div class="input-group">
-         					<span class="input-group-addon">Subject</span>
-            				<select disabled="true" name="subject_id" id="subject" class="form-control subjects-terms">
-            				</select>
-         				</div>
-         			</div>
-         			<div class="form-group col-md-4 hidden-subjectTerm-div hidden">
-         				<div class="input-group">
-	                  		<span class="input-group-addon">Term</span>
-	                  		<select disabled="" name="term_id" class="form-control subjects-terms" id="term">
-	                  			<option value="">Select term</option>
-                      			@foreach($terms as $term)
-		                  			<option value="{{$term->id}}">{{$term->name}}</option>
-		                  		@endforeach
-	         				</select>
-	         			</div>
-	         		</div>
-	         		<div id="result">
-	         		</div>
-	         	</div>
-         	</div>
-	    </div>
+            <div class="form-group col-md-3">
+              <label class="control-label">Grade</label>
+              <select name="grade_id" disabled="" class="form-control" id="grade">
+              </select>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label class="control-label">Subject</label>
+              <select disabled="true" name="subject_id" id="subject" class="form-control search_fields"></select>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label class="control-label">Term</label>
+              <select disabled="" name="term_id" class="form-control search_fields" id="term">
+                @foreach($terms as $term)
+                  <option value="{{$term->id}}">{{$term->name}}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+          <div id="result">
+          </div>
+        </div>
+	  </div>
 	</div>
 
 @endsection
@@ -125,7 +138,18 @@
 
 
 	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jquery.dataTables.min.js") }}"></script>
-	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
+  <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.buttons.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.bootstrap.min.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jszip.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/pdfmake.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/vfs_fonts.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.print.min.js") }}"></script>
+
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.html5.min.js") }}"></script>
 
 	<script type="text/javascript" src="{{asset("/js/scores/user/home.js")}}"></script>
 @endsection

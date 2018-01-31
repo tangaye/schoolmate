@@ -51,9 +51,6 @@
         <div class="well">
             <h1><div class="glyphicon glyphicon-ban-circle text-danger"></div> 404 NOT FOUND</h1>
             <p>The page you're requesting cannot be found.</p>
-            <p>
-              <a class="btn btn-primary btn-lg" href="" onclick="history.back()">Take Me Back!</a>
-            </p>
         </div>
     </div>
 

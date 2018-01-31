@@ -66,50 +66,31 @@
          		<div class="panel-body">
 
          			<div class="row">
-         				<div class="form-group col-md-12 student-div">
-         					<div class="input-group">
-         						<span class="input-group-addon">Students</span>
-                    	<select id="student" name="student_id" style="width: 100%" class="form-control">
-                    		<option value="" selected="">Select Student(s)</option>
-                  		  @foreach($guardians as $guardian)
-    			                @foreach($guardian->student as $student)
-    			                	<option value="{{$student->id}}">{{$student->first_name}} {{$student->surname}}</option>
-    			                @endforeach
-      			            @endforeach
-                    	</select>
-         					</div>
-         				</div>
 
-         				<div class="form-group col-md-4 hidden-years-dates hidden">
-         					<div class="input-group">
-         						<span class="input-group-addon">Years</span>
-                		<select class="form-control" disabled="" id="years">
-  	                  <option selected="" value="">Select Year</option>
-  	                  @foreach($years as $values)
-  	                    @foreach($values as $year)
-  	                      <option>{{$year}}</option>
-  	                    @endforeach
-  	                  @endforeach
-  	                </select>
-         					</div>
-         				</div>
-
-         				<div class="form-group col-md-4 hidden-years-dates hidden">
-         					<div class="input-group">
-         						<span class="input-group-addon">Dates</span>
-         						<select class="form-control" disabled="" id="dates" name="date"></select>
-         					</div>
-         				</div>
-         			</div>
-
-              <div class="row container">
-                <div class="form-group hidden-search-div hidden">
-                  <button class="btn btn-primary search-btn" disabled="">
-                    <i class="glyphicon glyphicon-search"></i> Search
-                  </button>
+                <div class="form-group col-md-4">
+                  <label class="control-label">Academic Years</label>
+                  <select class="form-control search" id="academic_years">
+                    <option selected="" value="">Select Academic Year</option>
+                    @foreach($academics as $academic)
+                        <option value="{{$academic->id}}">{{$academic->year_start}}/{{$academic->year_end}}</option>
+                    @endforeach
+                  </select>
                 </div>
+
+                <div class="form-group col-md-4">
+                  <label class="control-label">Dates</label>
+                  <select class="form-control search" disabled="" id="date" name="date">
+                    
+                  </select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label class="control-label">Students</label>
+                    <select class="form-control" disabled="" name="student_id" id="student" style="width: 100%;">
+                    </select>
+                </div>
+
               </div>
-         			
 	         		<div id="result"></div>
 	         	</div>
          	</div>

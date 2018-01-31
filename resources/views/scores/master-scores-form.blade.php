@@ -39,11 +39,11 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="{{route('guardians.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
-      <li><a href="{{route('guardians.form')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
+      <li><a href="{{route('guardians.form')}}"><i class="glyphicon glyphicon-pencil"></i>New Guardian</a></li>
     </ul>
   </li>
 
-  <!-- teacher -->
+  <!-- teachers -->
   <li class="treeview">
     <a href="#"><i class="glyphicon glyphicon-education"></i> <span>Teachers</span>
       <span class="pull-right-container">
@@ -53,10 +53,12 @@
     <ul class="treeview-menu">
       <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
       <li><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
-      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-asterisk"></i>Teacher Grades</a></li>
-        <li><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
+      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-align-left""></i>Teacher Grades</a></li>
+      <li><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
+      <li><a href="{{route('admin.ponsor.home')}}"><i class="glyphicon glyphicon-knight"></i>Sponsors</a></li>
     </ul>
   </li>
+
 
   <!-- Settings -->
   <li class="treeview">
@@ -85,8 +87,9 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li><a href="/students"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
-      <li><a href="/students/create"><i class="fa fa-pencil"></i>Student Admission</a></li>
+      <li><a href="{{route('students.home')}}"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
+      <li><a href="{{route('students.create')}}"><i class="glyphicon glyphicon-pencil"></i>Student Admission</a></li>
+      <li><a href="{{route('enrollments.home')}}"><i class="glyphicon glyphicon-saved"></i>Student Enrollment</a></li>
     </ul>
   </li>
 
@@ -100,7 +103,7 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="{{route('attendence')}}"><i class="glyphicon glyphicon-list-alt"></i>Manage Attendence</a></li>
-      <li><a href="{{route('attendence.create')}}"><i class="fa fa-pencil"></i>New Attendence</a></li>      
+      <li><a href="{{route('attendence.create')}}"><i class="glyphicon glyphicon-pencil"></i>New Attendence</a></li>      
     </ul>
   </li>
 
@@ -114,9 +117,9 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="{{route('users.home')}}"><i class="glyphicon glyphicon-list-alt"></i>User List</a></li>
-      <li><a href="{{route('users.form')}}"><i class="fa fa-pencil"></i>New User</a></li>
+      <li><a href="{{route('users.form')}}"><i class="glyphicon glyphicon-pencil"></i>New User</a></li>
       <li><a href="{{route('roles.home')}}"><i class="glyphicon glyphicon-tasks"></i>Roles</a></li>
-      <li><a href="{{route('roles.form')}}"><i class="fa fa-pencil"></i>New Role</a></li>
+      <li><a href="{{route('roles.form')}}"><i class="glyphicon glyphicon-pencil"></i>New Role</a></li>
     </ul>
   </li>
 
@@ -130,7 +133,7 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="/scores"><i class="glyphicon glyphicon-list-alt"></i>Score Tables</a></li>
-      <li class="active"><a href="/scores/master"><i class="fa fa-pencil"></i>Enter Score</a></li>
+      <li class="active"><a href="/scores/master"><i class="glyphicon glyphicon-pencil"></i>Enter Score</a></li>
     </ul>
   </li>
 
@@ -148,6 +151,11 @@
       <li><a href="/scores/report/semesters"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
       <li><a href="{{route('annual-scores')}}"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
+  </li>
+  <!-- transcript -->
+  <li>
+    <a href="{{route('transcripts.home')}}"><i class="fa fa-file-text-o"></i> <span>Student Transcript</span>
+    </a>
   </li>
 </ul>
 @endsection
@@ -167,36 +175,28 @@
          		<div class="panel-body">
 
               <div class="row">
-
-                <div class="form-group col-md-12 grade-div">
-                  <div class="input-group">
-                    <span class="input-group-addon">Grade</span>
-                    <select name="grade_id" class="form-control" id="grade">
-                        <option value="">Select Grade</option>
-                        @foreach($grades as $grade)
-                          <option value="{{$grade->id}}">{{$grade->name}}</option>
-                        @endforeach
-                    </select>
-                  </div>
-                </div>
-
-                <div class="form-group col-md-4 hidden-subjectTerm-div hidden">
-                  <div class="input-group">
-                    <span class="input-group-addon">Subject</span>
-                    <select disabled="true" name="subject_id" id="subject" class="form-control subjects-terms"></select>
-                  </div>
-                </div>
-
-                <div class="form-group col-md-4 hidden-subjectTerm-div hidden">
-                  <div class="input-group">
-                    <span class="input-group-addon">Term</span>
-                    <select disabled="" name="term_id" class="form-control subjects-terms" id="term">
-                      <option value="">Select term</option>
-                        @foreach($terms as $term)
-                        <option value="{{$term->id}}">{{$term->name}}</option>
+                <div class="form-group col-md-4">
+                  <label class="control-label">Grade</label>
+                  <select name="grade_id" class="form-control" id="grade">
+                      <option value="">Select Grade/Class</option>
+                      @foreach($grades as $grade)
+                        <option value="{{$grade->id}}">{{$grade->name}}</option>
                       @endforeach
-                    </select>
-                  </div>
+                  </select>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label class="control-label">Subject</label>
+                  <select disabled="true" name="subject_id" id="subject" class="form-control search_fields"></select>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label class="control-label">Term</label>
+                  <select disabled="" name="term_id" class="form-control search_fields" id="term">
+                    @foreach($terms as $term)
+                      <option value="{{$term->id}}">{{$term->name}}</option>
+                    @endforeach
+                  </select>
                 </div>
               </div>
 

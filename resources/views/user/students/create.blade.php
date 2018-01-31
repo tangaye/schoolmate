@@ -35,37 +35,49 @@
   </li>
 
   <!-- guardians -->
-  <li class="treeview">
-    <a href="#"><i class="fa fa-user"></i> <span>Guardians</span>
-      <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-      </span>
-    </a>
-    <ul class="treeview-menu">
-      <li><a href="/users/guardians"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
-      <li><a href="/users/guardians/create"><i class="fa fa-pencil"></i>New Guardian</a></li>
-    </ul>
-  </li>
+  @if($user->canAccessGuardians())
+    <li class="treeview">
+      <a href="#"><i class="fa fa-user"></i> <span>Guardians</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu">
+        @can('view-guardian')
+          <li><a href="{{route('users.guardians')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
+        @endcan
+        @can('create-guardian')
+          <li><a href="{{route('users.guardians.create')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
+        @endcan
+      </ul>
+    </li>
+  @endif
 
   <!-- student -->
-  <li class="treeview active">
-    <a href="#">
-      <i class="fa fa-users"></i><span>Students</span>
-      <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-      </span>
-    </a>
-    <ul class="treeview-menu">
-      <li><a href="/users/students"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
-      <li class="active"><a href="/users/students/create"><i class="fa fa-pencil"></i>Student Admission</a></li>
-    </ul>
-  </li>
-
-  <!-- score -->
- <li class="">
-    <a href="/users/scores"><i class="glyphicon glyphicon-list-alt"></i> <span>Score Tables</span>
-    </a>
-  </li>
+  @if($user->canAccessStudents())
+    <li class="treeview active">
+      <a href="#">
+        <i class="fa fa-users"></i><span>Students</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu">
+        @can('view-student')
+          <li><a href="{{route('users.students')}}"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
+        @endcan
+        @can('create-student')
+          <li class="active"><a href="{{route('users.students.create')}}"><i class="fa fa-pencil"></i>Student Admission</a></li>
+        @endcan
+      </ul>
+    </li>
+  @endif
+  
+  @if($user->canAccessScores())
+    <li class="">
+      <a href="{{route('users.scores')}}"><i class="glyphicon glyphicon-list-alt"></i> <span>Score Tables</span></a>
+    </li>
+  @endif
 </ul>
 @endsection
 
@@ -78,52 +90,47 @@
 		<div class="col-md-12">
 
 			<div class="panel panel-default">
-				<!-- Default panel contents -->
-				<div class="panel-heading">
-					<div class="container-fluid">
-						<span class="panel-title">Enter Student Details</span>
-						<!-- button that triggers modal -->
-						<a role="button" href="/users/students" class="pull-right" title="students table">
-							<span class="badge label-primary"><i class="glyphicon glyphicon-arrow-left"></i> </span>
-						</a>
-					</div>
-					
-				</div>
-				<div class="panel-body">
-                    <!-- start of form -->
-					<form action="/users/students" method="POST" enctype="multipart/form-data">
-						{{csrf_field()}}
-                    	<!-- personal information -->  
-                    	<div class="form-group">
-                    		<p>
+                <!-- Default panel contents -->
+                <div class="panel-heading">
+                    <span class="panel-title">Enter Student Details</span>
+                </div>
+                
+                <form action="/users/students" method="POST" enctype="multipart/form-data">
+                    <div class="panel-body">
+
+                        {{csrf_field()}}
+                        <!-- personal information -->  
+                        <div class="form-group">
+                            <p>
                                 <b>PERSONAL INFOMATION:</b>
                                 <hr>
                             </p>
-                    	</div>
+                        </div>
 
                         <div class="row">
                             <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }} col-sm-4">
-                            	<label for="" class="control-label">First Name</label>
-                            	<div class="input-group">
-                            		<span class="input-group-addon">
-                            			<i class="fa fa-user"></i>
-                            		</span>
-                            		<input class="form-control" name="first_name" required="required" type="text" maxlength="45" value="{{ old('first_name') }}">
-                            	</div>
-                                @if ($errors->has('first_name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('first_name') }}</strong>
+                                <label for="" class="control-label">First Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-user"></i>
                                     </span>
-                                @endif	                 
+                                    <input class="form-control" name="first_name" required="required" type="text" maxlength="45" value="{{ old('first_name') }}">
+                                </div>
+                                  @if ($errors->has('first_name'))
+                                      <span class="help-block">
+                                          <strong>{{ $errors->first('first_name') }}</strong>
+                                      </span>
+                                @endif                     
                             </div>
+
                             <div class="form-group{{ $errors->has('middle_name') ? ' has-error' : '' }} col-sm-4">
-                            	<label for="" class="control-label">Middle Name</label>
-                            	<div class="input-group">
-                            		<span class="input-group-addon">
-                            			<i class="fa fa-user"></i>
-                            		</span>
-                            		<input class="form-control" name="middle_name" type="text" maxlength="45" value="{{ old('middle_name') }}">
-                            	</div>  
+                                <label for="" class="control-label">Middle Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-user"></i>
+                                    </span>
+                                    <input class="form-control" name="middle_name" type="text" maxlength="45" value="{{ old('middle_name') }}">
+                                </div>  
                                 @if ($errors->has('middle_name'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('first_name') }}</strong>
@@ -131,31 +138,31 @@
                                 @endif   
                             </div>
                             <div class="form-group{{ $errors->has('surname') ? ' has-error' : '' }} col-sm-4">
-                            	<label for="surname" class="control-label">Surname</label>
-                            	<div class="input-group">
-                            		<span class="input-group-addon">
-                            			<i class="fa fa-user"></i>
-                            		</span>
-                            		<input class="form-control" id="surname" name="surname" required="required" type="text" maxlength="45" value="{{ old('surname') }}">
-                            	</div>
+                                <label for="surname" class="control-label">Surname</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-user"></i>
+                                    </span>
+                                    <input class="form-control" id="surname" name="surname" required="required" type="text" maxlength="45" value="{{ old('surname') }}">
+                                </div>
 
                                 @if ($errors->has('surname'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('first_name') }}</strong>
+                                        <strong>{{ $errors->first('surname') }}</strong>
                                     </span>
                                 @endif
-                            </div>		                                
+                            </div>                                        
                         </div>
 
                         <div class="row">
                             <div class="form-group{{ $errors->has('date_of_birth') ? ' has-error' : '' }} col-sm-6">
-                            	<label for="datepicker" class="control-label">Date of Birth</label>
-                            	<div class="input-group date">
-                            		<span class="input-group-addon">
-                            			<i class="fa fa-calendar-plus-o"></i>
-                            		</span>
-                            		<input class="form-control" id="datepicker" name="date_of_birth" required="required" value="{{ old('date_of_birth') }}">
-                            	</div>
+                                <label  class="control-label">Date of Birth</label>
+                                <div class="input-group date">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar-plus-o"></i>
+                                    </span>
+                                    <input class="form-control datepicker" name="date_of_birth" required="required" value="{{ old('date_of_birth') }}">
+                                </div>
 
                                 @if ($errors->has('date_of_birth'))
                                     <span class="help-block">
@@ -164,12 +171,12 @@
                                 @endif
                             </div>
                             <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }} col-sm-6">
-                            	<label for="" class="control-label">Gender</label>
-                            	<select name="gender" class="form-control" required="">
-                            		<option value="Female">Female</option>
-                            		<option value="Male">Male</option>
-                            	</select>
-                            </div>
+                                <label for="" class="control-label">Gender</label>
+                                <select name="gender" class="form-control" required="">
+                                    <option value="Female">Female</option>
+                                    <option value="Male">Male</option>
+                                </select>
+                              </div>
                             @if ($errors->has('gender'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('gender') }}</strong>
@@ -179,12 +186,12 @@
 
                         <div class="row"> 
                             <div class="form-group{{ $errors->has('county') ? ' has-error' : '' }} col-sm-6">
-                            	<label for="county">County</label>
-                            	<select name="county" id="county" class="form-control">
-									@foreach($counties as $name => $value)
+                                <label for="county">County</label>
+                                <select name="county" id="county" class="form-control">
+                                    @foreach($counties as $name => $value)
                                         <option value="{{$value}}">{{$name}}</option>
                                     @endforeach
-								</select>
+                                </select>
 
                                 @if ($errors->has('county'))
                                     <span class="help-block">
@@ -192,93 +199,152 @@
                                     </span>
                                 @endif
                             </div>
-                            
+                          
 
                             <div class="form-group{{ $errors->has('religion') ? ' has-error' : '' }} col-sm-6">
-                            	<label for="religion" class="control-label">Religion</label>
-                            	<select class="form-control" name="religion" id="religion">
-                                    @foreach($religions as $name => $value)
-                                        <option value="{{$value}}">{{$name}}</option>
-                                    @endforeach
-                            	</select>
+                                <label for="religion" class="control-label">Religion</label>
+                                <select class="form-control" name="religion" id="religion">
+                                      @foreach($religions as $name => $value)
+                                          <option value="{{$value}}">{{$name}}</option>
+                                      @endforeach
+                                </select>
                                 @if ($errors->has('religion'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('religion') }}</strong>
                                     </span>
                                 @endif
-                            </div>
-                            
+                            </div> 
                         </div>
 
-                        <!-- contact information -->
-                        <div class="form-group">
-                    		<p>
-                                <b>CONTACT DETAILS:</b>
-                                <hr>
-                            </p>
-                    	</div>
-
                         <div class="row">
-                        	<div class="form-group{{ $errors->has('address') ? ' has-error' : '' }} col-sm-12 col-md-12 col-xs-12">
-                        		<label for="address" class="control-label">Address</label>
-                        		<div class="input-group">
-                            		<span class="input-group-addon">
-                            			<i class="fa fa-home"></i>
-                            		</span>
-                                    <input id="address" value="{{old('address')}}" type="text" class="form-control" name="address" value="{{ old('address') }}">
-                            	</div>
+                            <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }} col-sm-12 col-md-12 col-xs-12">
+                                <label for="address" class="control-label">Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-home"></i>
+                                    </span>
+                                      <input id="address" value="{{old('address')}}" type="text" class="form-control" name="address" value="{{ old('address') }}">
+                                </div>
                                 @if ($errors->has('address'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('address') }}</strong>
                                     </span>
                                 @endif
-                        	</div>
+                            </div>
                         </div>
 
                         <div class="row">
-                        	<div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }} col-sm-6">
-                        		<label for="phone" class="control-label">Phone</label>
-                        		<div class="input-group">
-                            		<span class="input-group-addon">
-                            			<i class="fa fa-phone"></i>
-                            		</span>
-                            		<input id="phone" type="" name="phone" class="form-control" data-inputmask='"mask": "(9999) 999-999"' value="{{ old('phone') }}" phone-mask>
-                            	</div>
-                                @if ($errors->has('phone'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('phone') }}</strong>
+                            <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }} col-sm-6">
+                                <label for="phone" class="control-label">Phone</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-phone"></i>
                                     </span>
-                                @endif
-                        	</div>
-                        	<div class="form-group{{ $errors->has('country') ? ' has-error' : '' }} col-sm-6">
-                        		<label for="country" class="control-label">Country</label>
-                        		<input type="text" id="country" name="country" value="{{old('country')}}" class="form-control" required="">
+                                    <input id="phone" type="" name="phone" class="form-control" data-inputmask='"mask": "(9999) 999-999"' value="{{ old('phone') }}" phone-mask>
+                                </div>
+                                  @if ($errors->has('phone'))
+                                      <span class="help-block">
+                                          <strong>{{ $errors->first('phone') }}</strong>
+                                      </span>
+                                  @endif
+                            </div>
+                            <div class="form-group{{ $errors->has('country') ? ' has-error' : '' }} col-sm-6">
+                                <label for="country" class="control-label">Country</label>
+                                <input type="text" id="country" name="country" value="{{old('country')}}" class="form-control" required="">
 
                                 @if ($errors->has('country'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('country') }}</strong>
                                     </span>
                                 @endif
-                        	</div>
+                            </div>
+                        </div>
+
+                        <!-- family information -->
+                        <div class="form-group">
+                            <p>
+                                <b>PARENTS INFORMATION</b>
+                                <hr>
+                            </p>                            
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group{{ $errors->has('father_name') ? ' has-error' : '' }} col-sm-4">
+                              <label for="" class="control-label">Father Name</label>
+                              <input class="form-control" name="father_name" required="required" type="text" maxlength="255" value="{{ old('father_name') }}">
+                                @if ($errors->has('father_name'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('father_name') }}</strong>
+                                    </span>
+                                @endif                   
+                            </div>
+                            <div class="form-group{{ $errors->has('father_address') ? ' has-error' : '' }} col-sm-4">
+                              <label for="" class="control-label">Father Address</label>
+                              <input class="form-control" name="father_address" required="required" type="text" maxlength="255" value="{{ old('father_address') }}">
+                                @if ($errors->has('father_address'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('father_address') }}</strong>
+                                    </span>
+                                @endif                   
+                            </div>
+                            <div class="form-group{{ $errors->has('father_number') ? ' has-error' : '' }} col-sm-4">
+                              <label for="" class="control-label">Father Contact #</label>
+                              <input class="form-control" name="father_number" required="required" type="text" data-inputmask='"mask": "(9999) 999-999"' value="{{ old('father_number') }}" phone-mask>
+                                @if ($errors->has('father_number'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('father_number') }}</strong>
+                                    </span>
+                                @endif                   
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group{{ $errors->has('mother_name') ? ' has-error' : '' }} col-sm-4">
+                              <label for="" class="control-label">Mother Name</label>
+                              <input class="form-control" name="mother_name" required="required" type="text" maxlength="255" value="{{ old('mother_name') }}">
+                                @if ($errors->has('mother_name'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('mother_name') }}</strong>
+                                    </span>
+                                @endif                   
+                            </div>
+                            <div class="form-group{{ $errors->has('mother_address') ? ' has-error' : '' }} col-sm-4">
+                              <label for="" class="control-label">Mother Address</label>
+                              <input class="form-control" name="mother_address" required="required" type="text" maxlength="255" value="{{ old('mother_address') }}">
+                                @if ($errors->has('mother_address'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('mother_address') }}</strong>
+                                    </span>
+                                @endif                   
+                            </div>
+                            <div class="form-group{{ $errors->has('mother_number') ? ' has-error' : '' }} col-sm-4">
+                              <label for="" class="control-label">Mother Contact #</label>
+                              <input class="form-control" name="mother_number" required="required" type="text" data-inputmask='"mask": "(9999) 999-999"' value="{{ old('mother_number') }}" phone-mask>
+                                @if ($errors->has('mother_number'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('mother_number') }}</strong>
+                                    </span>
+                                @endif                   
+                            </div>
                         </div>
 
                         <!-- previous qualification section -->
                         <div class="form-group">
-                    		<p>
+                            <p>
                                 <b>PREVIOUS QUALIFICATION:</b>
                                 <hr>
-                            </p>	
-                    	</div>
+                            </p>    
+                        </div>
 
                         <div class="row">
                             <div class="form-group{{ $errors->has('last_school') ? ' has-error' : '' }} col-sm-6">
-                            	<label for="last_school" class="control-label">Last school attended</label>
-                            	<div class="input-group">
-                            		<span class="input-group-addon">
-                            			<i class="fa fa-institution"></i>
-                            		</span>
-                            		<input id="last_school" class="form-control" name="last_school" id="last_school" type="text" maxlength="100" value="{{ old('last_school') }}">
-                            	</div>
+                                <label for="last_school" class="control-label">Last School Attended</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-institution"></i>
+                                    </span>
+                                    <input  class="form-control" name="last_school" id="last_school" type="text" maxlength="255" value="{{ old('last_school') }}">
+                                </div>
 
                                 @if ($errors->has('last_school'))
                                     <span class="help-block">
@@ -287,67 +353,54 @@
                                 @endif
                             </div>
 
-                            <div class="form-group{{ $errors->has('last_grade') ? ' has-error' : '' }} col-sm-6">
-                            	<label for="last_grade" class="control-label">Last class</label>
-								<select name="last_grade" id="last_grade" class="form-control" required="">
-									@foreach($grades as $grade)
-										<option value="{{$grade->id}}">{{$grade->name}}</option>
-									@endforeach
-								</select>
-                            </div> 	
-                            @if ($errors->has('last_grade'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('last_grade') }}</strong>
-                                </span>
-                            @endif
+                            <div class="form-group{{ $errors->has('last_school_address') ? ' has-error' : '' }} col-sm-6">
+                                <label class="control-label">Last School Address</label>
+                                <input class="form-control" name="last_school_address" id="last_school_address" type="text" maxlength="255" value="{{ old('last_school_address') }}">
+
+                                @if ($errors->has('last_school_address'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('last_school_address') }}</strong>
+                                    </span>
+                                 @endif
+                            </div>
                         </div>
 
-                        <!-- school information -->
-                        <div class="form-group">
-                    		<p>
-                        		<b>School Information</b>
-                        		<hr>
-                        	</p>                        		
-                    	</div>
-
                         <div class="row">
-                        	<div class="form-group{{ $errors->has('student_type') ? ' has-error' : '' }} col-sm-6">
-                        		<label id="type" class="control-label">Student Type</label>
-                        		<select name="student_type" id="type" required="required" class="form-control">
-									<option value="Old Student">Old Student</option>
-									<option value="New Student">New Student</option>
-								</select>
+                            <div class="form-group{{ $errors->has('principal_name') ? ' has-error' : '' }} col-sm-6">
+                                <label class="control-label">Principal Name</label>
+                                <input  class="form-control" name="principal_name" id="principal_name" type="text" maxlength="255" required="" value="{{ old('principal_name') }}">
 
-                                @if ($errors->has('student_type'))
+                                @if ($errors->has('principal_name'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('student_type') }}</strong>
+                                        <strong>{{ $errors->first('principal_name') }}</strong>
                                     </span>
                                 @endif
-                        	</div>
+                            </div>
 
-                            
-                        	<div class="form-group{{ $errors->has('grade_id') ? ' has-error' : '' }} col-sm-6">
-                        		<label id="grade" class="control-label">Class</label>
-                        		<select name="grade_id" id="grade" class="form-control" required="">
-									@foreach($grades as $grade)
-										<option value="{{$grade->id}}">{{$grade->name}}</option>
-									@endforeach
-								</select>
+                            <div class="form-group{{ $errors->has('principal_number') ? ' has-error' : '' }} col-sm-6">
+                                <label class="control-label">Principal Contact #</label>
+                                <input class="form-control" name="principal_number" id="principal_number" data-inputmask='"mask": "(9999) 999-999"' phone-mask value="{{ old('principal_number') }}">
 
-                                @if ($errors->has('grade_id'))
+                                @if ($errors->has('principal_number'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('grade_id') }}</strong>
+                                        <strong>{{ $errors->first('principal_number') }}</strong>
                                     </span>
                                 @endif
-                        	</div>
+                            </div>
+                        </div>
 
-                        </div>	
+                        <div class="form-group">
+                            <p>
+                                <b></b>
+                                <hr>
+                            </p>  
+                        </div>
 
                         <!-- student photo -->
                         <div class="row">
-                            <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }} photoWarning col-md-12">
+                            <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }} photoWarning col-md-6">
                                 <label class="control-label">Student Photo</label>
-                                <input type="file" class="form-control photo" name="photo">
+                                <input type="file" class="form-control photo" name="photo" disabled="true">
 
                                 @if ($errors->has('photo'))
                                     <span class="help-block">
@@ -358,42 +411,55 @@
                                 <span class="help-block hidden photoWarningMsg">
                                     <strong class="photoWarningMsg"></strong>
                                 </span>
+                                <span class="help-block">
+                                    <strong class="text-warning">Sorry the Student photo upload feature isn't fully available yet.</strong>
+                                </span>
+                            </div>
+
+                            <div class="form-group{{ $errors->has('admission_date') ? ' has-error' : '' }} col-md-6">
+                                <label class="control-label">Admission Date</label>
+                                <div class="input-group date">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar-plus-o"></i>
+                                    </span>
+                                    <input class="form-control datepicker" name="admission_date" required="required" value="{{ old('admission_date') }}">
+                                </div>
+
+                                @if ($errors->has('admission_date'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('admission_date') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 
-                        <!-- school information -->
-                        <div class="form-group">
-                            <p>
-                                <b>Student Guardian</b>
-                                <hr>
-                            </p>                                
-                        </div>
+                        <!-- student guardian -->
                         <div class="row">
                             <div class="form-group{{ $errors->has('guardian_id') ? ' has-error' : '' }} col-sm-12">
-                                <label id="guardian" class="control-label">Guardian</label>
+                                <label id="guardian" class="control-label">Student Guardian</label>
                                 <select name="guardian_id" id="guardian" class="form-control guardians" style="width: 100%;" required="">
-                                    <option>Select Guardian</option>
+                                    <option value="" selected="">Select Guardian</option>
                                     @foreach($guardians as $guardian)
                                         <option value="{{$guardian->id}}">{{$guardian->first_name}} {{$guardian->surname}}</option>
                                     @endforeach
-                                </select>
-                            </div>
-
-                            @if ($errors->has('guardian_id'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('guardian_id') }}</strong>
-                                </span>
-                            @endif
+                                </select>   
+                                @if ($errors->has('guardian_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('guardian_id') }}</strong>
+                                    </span>
+                                @endif
+                             </div>
                         </div>  
-						<div class="row">
-                            <div class="form-group col-md-12">
-                                <input class="form-control btn btn-primary" type="submit" name="submit" value="Save">
-                            </div>
-                        </div>
-					</form>
-                    <!-- /. close of form -->
-				</div>
-			</div>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <button type="submit" name="submit" class="btn btn-primary">Admit Student</button> 
+                        @can('view-student')
+                          &nbsp;
+                          <a href="{{route('users.students')}}" class="btn btn-default">Cancel</a>
+                        @endcan
+                    </div>
+                </form>
+            </div>
 			<!-- /. close of panel div -->
 		</div>
 	</div>
@@ -412,7 +478,7 @@
         $(".guardians").select2();
 
         //Date picker
-        $('#datepicker').datepicker({
+        $('.datepicker').datepicker({
           autoclose: true
         });
 

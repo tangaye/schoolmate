@@ -65,38 +65,38 @@
          		<div class="panel-body">
 
          			<div class="row">
-         				<div class="form-group col-md-6">
-         					<div class="input-group">
-         						<span class="input-group-addon">Students</span>
-	                        	<select id="student" class="search-fields form-control" name="student_id" style="width: 100%">
-	                        		<option value="" selected="">Select Student(s)</option>
-	                        		@foreach($guardians as $guardian)
-				                  		@foreach($guardian->student as $student)
-						                	<option value="{{$student->id}}">{{$student->first_name}} {{$student->surname}}</option>
-						                @endforeach
-					                @endforeach
-	                        	</select>
-         					</div>
-         				</div>
+         				<div class="form-group col-md-4">
+         					<label class="control-label">Academic Years</label>
+		                  	<select name="academic_id" class="form-control" id="academic">
+			                    <option selected="true" value="">Select Academic Year</option>
+			                    @foreach($academics as $academic)
+			                      <option value="{{$academic->id}}">{{$academic->year_start}}/{{$academic->year_end}}</option>
+			                    @endforeach
+			                </select>
+		                </div>
+		                    
+		                <div class="form-group col-md-4">
+		                  	<label class="control-label">Students</label>
+		                  	<select class="form-control search-fields" disabled="" name="student_id" id="student" style="width: 100%;">
+		                  	</select>
+		                </div>
 
-         				<div class="form-group col-md-6">
-         					<div class="input-group">
-         						<span class="input-group-addon">Semesters</span>
-		                  		<select class="search-fields form-control" name="semester_id" class="form-control" id="semester">
-	                      			@foreach($semesters as $semester)
-			                  			<option value="{{$semester->id}}">{{$semester->name}}</option>
-			                  		@endforeach
-		         				</select>
-         					</div>
-         				</div>
+		                <div class="form-group col-md-4">
+			                <label class="control-label">Semesters</label>
+			                <select name="semester_id" disabled="" class="form-control search-fields" id="semester">
+			                    @foreach($semesters as $semester)
+			                    <option value="{{$semester->id}}">{{$semester->name}}</option>
+			                  @endforeach
+			                </select>
+		                </div>
          			</div>
          			
 	         		<div id="result"></div>
-	         		<div>
-	                	<button class="btn btn-primary print-btn" onclick="printReport('result')">
-	                 		<i class="fa fa-print"></i> Print
-	                	</button>
-	              	</div>
+	         		<div class="hidden print-div">
+              	<button class="btn btn-primary print-btn">
+               		<i class="fa fa-print"></i> Print
+              	</button>
+            	</div>
 	         	</div>
          	</div>
 	    </div>
@@ -106,56 +106,5 @@
 
 @section('page-scripts')
 	<script src="{{ asset ("/bower_components/AdminLTE/plugins/select2/select2.full.min.js") }}"></script>
-	<script type="text/javascript">
-
-		$(document).ready(function() {
-
-			
-			$("#student").select2();
-
-			$(document).on('click', '.print-btn', function(event) {
-		        event.preventDefault();
-		        /* Act on the event */
-		        printReport('result');
-		      });
-
-			$.ajaxSetup({
-			    headers: {
-			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			    }
-			});
-
-			$('.search-fields').on('change', function(event) {
-		      	event.preventDefault();
-
-		      	$(document).ajaxStart(function() {
-                	$(".overlay").css("display", "block");
-              	});
-
-              	$(document).ajaxStop(function() {
-                	$(".overlay").css("display", "none");
-              	});
-
-		      	/* Act on the event */
-		        var student = $('#student').val();
-		        var semester = $('#semester').val();
-
-		        if (student != '' && semester != '') {
-		          $.ajax({
-		          	url:"/guardian/students/semester",
-		            method:"POST",
-		           	data:{"student_id":student, "semester_id":semester},
-		           	success:function(data){
-		            	$("#result").html(data);
-		           	}
-		          });
-		        } else {
-		          $("#result").html('');
-
-		        }   
-
-		    });
-		});
-
-	</script>
+	<script type="text/javascript" src="{{asset("/js/scores/guardian/semester.js")}}"></script>
 @endsection

@@ -139,6 +139,9 @@ class GradesController extends Controller
         }
     }
 
+    /*
+    * This function queries out subjects that are assigned to a grade
+    */
     public function gradeSubjects($id)
     {
         $grade = Grade::findOrfail($id);

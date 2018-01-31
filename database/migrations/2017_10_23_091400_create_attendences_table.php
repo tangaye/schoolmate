@@ -21,9 +21,10 @@ class CreateAttendencesTable extends Migration
             $table->date('date');
             $table->string('status');
             $table->string('remarks')->nullable();
+            $table->unsignedInteger('academic_id');
             $table->timestamps();
 
-            $table->unique(array('student_id', 'subject_id', 'grade_id', 'date'));
+            $table->unique(array('student_id', 'subject_id', 'date', 'academic_id'));
 
             $table->foreign('student_id')
               ->references('id')
@@ -40,6 +41,12 @@ class CreateAttendencesTable extends Migration
             $table->foreign('subject_id')
               ->references('id')
               ->on('subjects')
+              ->onDelete('restrict')
+              ->onUpdate('cascade');
+
+            $table->foreign('academic_id')
+              ->references('id')
+              ->on('academics')
               ->onDelete('restrict')
               ->onUpdate('cascade');
         });
