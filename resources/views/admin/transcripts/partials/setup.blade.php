@@ -1,7 +1,7 @@
 
 <div class="col-md-12">
 	<div class="well">
-		<form method="post" class="" id="transcript-form">
+		<form id="transcript_form">
 
 			{{csrf_field()}}
 
@@ -52,7 +52,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<button class="btn btn-success generate-transcript" disabled="true">
+					<button class="btn btn-success generate_transcript" disabled="true">
 						<i class="glyphicon glyphicon-send"></i> 
 						Generate Transcript
 					</button>

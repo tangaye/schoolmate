@@ -70,27 +70,26 @@ $(document).ready(function($) {
 		event.preventDefault();
 		/* Act on the event */
 		if($("input[class='grade-checkbox']:checked").length > 0 && $("input[class='grade-checkbox']:checked").length <= limit) {
-            $(".generate-transcript").removeAttr('disabled');
+            $(".generate_transcript").removeAttr('disabled');
         } else if ($("input[class='grade-checkbox']:checked").length > limit) {
         	this.checked = false;
         }
         else {
-        	$(".generate-transcript").attr('disabled', 'true');
+        	$(".generate_transcript").attr('disabled', 'true');
         	$("#transcript").html("");
         	$(".print-div").addClass('hidden');
         }
 	});
 
-	$(document).on('click', '.generate-transcript', function(event) {
+	$(document).on('click', '.generate_transcript', function(event) {
 		event.preventDefault();
 		/* Act on the event */
-
-		var student_id = $(".student").val();
+		
 
 		$.ajax({
 			url: '/transcripts/generate',
 			method: 'POST',
-			data: $("#transcript-form" ).serialize(),
+			data: $("#transcript_form" ).serialize(),
 		})
 		.done(function(data) {
 			if (data.none) {
@@ -105,7 +104,7 @@ $(document).ready(function($) {
 		})
 		.fail(function(data) {
 			$("#message").html("An error occur! Try again, if problem persists contact administrator.");
-			$("#result").html("");
+			$("#result").html(data);
 		});
 	});
 
