@@ -84,7 +84,7 @@ $(document).ready(function($) {
 	$(document).on('click', '.generate_transcript', function(event) {
 		event.preventDefault();
 		/* Act on the event */
-		
+
 
 		$.ajax({
 			url: '/transcripts/generate',
@@ -104,6 +104,7 @@ $(document).ready(function($) {
 		})
 		.fail(function(data) {
 			$("#message").html("An error occur! Try again, if problem persists contact administrator.");
+			console.log(data);
 			$("#result").html(data);
 		});
 	});
