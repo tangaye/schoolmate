@@ -1,9 +1,22 @@
 $(document).ready(function() {
 
+
+  $(document).ajaxStart(function() {
+    $(".overlay").css("display", "block");
+  });
+
+  $(document).ajaxStop(function() {
+    $(".overlay").css("display", "none");
+  });
+
+  //Initialize Select2 Elements
+  $("#student").select2();
+
   $(document).on('click', '.print-btn', function(event) {
     event.preventDefault();
     /* Act on the event */
-    printReport('result');
+    var title = $('.title').val();
+    printReport('result', title);
   });
 
 	$.ajaxSetup({
@@ -11,80 +24,86 @@ $(document).ready(function() {
 	        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 	    }
 	});
-	
-	$("#code").keyup(function(event){
-		event.preventDefault();
 
-        var code = $('#code').val();
-        var term = $('#term').val();
+  $('#academic').on('change', function(event) {
+    event.preventDefault();
+    /* Act on the event */
 
-        if (code != '' && code.length === 4) {
+    var academic_id = $('#academic').val();
 
-          $(document).ajaxStart(function() {
-            $(".overlay").css("display", "block");
-          });
+    if (academic_id != "") {
 
-          $(document).ajaxStop(function() {
-            $(".overlay").css("display", "none");
-          });
-
-          $.ajax({
-          	url:"/scores/report/terms",
-            method:"POST",
-           	data:{"student_code":code, "term_id":term},
-            success:function(data){
-              if (data.none) {
-                $("#result").html(data.none);
-              } else {
-                $("#result").html(data);
-              }
-            },
-            error:function() {
-              $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
-            }
-          });
+      $.ajax({
+        url: '/scores/academic-students/'+academic_id,
+        type: 'GET',
+        dataType: 'JSON',
+      })
+      .done(function(data) {
+        if (data.none) {
+          $('#student').attr('disabled', 'disabled');
+          $('select[name="student_id"]').empty();
+          $('#term').attr('disabled', 'disabled');
+          $("#result").html(data.none);
         } else {
+
+          $("#student").removeAttr('disabled');
+          $("#term").removeAttr('disabled');
           $("#result").html('');
 
-        }   
-    });  
 
-	$('#term').on('change', function(event) {
-      	event.preventDefault();
-
-      	/* Act on the event */
-        var code = $('#code').val();
-        var term = $('#term').val();
-
-        if (code != '' && code.length === 4) {
-
-          $(document).ajaxStart(function() {
-            $(".overlay").css("display", "block");
+          $('select[name="student_id"]').empty();
+          $('select[name="student_id"]').append('<option value="">Select Students</option>');
+          $.each(data, function(key, value) {
+              $('select[name="student_id"]').append('<option value="'+ value.id +'">'+'('+value.code+')'+ value.first_name+' '+value.middle_name+' '+value.surname+'</option>');
           });
+        }
+      })
+      .fail(function() {
+        $("#result").html("An error occur! Please try again, and if problem persists contact administrator.");
+      });
+      
+    } else {
 
-          $(document).ajaxStop(function() {
-            $(".overlay").css("display", "none");
-          });
+      // empty students list
+      $('select[name="student_id"]').empty();
+      $('select[name="student_id"]').append('<option value="">Select Students</option>');
+      $('#student').attr('disabled', 'disabled');
+      $("#result").html('');
+      $(".print-div").addClass('hidden');
+    }
+  });
 
-          $.ajax({
-          	url:"/scores/report/terms",
-            method:"POST",
-           	data:{"student_code":code, "term_id":term},
-            success:function(data){
-              if (data.none) {
-                $("#result").html(data.none);
-              } else {
-                $("#result").html(data);
-              }
-            },
-            error:function() {
-              $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
-            }
-          });
+
+  $('.search_fields').on('change', function(event) {
+    event.preventDefault();
+    /* Act on the event */
+
+    var student_id = $('#student').val();
+    var academic_id = $('#academic').val();
+    var term_id = $('#term').val();
+
+    if (student_id != "" && academic_id != "" && term_id != "") {
+
+      $.ajax({
+        url: '/scores/report/terms',
+        type: 'POST',
+        data:{"student_id":student_id, "term_id":term_id, "academic_id":academic_id},
+      })
+      .done(function(data) {
+        if (data.none) {
+          $("#result").html(data.none);
+          $(".print-div").addClass('hidden');
         } else {
-          $("#result").html('');
-
-        }   
-
+          $("#result").html(data);
+          $(".print-div").removeClass('hidden');
+        }
+      })
+      .fail(function() {
+        $('#result').html('There was an error. Please try again, if problem persits please contact adminstrator');
+      });
+    } else {
+      $("#result").html('To view report please make sure you have the academic year, student and term selected.');
+      $(".print-div").addClass('hidden');
+    }
   });
 });

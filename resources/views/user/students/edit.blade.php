@@ -31,37 +31,49 @@
   </li>
 
   <!-- guardians -->
-  <li class="treeview">
-    <a href="#"><i class="fa fa-user"></i> <span>Guardians</span>
-      <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-      </span>
-    </a>
-    <ul class="treeview-menu">
-      <li><a href="/users/guardians"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
-      <li><a href="/users/guardians/create"><i class="fa fa-pencil"></i>New Guardian</a></li>
-    </ul>
-  </li>
+  @if($user->canAccessGuardians())
+    <li class="treeview">
+      <a href="#"><i class="fa fa-user"></i> <span>Guardians</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu">
+        @can('view-guardian')
+          <li><a href="{{route('users.guardians')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
+        @endcan
+        @can('create-guardian')
+          <li><a href="{{route('users.guardians.create')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
+        @endcan
+      </ul>
+    </li>
+  @endif
 
   <!-- student -->
-  <li class="treeview active">
-    <a href="#">
-      <i class="fa fa-users"></i><span>Students</span>
-      <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-      </span>
-    </a>
-    <ul class="treeview-menu">
-      <li class="active"><a href="/users/students"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
-      <li><a href="/users/students/create"><i class="fa fa-pencil"></i>Student Admission</a></li>
-    </ul>
-  </li>
+  @if($user->canAccessStudents())
+    <li class="treeview active">
+      <a href="#">
+        <i class="fa fa-users"></i><span>Students</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu">
+        @can('view-student')
+          <li class="active"><a href="{{route('users.students')}}"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
+        @endcan
+        @can('create-student')
+          <li><a href="{{route('users.students.create')}}"><i class="fa fa-pencil"></i>Student Admission</a></li>
+        @endcan
+      </ul>
+    </li>
+  @endif
 
-  <!-- score -->
-<li class="">
-    <a href="/users/scores"><i class="glyphicon glyphicon-list-alt"></i> <span>Score Tables</span>
-    </a>
-  </li>
+  @if($user->canAccessScores())
+    <li class="">
+      <a href="{{route('users.scores')}}"><i class="glyphicon glyphicon-list-alt"></i> <span>Score Tables</span></a>
+    </li>
+  @endif
 </ul>
 @endsection
 
@@ -69,122 +81,147 @@
 @section('content')
 
 	<div class="row">
+
         <div class="col-md-3">
+          <!-- Profile Image -->
+          <div class="box box-primary">
+              <div class="box-body box-profile">
+                  @if($student->photo)
+                      <img src="{{ asset("images/".$student->photo) }}" class="profile-user-img img-responsive img-circle" alt="User profile picture"/>
+                  @else
+                      <img src="{{ asset("images/default.png") }}" class="profile-user-img img-responsive img-circle" alt="User profile picture"/>
+                  @endif
 
-            <!-- Profile Image -->
-            <div class="box box-primary">
-                <div class="box-body box-profile">
-                    @if($student->photo)
-                        <img src="{{ asset("images/".$student->photo) }}" class="profile-user-img img-responsive img-circle" alt="User profile picture"/>
-                    @else
-                        <img src="{{ asset("images/default.png") }}" class="profile-user-img img-responsive img-circle" alt="User profile picture"/>
-                    @endif
+                  <h3 class="profile-username text-center">{{$student->full_name}}</h3>
 
-                    <h3 class="profile-username text-center">{{$student->first_name}} {{$student->middle_name}} {{$student->surname}}</h3>
+                  
+                  <ul class="list-group list-group-unbordered">
+                      <li class="list-group-item">
+                        <b>Age</b> <a class="pull-right">{{$student->age()}}</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>Date Of Birth</b> <a class="pull-right">{{$student->date_of_birth->toFormattedDateString()}}</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>Code</b> <a class="pull-right">{{$student->student_code}}</a>
+                      </li>
+                  </ul>
+              </div>
+              <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
 
-                    <p class="text-muted text-center">{{$student->grade->name}}</p>
+          <!-- About Me Box -->
+          <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">Enrollment Details</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body">
+                @if($student->enrollments->where('academic_id', $current_academic->id)->count() > 0)
+                  @foreach($student->enrollments->where('academic_id', $current_academic->id) as $enrollment)
 
-                    <ul class="list-group list-group-unbordered">
-                        <li class="list-group-item">
-                          <b>Age</b> <a class="pull-right">{{$student->age()}}</a>
-                        </li>
-                        <li class="list-group-item">
-                          <b>Date Of Birth</b> <a class="pull-right">{{$student->date_of_birth->toFormattedDateString()}}</a>
-                        </li>
-                        <li class="list-group-item">
-                          <b>Code</b> <a class="pull-right">{{$student->student_code}}</a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
+                    <strong>Status</strong>
 
-            <!-- About Me Box -->
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">About Me</h3>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                  <strong><i class="fa fa-book margin-r-5"></i> Last School Attended</strong>
+                    <p class="text-muted">
+                      @if($enrollment->enrollment_status == "Enrolled")
+                        <span class="label label-success">{{$enrollment->enrollment_status}}</span>
+                      @elseif($enrollment->enrollment_status == "Pending")
+                        <span class="label label-info">{{$enrollment->enrollment_status}}</span>
+                      @elseif($enrollment->enrollment_status == "Expelled")
+                        <span class="label label-danger">{{$enrollment->enrollment_status}}</span>
+                      @elseif($enrollment->enrollment_status == "Suspended")
+                        <span class="label label-warning">{{$enrollment->enrollment_status}}</span>
+                      @elseif($enrollment->enrollment_status == "Dropped")
+                        <span class="label label-default">{{$enrollment->enrollment_status}}</span>
+                      @endif
+                    </p>
 
-                  <p class="text-muted">
-                    {{$student->last_school}}
-                  </p>
+                    <hr style="margin-top: 0px; margin-bottom: 0px;">
 
-                  <hr>
+                    <strong> Last Grade</strong>
 
-                  <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+                    <p class="text-muted">{{$enrollment->past_grade->name}}</p>
 
-                  <p class="text-muted">{{$student->address}}</p>
+                    <hr style="margin-top: 0px; margin-bottom: 0px;">
 
-                  <hr>
+                    <strong>Current Grade</strong>
 
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
+                    <p class="text-muted">{{$enrollment->present_grade->name}}</p>
 
-            <!-- Widget: Student guardian -->
-              <div class="box box-widget widget-user-2">
-                <!-- Add the bg color to the header using any of the bg-* classes -->
-                @if($student->guardian)
-                    <div class="widget-user-header bg-yellow">
-                      <h3><a style="color: white;" href="/users/guardians/edit/{{$student->guardian->id}}">{{$student->guardian->first_name}} {{$student->guardian->surname}}</a></h3>
-                      <h5>{{$student->guardian->relationship}}</h5>
-                    </div>
-                    <div class="box-footer no-padding">
-                      <ul class="nav nav-stacked">
-                        <li>
-                            <a href="javascript:void(0)">Phone
-                                <span class="pull-right badge bg-blue">
-                                    {{$student->guardian->phone}}
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)">Address 
-                                <span class="pull-right badge bg-aqua">
-                                    {{$student->guardian->address}}
-                                </span>
-                            </a>
-                        </li>
-                      </ul>
-                    </div>
+                    <hr style="margin-top: 0px; margin-bottom: 0px;">
+
+                    <strong>Student Type</strong>
+
+                    <p class="text-muted">{{$enrollment->student_type}}</p>
+                  @endforeach
+                @else
+                  <p>Student is not enrolled for the current academic year.<p>
                 @endif
               </div>
-              <!-- /.widget-user -->
+              <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+          <!-- Widget: Student guardian -->
+          <div class="box box-widget widget-user-2">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            @if($student->guardian)
+              <div class="widget-user-header bg-yellow">
+                <h3>
+                  @can('view-guardian')
+                    <a style="color: white;" href="/users/guardians/edit/{{$student->guardian->id}}">{{$student->guardian->first_name}} {{$student->guardian->surname}}</a>
+                  @else
+                    <a style="color: white;" href="javascript:void(0)">{{$student->guardian->first_name}} {{$student->guardian->surname}}</a>
+                  @endcan
+                </h3>
+                <h5>{{$student->guardian->relationship}}</h5>
+              </div>
+              <div class="box-footer no-padding">
+                <ul class="nav nav-stacked">
+                  <li>
+                      <a href="javascript:void(0)">Phone
+                          <span class="pull-right badge bg-blue">
+                              {{$student->guardian->phone}}
+                          </span>
+                      </a>
+                  </li>
+                  <li>
+                      <a href="javascript:void(0)">Address 
+                          <span class="pull-right badge bg-aqua">
+                              {{$student->guardian->address}}
+                          </span>
+                      </a>
+                  </li>
+                </ul>
+              </div>
+            @endif
+          </div>
+          <!-- /.widget-user -->
         </div>
+
 		<div class="col-md-9">
 
 			<div class="panel panel-default">
 				<!-- Default panel contents -->
 				<div class="panel-heading">
-					<div class="container-fluid">
-						<span class="panel-title">Edit Student</span>
-						<!-- button that triggers modal -->
-						<a role="button" class="pull-right" href="" onclick="history.back()" title="students table">
-							<span class="badge label-primary"><i class="glyphicon glyphicon-arrow-left"></i> </span>
-						</a>
-					</div>
-					
+					<span class="panel-title">Edit Student</span>
 				</div>
-				<div class="panel-body">
-					<form method="POST" action="/students/update/{{$student->id}}" enctype="multipart/form-data">
+                <form  method="POST" action="/users/students/update/{{$student->id}}" enctype="multipart/form-data">
+                    <div class="panel-body">
 
-						{{csrf_field()}}
+                        {{csrf_field()}}
 
                         {{-- this is required for every update request --}}                       
                         <input type="hidden" name="_method" value="PUT" />
                        
-                    	<!-- personal information -->  
-                    	<div class="form-group">
-                    		<p>
-                                <b>PERSONAL INFOMATION:</b>
-                                <hr>
-                            </p>
-                    	</div>
+                        <!-- personal information -->  
+                        <div class="form-group">
+                            <p>
+                            <b>PERSONAL INFOMATION:</b>
+                            <hr>
+                          </p>
+                        </div>
 
                         <div class="row">
                             <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }} col-sm-4">
@@ -226,7 +263,7 @@
 
                                 @if ($errors->has('surname'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('first_name') }}</strong>
+                                        <strong>{{ $errors->first('surname') }}</strong>
                                     </span>
                                 @endif
                             </div>                                      
@@ -234,12 +271,12 @@
 
                         <div class="row">
                             <div class="form-group{{ $errors->has('date_of_birth') ? ' has-error' : '' }} col-sm-6">
-                                <label for="datepicker" class="control-label">Date of Birth</label>
+                                <label class="control-label">Date of Birth</label>
                                 <div class="input-group date">
                                     <span class="input-group-addon">
                                         <i class="fa fa-calendar-plus-o"></i>
                                     </span>
-                                    <input class="form-control" id="datepicker" name="date_of_birth" required="required" value="{{$student->date_of_birth->format('m/d/Y')}}">
+                                    <input class="form-control datepicker" name="date_of_birth" required="required" value="{{$student->date_of_birth->format('m/d/Y')}}">
                                 </div>
 
                                 @if ($errors->has('date_of_birth'))
@@ -252,7 +289,7 @@
                                 <label for="" class="control-label">Gender</label>
                                 <select name="gender" class="form-control" required="">
                                     @foreach($genders as $gender)
-                                        <option value="{{$student->gender}}" {{$student->gender === $gender ? 'selected' : ''}}>Female</option>
+                                        <option value="{{$gender}}" {{$student->gender === $gender ? 'selected' : ''}}>{{$gender}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -293,14 +330,6 @@
                             @endif
                         </div>
 
-                        <!-- contact information -->
-                        <div class="form-group">
-                            <p>
-                                <b>CONTACT DETAILS:</b>
-                                <hr>
-                            </p>
-                        </div>
-
                         <div class="row">
                             <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }} col-sm-12 col-md-12 col-xs-12">
                                 <label for="address" class="control-label">Address</label>
@@ -320,12 +349,12 @@
 
                         <div class="row">
                             <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }} col-sm-6">
-                                <label for="phone" class="control-label">Phone</label>
+                                <label class="control-label">Phone</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="fa fa-phone"></i>
                                     </span>
-                                    <input id="phone" type="" name="phone" class="form-control" data-inputmask='"mask": "(9999) 999-999"' value="{{$student->phone}}" phone-mask>
+                                    <input type="" name="phone" class="form-control" data-inputmask='"mask": "(9999) 999-999"' value="{{$student->phone}}" phone-mask>
                                 </div>
                                 @if ($errors->has('phone'))
                                     <span class="help-block">
@@ -345,6 +374,74 @@
                             </div>
                         </div>
 
+                        <!-- family information -->
+                        <div class="form-group">
+                          <p>
+                            <b>PARENTS INFORMATION</b>
+                            <hr>
+                          </p>                            
+                        </div>
+
+                        <div class="row">
+                          <div class="form-group{{ $errors->has('father_name') ? ' has-error' : '' }} col-sm-4">
+                            <label for="" class="control-label">Father Name</label>
+                            <input class="form-control" name="father_name" required="required" type="text" maxlength="255" value="{{$student->father_name}}">
+                              @if ($errors->has('father_name'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('father_name') }}</strong>
+                                  </span>
+                              @endif                   
+                          </div>
+                          <div class="form-group{{ $errors->has('father_address') ? ' has-error' : '' }} col-sm-4">
+                            <label for="" class="control-label">Father Address</label>
+                            <input class="form-control" name="father_address" required="required" type="text" maxlength="255" value="{{$student->father_address }}">
+                              @if ($errors->has('father_address'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('father_address') }}</strong>
+                                  </span>
+                              @endif                   
+                          </div>
+                          <div class="form-group{{ $errors->has('father_number') ? ' has-error' : '' }} col-sm-4">
+                            <label for="" class="control-label">Father Contact #</label>
+                            <input class="form-control" name="father_number" required="required" type="text" data-inputmask='"mask": "(9999) 999-999"' value="{{$student->father_number }}" phone-mask>
+                              @if ($errors->has('father_number'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('father_number') }}</strong>
+                                  </span>
+                              @endif                   
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="form-group{{ $errors->has('mother_name') ? ' has-error' : '' }} col-sm-4">
+                            <label for="" class="control-label">Mother Name</label>
+                            <input class="form-control" name="mother_name" required="required" type="text" maxlength="255" value="{{$student->mother_name}}">
+                              @if ($errors->has('mother_name'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('mother_name') }}</strong>
+                                  </span>
+                              @endif                   
+                          </div>
+                          <div class="form-group{{ $errors->has('mother_address') ? ' has-error' : '' }} col-sm-4">
+                            <label for="" class="control-label">Mother Address</label>
+                            <input class="form-control" name="mother_address" required="required" type="text" maxlength="255" value="{{$student->mother_address }}">
+                              @if ($errors->has('mother_address'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('mother_address') }}</strong>
+                                  </span>
+                              @endif                   
+                          </div>
+                          <div class="form-group{{ $errors->has('mother_number') ? ' has-error' : '' }} col-sm-4">
+                            <label for="" class="control-label">Mother Contact #</label>
+                            <input class="form-control" name="mother_number" required="required" type="text" data-inputmask='"mask": "(9999) 999-999"' value="{{$student->mother_number }}" phone-mask>
+                              @if ($errors->has('mother_number'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('mother_number') }}</strong>
+                                  </span>
+                              @endif                   
+                          </div>
+                        </div>
+
                         <!-- previous qualification section -->
                         <div class="form-group">
                             <p>
@@ -360,7 +457,7 @@
                                     <span class="input-group-addon">
                                         <i class="fa fa-institution"></i>
                                     </span>
-                                    <input id="last_school" class="form-control" name="last_school" id="last_school" type="text" maxlength="100" value="{{$student->last_school}}">
+                                    <input id="last_school" class="form-control" name="last_school" id="last_school" type="text" maxlength="255" value="{{$student->last_school}}">
                                 </div>
 
                                 @if ($errors->has('last_school'))
@@ -369,66 +466,52 @@
                                     </span>
                                 @endif
                             </div>
+                            <div class="form-group{{ $errors->has('last_school_address') ? ' has-error' : '' }} col-sm-6">
+                              <label class="control-label">Last School Address</label>
+                              <input class="form-control" name="last_school_address" id="last_school_address" type="text" maxlength="255" value="{{$student->last_school_address}}">
 
-                            <div class="form-group{{ $errors->has('last_grade') ? ' has-error' : '' }} col-sm-6">
-                                <label for="last_grade" class="control-label">Last class</label>
-                                <select name="last_grade" id="last_grade" class="form-control" required="">
-                                    @foreach($grades as $grade)
-                                        <option value="{{$grade->id}}" {{$student->last_grade === $grade->id ? 'selected' : ''}}>{{$grade->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>  
-                            @if ($errors->has('last_grade'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('last_grade') }}</strong>
-                                </span>
-                            @endif
+                                @if ($errors->has('last_school_address'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('last_school_address') }}</strong>
+                                    </span>
+                                @endif
+                            </div>                   
                         </div>
 
-                        <!-- school information -->
+                        <div class="row">
+                          <div class="form-group{{ $errors->has('principal_name') ? ' has-error' : '' }} col-sm-6">
+                            <label class="control-label">Principal Name</label>
+                            <input  class="form-control" name="principal_name" id="principal_name" type="text" maxlength="255" required="" value="{{$student->principal_name}}">
+
+                              @if ($errors->has('principal_name'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('principal_name') }}</strong>
+                                  </span>
+                              @endif
+                          </div>
+
+                          <div class="form-group{{ $errors->has('principal_number') ? ' has-error' : '' }} col-sm-6">
+                            <label class="control-label">Principal Contact #</label>
+                            <input class="form-control" name="principal_number" id="principal_number" data-inputmask='"mask": "(9999) 999-999"' phone-mask value="{{$student->principal_number}}">
+
+                              @if ($errors->has('principal_number'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('principal_number') }}</strong>
+                                  </span>
+                              @endif
+                          </div>
+                        </div>
+
                         <div class="form-group">
-                            <p>
-                                <b>School Information</b>
-                                <hr>
-                            </p>                                
+                          <p>
+                            <b></b>
+                            <hr>
+                          </p>                                
                         </div>
 
-                        <div class="row">
-                            <div class="form-group{{ $errors->has('student_type') ? ' has-error' : '' }} col-sm-6">
-                                <label id="type" class="control-label">Student Type</label>
-                                <select name="student_type" id="type" required="required" class="form-control">
-                                    @foreach($types as $type)
-                                        <option value="{{$type}}" {{$student->student_type == $type ? 'selected' : ''}}>{{$type}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            @if ($errors->has('student_type'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('student_type') }}</strong>
-                                </span>
-                            @endif
-                            <div class="form-group{{ $errors->has('grade_id') ? ' has-error' : '' }} col-sm-6">
-                                <label id="grade" class="control-label">Class</label>
-                                <select name="grade_id" id="grade" class="form-control" required="">
-                                    @foreach($grades as $grade)
-                                        <option value="{{$grade->id}}" {{$student->grade_id === $grade->id ? 'selected' : ''}}>{{$grade->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            @if ($errors->has('grade_id'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('grade_id') }}</strong>
-                                </span>
-                            @endif
-                        </div>  
-
-                        <!-- student photo -->
-
                         <!-- student photo -->
                         <div class="row">
-                            <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }} photoWarning col-md-12">
+                            <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }} photoWarning col-md-6">
                                 <label class="control-label">Update Student Photo</label>
                                 <input type="file" class="form-control photo" name="photo">
 
@@ -442,17 +525,24 @@
                                     <strong class="photoWarningMsg"></strong>
                                 </span>
                             </div>
+
+                            <div class="form-group{{ $errors->has('admission_date') ? ' has-error' : '' }} col-md-6">
+                              <label class="control-label">Admission Date</label>
+                              <div class="input-group date">
+                                <span class="input-group-addon">
+                                  <i class="fa fa-calendar-plus-o"></i>
+                                </span>
+                                <input class="form-control datepicker" name="admission_date" required="required" value="{{$student->admission_date->format('m/d/Y')}}">
+                              </div>
+
+                                @if ($errors->has('admission_date'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('admission_date') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                         </div>
-
-
-
-                        <!-- school information -->
-                        <div class="form-group">
-                            <p>
-                                <b>Student Guardian</b>
-                                <hr>
-                            </p>                                
-                        </div>
+                        
                         <div class="row">
                             <div class="form-group{{ $errors->has('guardian_id') ? ' has-error' : '' }} col-sm-12">
                                 <label id="guardian" class="control-label">Guardian</label>
@@ -469,17 +559,18 @@
                                     <strong>{{ $errors->first('guardian_id') }}</strong>
                                 </span>
                             @endif
-                        </div>  
-						
+                        </div>                      
+                    </div> 
+                    <div class="panel-footer text-right">
                         @can('update-student')
-                          <div class="row">
-                              <div class="form-group col-sm-12">
-                                  <input type="submit" name="update" class="btn btn-info form-control" value="Update">
-                              </div>
-                          </div>
+                          <button type="submit" name="update" class="btn btn-success">Update</button>
                         @endcan
-					</form>
-				</div>
+                        @can('view-student')
+                          &nbsp;
+                          <a href="{{route('users.students')}}" class="btn btn-default">Cancel</a>
+                        @endcan
+                    </div>
+                </form>
 			</div>
 			<!-- /. close of panel div -->
 		</div>
@@ -493,8 +584,8 @@
     <script src="{{ asset ("/bower_components/AdminLTE/plugins/input-mask/jquery.inputmask.js") }}"></script>
 
     <script type="text/javascript">
-        //Date picker
-        $('#datepicker').datepicker({
+         //Date picker
+        $('.datepicker').datepicker({
           autoclose: true
         });
 

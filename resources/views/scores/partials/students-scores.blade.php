@@ -1,10 +1,12 @@
-
+<h4 class="text-center print-title"><b>{{$academic}}</b> {{$grade}} <u>{{$subject}}</u> score(s) for {{$term}}</h4> <br>
 <table class="table table-bordered table-condensed table-responsive" id="scores-table">
 	<thead>
-		<th>Code</th>
-		<th>Name</th>
-		<th>Score</th>
-		<th class="actions">Actions</th>
+		<tr>
+			<th>Code</th>
+			<th>Name</th>
+			<th>Score</th>
+			<th class="noExport">Actions</th>
+		</tr>
 	</thead>
 	<tbody>
 		@foreach($students as $student)
@@ -28,7 +30,4 @@
 			</tr>
 		@endforeach
 	</tbody>
-	<tfoot>
-		<td colspan="4" class="text-center">Viewing <strong>{{$grade}} <u>{{$subject}}</u></strong> score(s) for <strong>{{$term}}</strong></td>
-	</tfoot>
 </table>

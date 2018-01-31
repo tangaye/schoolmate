@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Grade;
 
 class DashboardController extends Controller
 {
@@ -17,8 +16,6 @@ class DashboardController extends Controller
      */
     public function index()
     {   
-        $grades = Grade::grades_student_count();
-        //dd($grades);
-        return view('admin.dashboard', compact('grades'));
+        return view('admin.dashboard');
     }
 }

@@ -7,8 +7,8 @@
 @endsection
 
 @section('page-css')
-<!-- Animate css -->
-<link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
+    <!-- Animate css -->
+    <link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page-header', 'New Guardian')
@@ -26,44 +26,57 @@
 @section('sidebar-navigation')
 <!-- Sidebar Menu -->
 <ul class="sidebar-menu">
-  <li class="header">USER NAVIGATION</li>
+    <li class="header">USER NAVIGATION</li>
 
-  <li class="">
-    <a href="{{route('user.dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
-    </a>
-  </li>
+    <li class="">
+        <a href="{{route('user.dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard</span>
+        </a>
+    </li>
 
-  <!-- guardians -->
-  <li class="treeview active">
-    <a href="#"><i class="fa fa-user"></i> <span>Guardians</span>
-      <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-      </span>
-    </a>
-    <ul class="treeview-menu">
-      <li><a href="/users/guardians"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
-      <li class="active"><a href="/users/guardians/create"><i class="fa fa-pencil"></i>New Guardian</a></li>
-    </ul>
-  </li>
+    <!-- guardians -->
+    @if($user->canAccessGuardians())
+        <li class="treeview active">
+          <a href="#"><i class="fa fa-user"></i> <span>Guardians</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            @can('view-guardian')
+              <li><a href="{{route('users.guardians')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
+            @endcan
+            @can('create-guardian')
+              <li class="active"><a href="{{route('users.guardians.create')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
+            @endcan
+          </ul>
+        </li>
+    @endif
 
-  <!-- student -->
-  <li class="treeview">
-    <a href="#">
-      <i class="fa fa-users"></i><span>Students</span>
-      <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-      </span>
-    </a>
-    <ul class="treeview-menu">
-      <li><a href="/users/students"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
-      <li><a href="/users/students/create"><i class="fa fa-pencil"></i>Student Admission</a></li>
-    </ul>
-  </li>
+    <!-- student -->
+    @if($user->canAccessStudents())
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-users"></i><span>Students</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            @can('view-student')
+              <li><a href="{{route('users.students')}}"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
+            @endcan
+            @can('create-student')
+              <li><a href="{{route('users.students.create')}}"><i class="fa fa-pencil"></i>Student Admission</a></li>
+            @endcan
+          </ul>
+        </li>
+    @endif
 
-  <li class="">
-    <a href="/users/scores"><i class="glyphicon glyphicon-list-alt"></i> <span>Score Tables</span>
-    </a>
-  </li>
+    @if($user->canAccessScores())
+        <li class="">
+          <a href="{{route('users.scores')}}"><i class="glyphicon glyphicon-list-alt"></i> <span>Score Tables</span></a>
+        </li>
+    @endif
 </ul>
 @endsection
 
@@ -74,19 +87,13 @@
             <div class="panel panel-default">
                 <!-- Default panel contents -->
                 <div class="panel-heading">
-                  <div class="container-fluid">
                     <span class="panel-title">New Guardian</span>
-                    <!-- button that triggers modal -->
-                    <a role="button" class="pull-right" href="/users/guardians" title="students table">
-                      <span class="badge label-primary"><i class="glyphicon glyphicon-arrow-left"></i> </span>
-                    </a>
-                  </div>
-                  
                 </div>
-                <div class="panel-body">
-                    <form role="form" method="POST" action="/users/guardians">
-                        {{ csrf_field() }}
+                <form role="form" method="POST" action="/users/guardians">
 
+                    {{ csrf_field() }}
+
+                    <div class="panel-body">
                         <div class="row">
                             <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }} col-md-12">
                                 <label for="first_name" class="control-label">First Name</label>
@@ -99,8 +106,6 @@
                                     </span>
                                 @endif
                             </div>
-
-                            
                         </div>
                         <div class="row">
                           <div class="form-group{{ $errors->has('surname') ? ' has-error' : '' }} col-md-12">
@@ -159,8 +164,7 @@
                                 @endif
                             </div>
                         </div>
-
-
+                        
                         <div class="row">
                             <div class="form-group{{ $errors->has('relationship') ? ' has-error' : '' }} col-md-12">
                                 <label class="control-label">Relationship</label>
@@ -227,17 +231,17 @@
                             </div>
 
                         </div>
-                    
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary form-control">Register</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <button type="submit" class="btn btn-primary">Register</button> &nbsp;
+                        @can('view-guardian')
+                            <a href="{{route('users.guardians')}}" class="btn btn-default">Cancel</a>
+                        @endcan
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
 @endsection
 
 

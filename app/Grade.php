@@ -18,16 +18,15 @@ class Grade extends Model
     	return $this->belongsTo(Division::class);
     }
 
-    // relationship between grade and student
-    // a grade may have many students
-    public function student()
+    // relationship between grade and enrollment
+    public function enrollments()
     {
-    	return $this->hasMany(Student::class);
+    	return $this->hasMany(Enrollment::class);
     }
 
     public function score()
     {
-        return $this->hasMany(\Score::class);
+        return $this->hasMany(Score::class);
     }
 
     // a many to many relationship for grades/class and subjects
@@ -36,13 +35,5 @@ class Grade extends Model
         return $this->belongsToMany(Subject::class);
     }
 
-    public static function grades_student_count()
-    {
-        return DB::table('grades')
-            ->join('students', 'grades.id', '=', 'students.grade_id')
-            ->select('grades.name as name', DB::raw('COUNT(students.id) as students'))
-            ->groupBy('grades.name')
-            ->orderBy(DB::raw('COUNT(students.id)'), 'desc')
-            ->get();
-    }
+    
 }

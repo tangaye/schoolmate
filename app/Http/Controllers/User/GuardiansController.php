@@ -4,7 +4,7 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Auth;
 use App\Guardian;
 use App\User;
 use App\Term;
@@ -26,8 +26,8 @@ class GuardiansController extends Controller
     {
         //
         $guardians = Guardian::all();
-
-        return view('user.guardians.home', compact('guardians'));
+        $user = User::findOrFail(Auth::guard('web')->user()->id);
+        return view('user.guardians.home', compact('guardians', 'user'));
         
     }
 
@@ -39,8 +39,8 @@ class GuardiansController extends Controller
     public function create()
     {
         $relationships = Guardian::relationships();
-
-        return view('user.guardians.create', compact('relationships'));
+        $user = User::findOrFail(Auth::guard('web')->user()->id);
+        return view('user.guardians.create', compact('relationships', 'user'));
     }
 
      /**
@@ -56,7 +56,7 @@ class GuardiansController extends Controller
             'surname' => 'required|string|max:200|regex:/^[a-z ,.\'-]+$/i',
             'gender' => 'required|string',
             'relationship' => 'required|string',
-            'address' => 'required|string|max:255|regex:/^[a-z ,.\'-]+$/i',
+            'address' => 'required|string|max:255',
             'phone' => 'required|unique:guardians',
             'user_name' => 'required|string|unique:guardians|max:20',
             'email' => 'sometimes|email|unique:guardians|nullable',
@@ -92,13 +92,11 @@ class GuardiansController extends Controller
     {
         //
         $guardian = Guardian::findOrfail($id);
-
-        //pass guardian with students assigned
-        $guardians = Guardian::with('student')->where('id', $guardian->id)->get();
         $genders = Common::genders();
         $relationships = Guardian::relationships();
-
-        return view('user.guardians.edit', compact('guardian', 'guardians', 'genders', 'relationships'));
+        $user = User::findOrFail(Auth::guard('web')->user()->id);
+        
+        return view('user.guardians.edit', compact('guardian', 'genders', 'relationships', 'user'));
 
         
     }
@@ -118,7 +116,7 @@ class GuardiansController extends Controller
             'surname' => 'required|string|max:200|regex:/^[a-z ,.\'-]+$/i',
             'gender' => 'required|string',
             'relationship' => 'required|string',
-            'address' => 'required|string|max:255|regex:/^[a-z ,.\'-]+$/i',
+            'address' => 'required|string|max:255|',
             'phone' => 'required|unique:guardians,phone,'.$id,
             'user_name' => 'required|string|max:30|unique:guardians,user_name,'.$id,
             'email' => 'sometimes|nullable|email|unique:guardians,email,'.$id

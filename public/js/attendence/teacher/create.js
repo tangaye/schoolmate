@@ -23,11 +23,8 @@ $(document).on('change', '#grade', function(event) {
   var grade = $('#grade').val();
 
   if (grade != "") {
-    $('.grade-div').removeClass('fadeOut animated zoomIn col-md-12').addClass('col-md-4');
-    $('.hidden-div').removeClass('hidden').show().addClass('animated fadeInRight');
-    $("#subject").removeAttr('disabled');
-
-    $.get('/teacher/grade-subjects/'+grade)
+  
+    $.get('/teacher/grade/subjects/'+grade)
     .done(function (data) {
 
       if (data.none) {
@@ -36,6 +33,7 @@ $(document).on('change', '#grade', function(event) {
         $("#subject").attr('disabled','disabled');
 
       } else {
+        $("#subject").removeAttr('disabled');
         $('select[name="subject_id"]').empty();
         $('select[name="subject_id"]').append('<option value="">Select Subjects</option>');
           $.each(data, function(key, value) {
@@ -51,9 +49,8 @@ $(document).on('change', '#grade', function(event) {
 
     $("#result").html('');
   } else {
-    $('.hidden-div').removeClass('fadeInRight').addClass('hidden');
-    $('.grade-div').removeClass('col-md-4').addClass('fadeOut col-md-12 animated zoomIn');
     $("#grade").val("");
+     $('select[name="subject_id"]').empty();
     $("#subject").attr('disabled','disabled');
     $("#result").html('');
   }
@@ -85,10 +82,6 @@ $(document).on('change', '#subject', function(event) {
     });
   }
   else {
-    $('.hidden-div').removeClass('fadeInRight').addClass('hidden');
-    $('.grade-div').removeClass('col-md-4').addClass('fadeOut col-md-12 animated zoomIn');
-    $("#grade").val("");
-    $("#subject").attr('disabled','disabled');
     $("#result").html('');
   }
 });
@@ -118,9 +111,7 @@ $(document).on('click', '.save-attendence', function(event) {
         } else {
           $("#search-form")[0].reset();
           jQuery("#attendence-form").fadeOut('slow');
-
-          $('.hidden-div').removeClass('fadeInRight').addClass('hidden');
-          $('.grade-div').removeClass('col-md-4').addClass('fadeOut col-md-12 animated zoomIn');
+          $("#subject").attr('disabled','disabled');
           notify(data);
         }
     })

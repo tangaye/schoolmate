@@ -26,6 +26,6 @@
 		@endforeach
 	</tbody>
 	<tfoot>
-		<td class="text-center" colspan="3">Showing attendence for: <strong>{{$student}}</strong> on <strong>{{$date->toFormattedDateString()}}</strong> </td>
+		<td class="text-center" colspan="3">Showing attendence recorded for: <strong>{{$student}}</strong> on <strong>{{$date}}</strong> </td>
 	</tfoot>
 </table>

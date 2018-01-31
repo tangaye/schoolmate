@@ -7,11 +7,15 @@
   		color:red !important;
 	}
 
-	footer {
-	   text-align: center;
-	   margin-left: auto;
-	   margin-right: auto;
-	   font-size: 15px;
+	body {
+		margin-top: 0px;
+	    margin-bottom: 0px;
+	    font-size: 15px;
+	}
+
+	@page {
+		margin-top: 0px;
+	    margin-bottom: 0px;
 	}
 }
 

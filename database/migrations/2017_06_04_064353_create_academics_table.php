@@ -15,12 +15,12 @@ class CreateAcademicsTable extends Migration
     {
         Schema::create('academics', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date_start')->unique();
-            $table->date('date_end')->unique();
+            $table->integer('year_start')->unique();
+            $table->integer('year_end')->unique();
             $table->tinyInteger('status');
             $table->timestamps();
-
-            $table->unique(array('date_start', 'date_end'));
+            
+            $table->unique(array('year_start', 'year_end'));
         });
     }
 

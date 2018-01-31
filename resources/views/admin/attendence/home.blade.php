@@ -7,8 +7,7 @@
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/animate/animate.min.css") }}" rel="stylesheet" type="text/css" />
 	<!-- swal alert css -->
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.css") }}" rel="stylesheet" type="text/css" />
-	<!-- datatables -->
-	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css") }}" rel="stylesheet" type="text/css" />
+
 @endsection
 
 @section('user-logout')
@@ -44,7 +43,7 @@
     </ul>
   </li>
 
-  <!-- teachres -->
+  <!-- teachers -->
   <li class="treeview">
     <a href="#"><i class="glyphicon glyphicon-education"></i> <span>Teachers</span>
       <span class="pull-right-container">
@@ -54,10 +53,12 @@
     <ul class="treeview-menu">
       <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
       <li><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
-      <li class=""><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-asterisk"></i>Teacher Grades</a></li>
+      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-align-left""></i>Teacher Grades</a></li>
       <li><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
+      <li><a href="{{route('admin.ponsor.home')}}"><i class="glyphicon glyphicon-knight"></i>Sponsors</a></li>
     </ul>
   </li>
+
 
   <!-- Settings -->
   <li class="treeview">
@@ -86,8 +87,9 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li><a href="/students"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
-      <li><a href="/students/create"><i class="fa fa-pencil"></i>Student Admission</a></li>
+      <li><a href="{{route('students.home')}}"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
+      <li><a href="{{route('students.create')}}"><i class="glyphicon glyphicon-pencil"></i>Student Admission</a></li>
+      <li><a href="{{route('enrollments.home')}}"><i class="glyphicon glyphicon-saved"></i>Student Enrollment</a></li>
     </ul>
   </li>
 
@@ -149,6 +151,11 @@
       <li><a href="{{route('annual-scores')}}"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
+  <!-- transcript -->
+  <li>
+    <a href="{{route('transcripts.home')}}"><i class="fa fa-file-text-o"></i> <span>Student Transcript</span>
+    </a>
+  </li>
 </ul>
 @endsection
 
@@ -178,50 +185,36 @@
           <form>
             <div class="row">
 
-              <div class="form-group col-md-12 grade-div">
-                <label class="control-label">Grades</label>
-                <select class="form-control search" name="grade_id" id="grade">
-                  <option value="" selected="">Select Grade</option>
-                  @foreach($grades as $id => $name)
-                    <option value="{{$id}}">{{$name}}</option>
+              <div class="form-group col-md-3">
+                <label class="control-label">Academic Years</label>
+                <select class="form-control" id="academic_years">
+                  <option selected="" value="">Select Academic Year</option>
+                  @foreach($academics as $academic)
+                      <option value="{{$academic->id}}">{{$academic->year_start}}/{{$academic->year_end}}</option>
                   @endforeach
+                </select>
+              </div>
+
+              <div class="form-group col-md-3">
+                <label class="control-label">Dates</label>
+                <select class="form-control search" disabled="" id="date" name="date">
+                </select>
+              </div>
+
+              <div class="form-group col-md-3">
+                <label class="control-label">Grades</label>
+                <select class="form-control" disabled="" name="grade_id" id="grade">
                 </select>
               </div>
               <!-- ./ grades close -->
 
-              <div class="form-group hidden-subject-div hidden">
+              <div class="form-group col-md-3">
                 <label class="control-label">Subjects</label>
                 <select class="form-control" disabled="" id="subject" name="subject_id">
                   
                 </select>
               </div>
               <!-- ./ grades close -->
-
-              <div class="form-group col-md-3 hidden-dates-div hidden">
-                <label class="control-label">Years</label>
-                <select class="form-control search" disabled="" id="years">
-                  <option selected="" value="">Select Year</option>
-                  @foreach($years as $values)
-                    @foreach($values as $year)
-                      <option>{{$year}}</option>
-                    @endforeach
-                  @endforeach
-                </select>
-              </div>
-
-              <div class="form-group col-md-3 hidden-dates-div hidden">
-                <label class="control-label">Dates</label>
-                <select class="form-control search" disabled="" id="date" name="date">
-                  
-                </select>
-              </div>
-            </div>
-            <div class="row container">
-              <div class="form-group hidden-search-div hidden">
-                <button class="btn btn-primary search-btn" disabled="">
-                  <i class="glyphicon glyphicon-search"></i> Search
-                </button>
-              </div>
             </div>
           </form>
           <div id="result">
@@ -236,9 +229,6 @@
 @section('page-scripts')
 
 	<script src="{{ asset ("/bower_components/AdminLTE/plugins/sweetalert-master/dist/sweetalert.min.js") }}"></script>
-
-	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jquery.dataTables.min.js") }}"></script>
-	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
 
   <script src="{{ asset ("/js/attendence/admin/home.js") }}"></script>
 @endsection

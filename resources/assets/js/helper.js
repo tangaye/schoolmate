@@ -115,14 +115,18 @@ window.big_notify = function(message) {
     });
 }
 
-window.printReport = function(section){
+window.printReport = function(section, title){
     var printContent = document.getElementById(section);
     var WinPrint = window.open();
 
+    WinPrint.document.write('<head>');
     WinPrint.document.write('<link rel="stylesheet" type="text/css" href="/css/app.css">');
     WinPrint.document.write('<link rel="stylesheet" type="text/css" href="/css/media-print.css" media="print">');
+    WinPrint.document.write('<title>'+title+'</title>');
+    WinPrint.document.write('</head>');
+    WinPrint.document.write('<body>');
     WinPrint.document.write(printContent.innerHTML);
-    WinPrint.document.write('<footer>Courtesy of <b>School</b>Mate</footer>');
+    WinPrint.document.write('</body>');
     WinPrint.document.close();
     WinPrint.setTimeout(function(){
       WinPrint.focus();

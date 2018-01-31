@@ -64,51 +64,42 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="panel panel-default">
         <div class="panel-heading">
-            @if($guardian->gender === "Male")
-              <h3> <span>Good day! </span> <strong>Mr. {{$guardian->first_name}} {{$guardian->surname}}</strong></h3>
+            @if($logged_in_guardian->gender === "Male")
+              <h3> <span>Good day! </span> <strong>Mr. {{$logged_in_guardian->full_name}} </strong></h3>
             @else
-              <h3><span>Good day! </span> <strong> Mrs/Ms. {{$guardian->first_name}} {{$guardian->surname}}</strong></h3>
+              <h3><span>Good day! </span> <strong> Mrs/Ms.{{$logged_in_guardian->full_name}}</strong></h3>
             @endif
             
         </div>
 
         <div class="panel-body">
-          <div class="row">
-            @foreach($guardians as $guardian)
-              @foreach($guardian->student as $student)
-                  <div class="col-md-4">
-                    <!-- Widget: user widget style 1 -->
-                    <div class="box box-widget widget-user-2">
-                      <!-- Add the bg color to the header using any of the bg-* classes -->
-                      <div class="widget-user-header bg-aqua-active">
-                        <div class="widget-user-image">
-                          @if($student->photo)
-                              <img src="{{ asset("images/".$student->photo) }}" class="img-circle" alt="Student photo"/>
-                          @else
-                              <img src="{{ asset("images/default.png") }}" class="img-circle" alt="Student photo"/>
-                          @endif
-                        </div>
-                        <!-- /.widget-user-image -->
-                        <h3 class="widget-user-username">{{$student->first_name}} {{$student->surname}}</h3>
-                        <h5 class="widget-user-desc">
-                          {{$student->grade->name}}
-                          <span class="badge bg-green">{{$student->gender}}</span>
-                        </h5>
-                      </div>
-                      <div class="box-footer no-padding">
-                        <ul class="nav nav-stacked">
-                          <li><a href="javascript:void(0)">Age<span class="pull-right badge bg-yellow">{{$student->age()}}</span></a></li>
 
-                          <li><a href="javascript:void(0)">Birth Date <span class="pull-right badge bg-aqua">{{$student->date_of_birth->toFormattedDateString()}}</span></a></li>
-                          <li><a href="javascript:void(0)">Address<span class="pull-right badge bg-red">{{$student->address}}</span></a></li>
-                        </ul>
-                      </div>
-                    </div>
-                    <!-- /.widget-user -->
-                  </div>
-                  <!-- /.col -->
-              @endforeach
-            @endforeach
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="control-label">Academic Years</label>
+                <select class="form-control" id="academic_years">
+                  @if(count($academics) > 0)
+                    <option selected="" value="">Select Academic Year</option>
+                    @foreach($academics as $academic)
+                      @if($academic->status)
+                        <option class="text-danger" selected="" style="font-weight: bold;" value="{{$academic->id}}">
+                          {{$academic->full_year}}
+                          <span>- Current Academic Year</span>
+                        </option>
+                      @else 
+                        <option value="{{$academic->id}}">{{$academic->full_year}}</option>
+                      @endif
+                    @endforeach
+                  @else
+                    <option selected="" value="">Seems like students assigned to you are not enrolled yet.</option>
+                  @endif
+                </select>
+              </div>
+            </div>
+          </div>
+          <div id="result">
+            
           </div>
         </div>
         <div class="panel-footer">
@@ -128,4 +119,64 @@
           welcome(message);
       </script>
   @endif
+
+  <script type="text/javascript">
+
+    $(document).ready(function($) {
+
+      var academic_id = $("#academic_years").val();
+
+      if (academic_id != "") {
+
+        $.ajax({
+          url: '/guardian/students/dashboard/'+academic_id,
+          type: 'GET',
+        })
+        .done(function(data) {
+
+          if (data.none) {
+            $("#result").html(data.none);
+          } else {
+            $("#result").html(data);
+          }
+        })
+        .fail(function() {
+          $("#result").html("An error occur! Please try again, and if problem persists contact administrator.");
+        });
+        
+      } else {
+        $("#result").html('');
+      }
+
+      $(document).on('change', '#academic_years', function(event) {
+        event.preventDefault();
+        /* Act on the event */
+
+        var academic_id = $("#academic_years").val();
+
+        if (academic_id != "") {
+
+          $.ajax({
+            url: '/guardian/students/dashboard/'+academic_id,
+            type: 'GET',
+          })
+          .done(function(data) {
+
+            if (data.none) {
+              $("#result").html(data.none);
+            } else {
+              $("#result").html(data);
+            }
+          })
+          .fail(function() {
+            $("#result").html("An error occur! Please try again, and if problem persists contact administrator.");
+          });
+          
+        } else {
+          $("#result").html('');
+        }
+      });
+    });
+   
+  </script>
 @endsection

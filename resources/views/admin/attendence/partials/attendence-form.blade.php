@@ -29,6 +29,10 @@
 						<input class="date" type="text"  name="rows[{{$student->id}}][date]" value="{{$date}}">
 					</td>
 
+					<td  class="hidden">
+						<input class="date" type="text"  name="rows[{{$student->id}}][academic_id]" value="{{$current_academic->id}}">
+					</td>
+
 					{{-- end of hidden values to be sent--}}
 					<td>
 						<a href="/students/edit/{{$student->id}}" title="View student" data-toggle="tooltip">{{$student->student_code}}</a>
@@ -51,6 +55,22 @@
 			@endforeach
 		</tbody>
 	</table>
-	<button type="submit" class="btn btn-primary save-attendence">Save Attendence</button>
+	<div class="row">
+		<div class="col-md-12">
+
+			<a class="btn btn-default pull-right btn-sm" href="{{route('attendence')}}">
+				Cancel
+			</a>
+
+			<button type="submit" style="margin-right: 5px;" class="btn btn-primary btn-sm save-attendence pull-right">
+			<i class="glyphicon glyphicon-ok-sign"></i>
+			Record Attendence
+			</button>
+
+			
+		</div>
+	
+	</div>
+	
 	
 </form>

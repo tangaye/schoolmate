@@ -28,7 +28,7 @@
   <li>
     <a href="{{route('teacher.manage-scores')}}"><i class="fa fa-pencil"></i> <span>Manage Scores</span></a>
   </li>
-  <li class="active">
+  <li>
     <a href="{{route('teacher.scores-home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Scores Table</span></a>
   </li>
 
@@ -40,8 +40,24 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li ><a href="{{route('teacher-attendence')}}"><i class="glyphicon glyphicon-list-alt"></i>Manage Attendence</a></li>
+      <li ><a href="{{route('teacher-attendence')}}"><i class="glyphicon glyphicon-list-alt"></i>View Attendence</a></li>
       <li class="active"><a href="{{route('teacher-attendence.create')}}"><i class="fa fa-pencil"></i>New Attendence</a></li>      
+    </ul>
+  </li>
+
+  <!-- reports -->
+  <li class="treeview">
+    <a href="#">
+      <i class="fa fa-folder-open-o"></i>
+      <span>Scores Reports</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+    <ul class="treeview-menu">
+      <li><a href="{{route('teacher.term-scores')}}"><i class="fa fa-file-text-o"></i>Term Report</a></li>
+      <li><a href="{{route('teacher.semester-scores')}}"><i class="fa fa-file-text-o"></i>Semester Report</a></li>
+      <li><a href="{{route('teacher.annual-scores')}}"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
 
@@ -55,16 +71,11 @@
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="panel panel-default ol-md-offset-2">
 				<div class="panel-heading">
-					<div class="container-fluid">
-						<span class="panel-title">New Attendence</span>
-
-						<a class="btn btn-primary pull-right btn-sm" onclick="history.back()">
-							<i class="glyphicon glyphicon-arrow-left"></i> Back
-						</a>
-					</div>
+          <span class="panel-title">Record Attendence for <b>{{$date->toFormattedDateString()}}</b></span>
 				</div>
 
 				<div class="panel-body">
+
           @component('components.loader')
           @endcomponent
 
@@ -72,7 +83,7 @@
 
           <div class="row">
             <form id="search-form">
-              <div class="form-group col-md-12 grade-div">
+              <div class="form-group col-md-6">
                 <label class="control-label">Grade</label>
                 <select class="form-control" name="grade_id" id="grade">
                   <option value="" selected="">Select Grade</option>
@@ -81,19 +92,19 @@
                   @endforeach
                 </select>
               </div>
-              <div class="form-group col-md-4 hidden-div hidden">
+              <div class="form-group col-md-6">
                 <label class="control-label">Subject</label>
                 <select class="form-control" disabled="" name="subject_id" id="subject">
                 </select>
               </div>
-              <div class="form-group col-md-4 hidden-div hidden">
+              <div class="form-group hidden">
                 <label class="control-label">Date</label>
-                <input class="form-control" type="" id="date" value="{{$date}}" readonly="" name="date">
+                <input class="form-control" type="" id="date" value="{{$date->toDateString()}}" readonly="" name="date">
               </div>
             </form>
           </div>
+
           <div id="result"></div>
-          <div id="test"></div>
 				</div>
 			</div>
 		</div>	

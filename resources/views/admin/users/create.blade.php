@@ -42,11 +42,11 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="{{route('guardians.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
-      <li><a href="{{route('guardians.form')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
+      <li><a href="{{route('guardians.form')}}"><i class="glyphicon glyphicon-pencil"></i>New Guardian</a></li>
     </ul>
   </li>
 
-  <!-- teacher -->
+  <!-- teachers -->
   <li class="treeview">
     <a href="#"><i class="glyphicon glyphicon-education"></i> <span>Teachers</span>
       <span class="pull-right-container">
@@ -56,10 +56,12 @@
     <ul class="treeview-menu">
       <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
       <li><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
-      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-asterisk"></i>Teacher Grades</a></li>
-        <li><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
+      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-align-left""></i>Teacher Grades</a></li>
+      <li><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
+      <li><a href="{{route('admin.ponsor.home')}}"><i class="glyphicon glyphicon-knight"></i>Sponsors</a></li>
     </ul>
   </li>
+
 
   <!-- Settings -->
   <li class="treeview">
@@ -88,8 +90,9 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li><a href="/students"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
-      <li><a href="/students/create"><i class="fa fa-pencil"></i>Student Admission</a></li>
+      <li><a href="{{route('students.home')}}"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
+      <li><a href="{{route('students.create')}}"><i class="glyphicon glyphicon-pencil"></i>Student Admission</a></li>
+      <li><a href="{{route('enrollments.home')}}"><i class="glyphicon glyphicon-saved"></i>Student Enrollment</a></li>
     </ul>
   </li>
 
@@ -103,7 +106,7 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="{{route('attendence')}}"><i class="glyphicon glyphicon-list-alt"></i>Manage Attendence</a></li>
-      <li><a href="{{route('attendence.create')}}"><i class="fa fa-pencil"></i>New Attendence</a></li>      
+      <li><a href="{{route('attendence.create')}}"><i class="glyphicon glyphicon-pencil"></i>New Attendence</a></li>      
     </ul>
   </li>
 
@@ -117,9 +120,9 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="{{route('users.home')}}"><i class="glyphicon glyphicon-list-alt"></i>User List</a></li>
-      <li class="active"><a href="{{route('users.form')}}"><i class="fa fa-pencil"></i>New User</a></li>
+      <li class="active"><a href="{{route('users.form')}}"><i class="glyphicon glyphicon-pencil"></i>New User</a></li>
       <li><a href="{{route('roles.home')}}"><i class="glyphicon glyphicon-tasks"></i>Roles</a></li>
-      <li><a href="{{route('roles.form')}}"><i class="fa fa-pencil"></i>New Role</a></li>
+      <li><a href="{{route('roles.form')}}"><i class="glyphicon glyphicon-pencil"></i>New Role</a></li>
     </ul>
   </li>
 
@@ -134,7 +137,7 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="/scores"><i class="glyphicon glyphicon-list-alt"></i>Score Tables</a></li>
-      <li><a href="/scores/master"><i class="fa fa-pencil"></i>Enter Score</a></li>
+      <li><a href="/scores/master"><i class="glyphicon glyphicon-pencil"></i>Enter Score</a></li>
     </ul>
   </li>
 
@@ -153,6 +156,11 @@
       <li><a href="{{route('annual-scores')}}"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
+  <!-- transcript -->
+  <li>
+    <a href="{{route('transcripts.home')}}"><i class="fa fa-file-text-o"></i> <span>Student Transcript</span>
+    </a>
+  </li>
 </ul>
 @endsection
 
@@ -163,152 +171,144 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                  <div class="container-fluid">
-                    <span>User Details</span>
-                    <a href="{{route('users.home')}}" class="btn btn-sm btn-primary pull-right">
-                      <i class="glyphicon glyphicon-arrow-left"></i>
-                      Back
-                    </a>
-                  </div>
-                  
+                  <span class="panel-title">User Details</span>
                 </div>
-                <div class="panel-body">
-                    <form role="form" method="POST" action="{{ route('users.create') }}">
-                        {{ csrf_field() }}
+                <form role="form" method="POST" action="{{ route('users.create') }}">
+                  <div class="panel-body">
+                    {{ csrf_field() }}
 
-                        <div class="row">
-                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-12">
-                                <label for="name" class="control-label">Name</label>
+                    <div class="row">
+                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-12">
+                            <label for="name" class="control-label">Name</label>
 
-                                <input type="text" class="form-control" name="name" value="{{ old('name') }}" id="name" required autofocus>
+                            <input type="text" class="form-control" name="name" value="{{ old('name') }}" id="name" required autofocus>
 
-                                @if ($errors->has('name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                            @if ($errors->has('name'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('name') }}</strong>
+                                </span>
+                            @endif
                         </div>
+                    </div>
 
-                        <div class="row">
+                    <div class="row">
 
-                            <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }} col-md-6">
-                                <label for="gender" class="control-label">Gender</label>
+                        <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }} col-md-6">
+                            <label for="gender" class="control-label">Gender</label>
 
-                                <select id="gender" type="text" class="form-control" name="gender" value="{{ old('gender') }}" required autofocus>
-                                    <option value="Female">Female</option>
-                                    <option value="Male">Male</option>
-                                </select>
-
-                                @if ($errors->has('gender'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('gender') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-
-                            <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }} col-md-6">
-                                <label for="phone" class="control-label">Phone Number</label>
-
-                                <input data-inputmask='"mask": "(9999) 999-999"' phone-mask id="phone" type="text" class="form-control" name="phone" value="{{ old('phone') }}" required autofocus>
-
-                                @if ($errors->has('phone'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('phone') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-
-                        <div class="row">
-                            <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }} col-md-12">
-                                <label for="address" class="control-label">Address</label>
-
-                                <input name="address" id="address" type="text" class="form-control"  value="{{ old('address') }}" required autofocus>
-
-                                @if ($errors->has('address'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('address') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        
-                        <div class="form-group{{ $errors->has('role_id') ? ' has-error' : '' }}">
-                            <label for="role_id" class="control-label">Role</label>
-
-                            <select class="form-control" name="role_id" id="role_id" value="{{old('role_id')}}" required="">
-                                @foreach($roles as $id => $name)
-                                    <option value="{{$id}}">{{$name}}</option>
-                                @endforeach
+                            <select id="gender" type="text" class="form-control" name="gender" value="{{ old('gender') }}" required autofocus>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
                             </select>
 
-                            @if ($errors->has('role_id'))
+                            @if ($errors->has('gender'))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('role_id') }}</strong>
+                                    <strong>{{ $errors->first('gender') }}</strong>
                                 </span>
                             @endif
                         </div>
 
-                         <div class="row">
-                            <div class="form-group{{ $errors->has('user_name') ? ' has-error' : '' }} col-md-12">
-                                <label for="user_name" class="control-label">User Name</label>
+                        <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }} col-md-6">
+                            <label for="phone" class="control-label">Phone Number</label>
 
-                                <input id="user_name" type="text" class="form-control" name="user_name" value="{{ old('user_name') }}" required autofocus>
+                            <input data-inputmask='"mask": "(9999) 999-999"' phone-mask id="phone" type="text" class="form-control" name="phone" value="{{ old('phone') }}" required autofocus>
 
-                                @if ($errors->has('user_name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('user_name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                            @if ($errors->has('phone'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('phone') }}</strong>
+                                </span>
+                            @endif
                         </div>
+                    </div>
 
-                        <div class="row">
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} col-md-12">
-                                <label for="email" class="control-label">E-Mail Address</label>
 
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                    <div class="row">
+                        <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }} col-md-12">
+                            <label for="address" class="control-label">Address</label>
 
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                            <input name="address" id="address" type="text" class="form-control"  value="{{ old('address') }}" required autofocus>
+
+                            @if ($errors->has('address'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('address') }}</strong>
+                                </span>
+                            @endif
                         </div>
+                    </div>
 
-                        <div class="row">
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }} col-md-6">
-                                <label for="password" class="control-label">Password</label>
-
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-
-                            <div class="form-group">
-                                <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                                </div>
-                            </div>
-
-                        </div>
                     
+                    <div class="form-group{{ $errors->has('role_id') ? ' has-error' : '' }}">
+                        <label for="role_id" class="control-label">Role</label>
+
+                        <select class="form-control" name="role_id" id="role_id" value="{{old('role_id')}}" required="">
+                            @foreach($roles as $id => $name)
+                                <option value="{{$id}}">{{$name}}</option>
+                            @endforeach
+                        </select>
+
+                        @if ($errors->has('role_id'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('role_id') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group{{ $errors->has('user_name') ? ' has-error' : '' }} col-md-12">
+                            <label for="user_name" class="control-label">User Name</label>
+
+                            <input id="user_name" type="text" class="form-control" name="user_name" value="{{ old('user_name') }}" required autofocus>
+
+                            @if ($errors->has('user_name'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('user_name') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} col-md-12">
+                            <label for="email" class="control-label">E-Mail Address</label>
+
+                            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+
+                            @if ($errors->has('email'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }} col-md-6">
+                            <label for="password" class="control-label">Password</label>
+
+                            <input id="password" type="password" class="form-control" name="password" required>
+
+                            @if ($errors->has('password'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </span>
+                            @endif
+                        </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary form-control">Register</button>
+                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+
+                            <div class="col-md-6">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                            </div>
                         </div>
-                    </form>
-                </div>
+
+                    </div>
+                  </div>
+                  <div class="panel-footer text-right">
+                    <button type="submit" class="btn btn-primary">Register</button> &nbsp;
+                    <a href="{{route('users.home')}}" class="btn btn-default">Cancel</a>
+                  </div>
+                </form>
             </div>
         </div>
     </div>

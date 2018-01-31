@@ -69,4 +69,38 @@ class User extends Authenticatable
     {
         return User::count();
     }
+
+    //This returns true if a logged in user can perform any operation
+    //on a guardian
+    public function canAccessGuardians()
+    {
+        if ($this->can('create-guardian') || $this->can('update-guardian') || $this->can('delete-guardian') || $this->can('view-guardian')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //This returns true if a logged in user can perform any operation
+    //on a student
+    public function canAccessStudents()
+    {
+        if ($this->can('create-student') || $this->can('update-student') || $this->can('delete-student') || $this->can('view-student')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    //This returns true if a logged in user can perform any operation
+    //on students scores
+    public function canAccessScores()
+    {
+        if ($this->can('view-scores')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

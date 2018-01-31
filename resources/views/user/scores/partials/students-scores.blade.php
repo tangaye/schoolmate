@@ -1,3 +1,4 @@
+<h4 class="text-center print-title"><b>{{$academic}}</b> {{$grade}} <u>{{$subject}}</u> score(s) for {{$term}}</h4> <br>
 <table class="table table-bordered table-condensed table-responsive" id="scores-table">
 	<thead>
 		<th>Code</th>
@@ -17,7 +18,4 @@
 			</tr>
 		@endforeach
 	</tbody>
-	<tfoot>
-		<td colspan="3" class="text-center">Viewing <strong>{{$grade}} <u>{{$subject}}</u></strong> score(s) for <strong>{{$term}}</strong></td>
-	</tfoot>
 </table>

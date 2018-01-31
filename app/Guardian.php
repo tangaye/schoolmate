@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
 use Carbon\Carbon;
 
 
@@ -49,6 +48,12 @@ class Guardian extends Authenticatable
     public static function guardians_count()
     {
         return Guardian::count();
+    }
+
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->surname}";
+
     }
 
 }

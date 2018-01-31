@@ -39,11 +39,11 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="{{route('guardians.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
-      <li><a href="{{route('guardians.form')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
+      <li><a href="{{route('guardians.form')}}"><i class="glyphicon glyphicon-pencil"></i>New Guardian</a></li>
     </ul>
   </li>
 
-  <!-- teachres -->
+  <!-- teachers -->
   <li class="treeview active">
     <a href="#"><i class="glyphicon glyphicon-education"></i> <span>Teachers</span>
       <span class="pull-right-container">
@@ -53,10 +53,12 @@
     <ul class="treeview-menu">
       <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
       <li><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
-      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-asterisk"></i>Teacher Grades</a></li>
+      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-align-left""></i>Teacher Grades</a></li>
       <li class="active"><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
+      <li><a href="{{route('admin.ponsor.home')}}"><i class="glyphicon glyphicon-knight"></i>Sponsors</a></li>
     </ul>
   </li>
+
 
   <!-- Settings -->
   <li class="treeview">
@@ -85,8 +87,9 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li><a href="/students"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
-      <li><a href="/students/create"><i class="fa fa-pencil"></i>Student Admission</a></li>
+      <li><a href="{{route('students.home')}}"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
+      <li><a href="{{route('students.create')}}"><i class="glyphicon glyphicon-pencil"></i>Student Admission</a></li>
+      <li><a href="{{route('enrollments.home')}}"><i class="glyphicon glyphicon-saved"></i>Student Enrollment</a></li>
     </ul>
   </li>
 
@@ -100,7 +103,7 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="{{route('attendence')}}"><i class="glyphicon glyphicon-list-alt"></i>Manage Attendence</a></li>
-      <li><a href="{{route('attendence.create')}}"><i class="fa fa-pencil"></i>New Attendence</a></li>      
+      <li><a href="{{route('attendence.create')}}"><i class="glyphicon glyphicon-pencil"></i>New Attendence</a></li>      
     </ul>
   </li>
 
@@ -114,9 +117,9 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="{{route('users.home')}}"><i class="glyphicon glyphicon-list-alt"></i>User List</a></li>
-      <li><a href="{{route('users.form')}}"><i class="fa fa-pencil"></i>New User</a></li>
+      <li><a href="{{route('users.form')}}"><i class="glyphicon glyphicon-pencil"></i>New User</a></li>
       <li><a href="{{route('roles.home')}}"><i class="glyphicon glyphicon-tasks"></i>Roles</a></li>
-      <li><a href="{{route('roles.form')}}"><i class="fa fa-pencil"></i>New Role</a></li>
+      <li><a href="{{route('roles.form')}}"><i class="glyphicon glyphicon-pencil"></i>New Role</a></li>
     </ul>
   </li>
 
@@ -130,7 +133,7 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="/scores"><i class="glyphicon glyphicon-list-alt"></i>Score Tables</a></li>
-      <li><a href="/scores/master"><i class="fa fa-pencil"></i>Enter Score</a></li>
+      <li><a href="/scores/master"><i class="glyphicon glyphicon-pencil"></i>Enter Score</a></li>
     </ul>
   </li>
 
@@ -149,6 +152,11 @@
       <li><a href="{{route('annual-scores')}}"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
+  <!-- transcript -->
+  <li>
+    <a href="{{route('transcripts.home')}}"><i class="fa fa-file-text-o"></i> <span>Student Transcript</span>
+    </a>
+  </li>
 </ul>
 @endsection
 
@@ -160,85 +168,87 @@
 
 			<div class="panel panel-default">
 				<div class="panel-heading">
-          <div class="container-fluid">
-            <span class="panel-title">Assigned Subjects and Grades to Teacher</span>
-
-            <a class="btn btn-primary pull-right btn-sm" title="Back" data-toggle="title" onclick="history.back()" href="javascript:void(0)">
-              <i class="glyphicon glyphicon-arrow-left"></i> Back
-            </a>
-          </div>
+           <span class="panel-title">Assigned Subjects and Grades to Teacher</span>
         </div>
 
-				<div class="panel-body">
-					<!-- Table -->
-					<form class="form-horizontal" method="POST" action="{{ route('admin-gradesTeacher.submit') }}">
+        <form class="form-horizontal" method="POST" action="{{ route('admin-gradesTeacher.submit') }}">
 
-			              {{ csrf_field() }}
+          <div class="panel-body">
+            {{ csrf_field() }}
 
-			              <div class="form-group{{ $errors->has('teacher_id') ? ' has-error' : '' }}">
-			                  <label for="teacher_id" class="col-md-2 control-label">Teacher</label>
+            <input class="hidden" type="text" value="{{$current_academic->id}}" name="academic_id" required="">
 
-			                  <div class="col-md-8">
-			                  	<select name="teacher_id" id="teacher_id" class="form-control" value="{{ old('teacher_id') }}" required="">
-			                  		@foreach($teachers as $teacher)
-			                  			<option value="{{$teacher->id}}">{{$teacher->first_name}} {{$teacher->surname}}</option>
-			                  		@endforeach
-			                  	</select>
+            <div class="form-group{{ $errors->has('teacher_id') ? ' has-error' : '' }}">
+                <label for="teacher_id" class="col-md-2 control-label">Teacher</label>
 
-			                      @if ($errors->has('name'))
-			                          <span class="help-block">
-			                              <strong>{{ $errors->first('name') }}</strong>
-			                          </span>
-			                      @endif
-			                  </div>
-			              </div>
+                <div class="col-md-8">
+                  <select name="teacher_id" id="teacher_id" class="form-control" value="{{ old('teacher_id') }}" required="">
+                    @foreach($teachers as $teacher)
+                      <option value="{{$teacher->id}}">{{$teacher->first_name}} {{$teacher->surname}}</option>
+                    @endforeach
+                  </select>
 
-			              <div class="form-group{{ $errors->has('grade_id') ? ' has-error' : '' }} gradeWarning">
-			                  <label for="name" class="col-md-2 control-label">Grades/Classes</label>
+                    @if ($errors->has('name'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('name') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>
 
-			                  <div class="col-md-8">
-			                  	<select name="grade_id" id="grade_id" class="form-control" required="">
-			                  		<option selected="" value="">Select Grade</option>
-			                  		@foreach($grades as $grade)
-			                  			<option value="{{$grade->id}}">{{$grade->name}}</option>
-			                  		@endforeach
-			                  	</select>
+            <div class="form-group{{ $errors->has('grade_id') ? ' has-error' : '' }} gradeWarning">
+                <label for="name" class="col-md-2 control-label">Grades/Classes</label>
 
-			                      @if ($errors->has('grade_id'))
-			                          <span class="help-block">
-			                              <strong>{{ $errors->first('grade_id') }}</strong>
-			                          </span>
-			                      @endif
+                <div class="col-md-8">
+                  <select name="grade_id" id="grade_id" class="form-control" required="">
+                    <option selected="" value="">Select Grade</option>
+                    @foreach($grades as $grade)
+                      <option value="{{$grade->id}}">{{$grade->name}}</option>
+                    @endforeach
+                  </select>
 
-			                       <span class="help-block hidden gradeWarningMsg">
-				                        <strong class="gradeWarningMsg"></strong>
-				                    </span>
-			                  </div>
-			              </div>
+                    @if ($errors->has('grade_id'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('grade_id') }}</strong>
+                        </span>
+                    @endif
 
-			              <div class="form-group{{ $errors->has('subject_id') ? ' has-error' : '' }}">
-			                  <label class="col-md-2 control-label">Subjects</label>
+                     <span class="help-block hidden gradeWarningMsg">
+                        <strong class="gradeWarningMsg"></strong>
+                    </span>
+                </div>
+            </div>
 
-			                  <div class="col-md-8">
-			               		<select disabled="" name="subject_id" id="subject_id" class="form-control" required=""></select>
-			                      @if ($errors->has('subject_id'))
-			                          <span class="help-block">
-			                              <strong>{{ $errors->first('subject_id') }}</strong>
-			                          </span>
-			                      @endif
-			                  </div>
-			              </div>
+            <div class="form-group{{ $errors->has('subject_id') ? ' has-error' : '' }}">
+                <label class="col-md-2 control-label">Subjects</label>
 
-			            <div class="form-group">
-			                  <div class="col-md-4 col-md-offset-2">
-			                      <button disabled="" type="submit" class="btn btn-primary btn-assign">
-			                          Assign
-			                      </button>
-			                  </div>
-			              </div>
-			          </form>
-				</div>
-			</div>
+                <div class="col-md-8">
+                <select disabled="" name="subject_id" id="subject_id" class="form-control" required=""></select>
+                    @if ($errors->has('subject_id'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('subject_id') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>
+
+            <div class="form-group{{ $errors->has('academic_id') ? ' has-error' : '' }}">
+              <label class="col-md-2 control-label">Academic Year</label>
+              <div class="col-md-8">
+                <input disabled="" type="" value="{{$current_academic->full_year}}" class="form-control">
+                @if ($errors->has('academic_id'))
+                  <span class="help-block">
+                      <strong>{{ $errors->first('academic_id') }}</strong>
+                  </span>
+                @endif
+              </div>
+            </div>
+          </div>
+          <div class="panel-footer text-right">
+            <button disabled="" type="submit" class="btn btn-primary btn-assign">Assign</button> &nbsp;
+            <a href="{{route('admin-gradesTeacher.home')}}" class="btn btn-default">Cancel</a>
+          </div>
+        </form>
 		</div>
 	</div>
 @endsection
@@ -296,7 +306,7 @@
 @if($flash = session('message'))
     <script type="text/javascript">
         var message = "{!!html_entity_decode($flash)!!}";
-        notify(message);
+        big_notify(message);
     </script>
 @endif
 @endsection

@@ -20,39 +20,44 @@ class AcademicsController extends Controller
     public function index()
     {
         //
-        $academics = Academic::all();
+        $academics = Academic::orderBy('year_start', 'asc')->get();
         return view('admin.academics.home', compact('academics'));
 
     }
 
     /**
-     * This function takes date(date start year) and check 
-     * whether is exists in the database
+     * This function takes the year start and check 
+     * whether is exists in the database. If it does
+     * A message is return stating so.
      * @return \Illuminate\Http\Response
      */
-    public function findStartYear(Request $request, $date)
+    public function findStartYear(Request $request, $year_start)
     {
         //
         if ($request->ajax()) {
 
-            $recieveDate = Carbon::createFromDate($date);
-            $startDates = Academic::all()->pluck('date_start');
+            // get all the years from the year start column in the academics table
+            $startYears = Academic::all()->pluck('year_start');
 
             $found = false;
             $year = null;
-            //dd($startDates);
 
-            foreach ($startDates as $key => $value) {
+            /*
+            * loop through the start year and check if the $year_start is 
+            * equivalent to any of the start years. If so, assign such year to
+            * the $year variable.
+            */
+            foreach ($startYears as $index => $year) {
 
-                if ($value->year == $recieveDate->year) {
+                if ($year == $year_start) {
                     $found = true;
-                    $year = $value->year;
+                    $year = $year_start;
                     break;
                 } 
             }
 
             if($found) {
-                 return response()->json(['exists' => 'The year: <b>'.$year.'</b> of School Date Start already exists']);
+                 return response()->json(['exists' => 'The year: <b>'.$year.'</b> of School Year Start already exists']);
             } else {
                 return response()->json(['none' => null]);
             }
@@ -65,24 +70,22 @@ class AcademicsController extends Controller
      * whether is exists in the database
      * @return \Illuminate\Http\Response
      */
-    public function findEditStartYear(Request $request, $id, $date)
+    public function findEditStartYear(Request $request, $id, $year_start)
     {
         //
         if ($request->ajax()) {
 
-            $editDateStart = Academic::findOrFail($id);
-            //dd($editDateStart);
-            $recieveEditDate = Carbon::createFromDate($date);
-            $startDates = Academic::all()->pluck('date_start');
+            $academic = Academic::findOrFail($id);
+            $startYears = Academic::all()->pluck('year_start');
 
             $found = false;
             $year = null;
 
-            foreach ($startDates as $key => $value) {
+            foreach ($startYears as $index => $year) {
 
-                if ($value->year == $recieveEditDate->year && $value->year != $editDateStart->date_start->year){
+                if ($year == $year_start && $year != $academic->year_start){
                     $found = true;
-                    $year = $value->year;
+                    $year = $year_start;
                     break; 
                 }
             }
@@ -97,31 +100,31 @@ class AcademicsController extends Controller
     }
 
     /**
-     * This function takes date(date end year) and check 
-     * whether is exists in the database
+     * This function takes the year and check 
+     * whether is exists in the database. If it does
+     * A message is return stating so.
      * @return \Illuminate\Http\Response
      */
-    public function findEndYear(Request $request, $date)
+    public function findEndYear(Request $request, $year_start)
     {
         //
         if ($request->ajax()) {
 
-            $recieveDate = Carbon::createFromDate($date);
-            $endDates = Academic::all()->pluck('date_end');
+            $endYears = Academic::all()->pluck('year_end');
 
             $found = false;
             $year = null;
 
-            foreach ($endDates as $key => $value) {
-                if ($value->year == $recieveDate->year) {
+            foreach ($endYears as $index => $year) {
+                if ($year == $year_start) {
                     $found = true;
-                    $year = $value->year;
+                    $year = $year_start;
                     break;
                 } 
             }
 
             if($found) {
-                 return response()->json(['exists' => 'The year: <b>'.$year.'</b> of School Date End already exists']);
+                 return response()->json(['exists' => 'The year: <b>'.$year.'</b> of School Year End already exists']);
             } else {
                 return response()->json(['none' => null]);
             }
@@ -134,30 +137,28 @@ class AcademicsController extends Controller
      * whether is exists in the database
      * @return \Illuminate\Http\Response
      */
-    public function findEditEndYear(Request $request, $id, $date)
+    public function findEditEndYear(Request $request, $id, $year_end)
     {
         //
         if ($request->ajax()) {
 
-            $editDateEnd = Academic::findOrFail($id);
-            //dd($editDateStart);
-            $recieveEditDate = Carbon::createFromDate($date);
-            $endDates = Academic::all()->pluck('date_end');
+            $academic = Academic::findOrFail($id);
+            $endYears = Academic::all()->pluck('year_end');
 
             $found = false;
             $year = null;
 
-            foreach ($endDates as $key => $value) {
+            foreach ($endYears as $index => $year) {
 
-                if ($value->year == $recieveEditDate->year && $value->year != $editDateEnd->date_end->year){
+                if ($year == $year_end && $year != $academic->year_end){
                     $found = true;
-                    $year = $value->year;
+                    $year = $year_end;
                     break; 
                 }
             }
 
             if($found) {
-                 return response()->json(['exists' => 'The year: <b>'.$year.'</b> of School Date End already exists']);
+                 return response()->json(['exists' => 'The year: <b>'.$year.'</b> of School Year End already exists']);
             } else {
                 return response()->json(['none' => null]);
             }
@@ -175,25 +176,61 @@ class AcademicsController extends Controller
     {
         //
         $rules = [
-            'date_start' => 'bail|required|date|date_format:Y/m/d|after:yesterday|unique:academics',
-            'date_end' => 'bail|required|date|date_format:Y/m/d|after:date_start|unique:academics',
+            'year_start' => 'bail|required|unique:academics',
+            'year_end' => 'bail|required|unique:academics',
             'status' => 'required|boolean'
         ];
 
         $this->validate(request(), $rules);
 
-        $academic = Academic::create(request([
-            'date_start',
-            'date_end',
-            'status'
-        ]));
+        /*
+        * If the status of the academic year being created is set to active or
+        * "1" check if records exists in the academic table; if that is so,
+        * set all the academic years status to "0" or "inactive". 
+        * If there are no records in the academics table stored the academic year.
+        *
+        * If the status of the academic year being created is not set to "active"
+        * or "1" create the academic year.
+        */
+
+        if ($request->status) {
+
+            $academicExists = Academic::all()->count();
+
+            if ($academicExists > 0) {
+                
+                //update the academic years that are currently active to inactive
+                $activeAcademic = Academic::where('status', 1)
+                    ->update(['status' => 0]);
+
+                //set academic year being created to active
+                $academic = Academic::create(request([
+                    'year_start',
+                    'year_end',
+                    'status'
+                ]));
+
+            } else {
+
+                $academic = Academic::create(request([
+                    'year_start',
+                    'year_end',
+                    'status'
+                ]));
+            }
+        } else {
+
+            $academic = Academic::create(request([
+                'year_start',
+                'year_end',
+                'status'
+            ]));
+        }
 
         // send a message to the session that greets/ thank user
-        session()->flash('message', $academic->date_start->toFormattedDateString()." - ".$academic->date_end->toFormattedDateString());
+        session()->flash('message', $academic->year_start." - ".$academic->year_end." save!");
 
         return redirect('/academics');
-
-        //dd($request->all());
     }
 
     /**
@@ -205,15 +242,15 @@ class AcademicsController extends Controller
     public function edit($id)
     {
         //
-        $academic_status = Academic::findOrFail($id);
-        $status_active = Academic::where('status', 1)->exists();
+        $academic = Academic::findOrFail($id);
         $statuses = Academic::statuses();
 
-        return \View::make('admin.academics.partials.status-assigned')->with(array(
-            'status' => $academic_status->status, // returns 1 or zero
-            'status_active' => $status_active, // returns true if 1 and false if 0
+        return view('admin.academics.edit', compact('academic', 'statuses'));
+
+        /*return \View::make('admin.academics.partials.status-assigned')->with(array(
+            'academic' => $academic,
             'statuses' => $statuses // returns a collection all statuses
-        ));
+        ));*/
     }
 
     /**
@@ -225,44 +262,51 @@ class AcademicsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //dd(request());
-        //
         $rules = [
-            'date_start' => 'required|date|date_format:Y/m/d|after:yesterday|unique:academics,date_start,'.$id,
-            'date_end' => 'required|date|date_format:Y/m/d|after:date_start|unique:academics,date_end,'.$id,
+            'year_start' => 'required|unique:academics,year_start,'.$id,
+            'year_end' => 'required|unique:academics,year_end,'.$id,
             'status' => 'required|boolean'
         ];
 
-        // make validation
-        $validator = Validator::make ( $request->all(), $rules);
+        //validate and return errors
+        $this->validate(request(), $rules);
 
-        // if validation fails return error
-        if ($validator->fails ()) {
-            return response()->json ( array (
-                        
-             'errors' => $validator->getMessageBag ()->toArray ()
-            ) );
-        }
-        // if validation succeeds insert records
-        else {
+        $academic = Academic::findOrFail($id);  
 
-            $academic = Academic::findOrFail($id);
+        // if the user is updating the current academic year to inactive
+        if ($academic->status && !$request->status) {
 
+            return redirect()->back()->with('error_message', "Atleast one academic year should be active!");
+        } 
+        // if the user is updating an inactive academic year to active
+        elseif (!$academic->status && $request->status) {
+            
+            /*
+            * Set all other academic year to inactive and make this active
+            */
+            //update the academic years that are currently active to inactive
+            $activeAcademic = Academic::where('status', 1)
+                ->update(['status' => 0]);
+
+            //set academic year being created to active
             $academic->update(request([
-                'date_start',
-                'date_end',
+                'year_start',
+                'year_end',
                 'status'
             ]));
 
-            return response ()->json (array(
-                'id' => $academic->id,
-                'date_start' => $academic->date_start->toFormattedDateString(),
-                'format_start' => $academic->date_start->format('Y/m/d'),
-                'date_end' => $academic->date_end->toFormattedDateString(),
-                'format_end' => $academic->date_end->format('Y/m/d'),
-                'status' => $academic->status
-            ));     
+        } else {
+
+            $academic->update(request([
+                'year_start',
+                'year_end',
+                'status'
+            ]));
         }
+        // send a message to the session 
+        session()->flash('message', $academic->year_start." - ".$academic->year_end." updated!");
+
+        return redirect('/academics');
     }
 
     /**
@@ -275,22 +319,35 @@ class AcademicsController extends Controller
     {
         //
         /**
-         * if subject is related to others entities
-         * warn user to modify or delete records
-         * related to the subject to be deleted before deleting.
+         * If academic year being deleted is active throw an error message.
          */
+        
 
-        $academic = Academic::findOrFail($id);
-        if ($academic->status) {
-            return response()->json ( array (
-                'error' => "This academic year is currently active."
-            ) );
-        }
-        else {
-            $academic->delete();
-            return response()->json ( array (
-                'message' => "Academic term deleted!"
-            ) );
+        try {
+            $academic = Academic::findOrFail($id);
+            if ($academic->status) {
+                return response()->json ( array (
+                    'error' => "This academic year cannot be deleted because it's currently active."
+                ) );
+            }
+            else {
+                $academic->delete();
+                
+                return response()->json ( array (
+                    'message' => "Academic year deleted!"
+                ) );
+            }
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            $error_code = $e->errorInfo[1];
+
+            // Integrity constraint violation: 1451
+            if($error_code  == 1451){
+                return response()->json ( array (
+                    'error' => "This academic year cannot be deleted because it's reference in other areas."
+                ) );
+            }
+            
         }
     }
 }
