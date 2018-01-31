@@ -49,9 +49,6 @@
         <div class="well">
             <h1><div class="glyphicon glyphicon-ban-circle text-danger"></div> 403 Forbidden</h1>
             <p>Sorry! You don't have access permissions for this page.</p>
-            <p>
-              <a class="btn btn-primary btn-lg" href="" onclick="history.back()">Take Me Home!</a>
-            </p>
         </div>
     </div>
 

@@ -13,6 +13,10 @@ use App\Grade;
 use App\Subject;
 use App\Student;
 use App\Score;
+use App\Academic;
+
+use App\Repositories\TeachersRepository;
+use App\Repositories\ScoresRepository;
 
 
 /**
@@ -29,14 +33,17 @@ class ScoresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(TeachersRepository $teacher)
     {
         //
         $terms = Term::all();
-        // returns all grades teacher is teaching
-        $teacher_grades = Teacher::teacherGrades(Auth::guard('teacher')->user()->id); 
+        $instructor = Teacher::findOrFail(Auth::guard('teacher')->user()->id);
+        // returns all grades teacher is teaching 
+        $teacher_grades = $teacher->teacher_grades($instructor->id); 
+        //years teacher has been teaching for.
+        $academics = $teacher->teacher_academic_years($instructor->id);
 
-        return view('teacher-scores.scores-home', compact('teacher_grades', 'terms'));
+        return view('teacher.scores.home', compact('teacher_grades', 'terms', 'academics'));
 
     }
 
@@ -45,21 +52,11 @@ class ScoresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function master()
+    public function master(TeachersRepository $teachers)
     {
         $terms = Term::all();
-        $teacher_grades = Teacher::teacherGrades(Auth::guard('teacher')->user()->id); 
-        //dd($teacher_grades);
-        return view('teacher-scores.master-scores-form', compact('teacher_grades', 'terms'));
-    }
-
-
-    // returns all subjects assigned to a grade that a teacher is teaching
-    public function gradeSubjects($id)
-    {
-        $subjects = Teacher::teacherGradeSubjects($id, Auth::guard('teacher')->user()->id);
-
-        return response()->json($subjects);
+        $teacher_grades = $teachers->teacher_grades(Auth::guard('teacher')->user()->id); 
+        return view('teacher.scores.master-scores-form', compact('teacher_grades', 'terms'));
     }
 
 
@@ -68,21 +65,26 @@ class ScoresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function studentsScores(Request $request)
+    public function studentsScores(Request $request, TeachersRepository $teachers)
     {
        $term = Term::findOrFail($request->term_id);
        $grade = Grade::findOrFail($request->grade_id);
        $subject = Subject::findOrFail($request->subject_id);
+       $academic = Academic::findOrFail($request->academic_id);
 
-       $students = Teacher::teacherStudentsScores($grade->id, $subject->id, $term->id);
-       //dd($students);
+       $students = $teachers->teacher_students_scores($grade->id, $subject->id, $term->id, $academic->id);
 
-        return \View::make('teacher-scores.partials.students-scores')->with(array(
-                'students'=>$students,
+        if (count($students) > 0) {
+            return \View::make('teacher.scores.partials.students-scores')->with(array(
+                'students' => $students,
                 'grade' => $grade->name,
                 'term' => $term->name,
-                'subject' => $subject->name
-            ));
+                'subject' => $subject->name,
+                'academic' => $academic->full_year
+            ));   
+        } else {
+           return  response()->json(['none' => 'No score found for students in <b>'.$grade->name.'</b> for academic year <u>'.$academic->full_year.'</u>']);
+        }
     }
 
 
@@ -95,23 +97,44 @@ class ScoresController extends Controller
     public function create(Request $request)
     {
         //
+        $academic = new Academic;
+        $current_academic = $academic->current();
         $grade = Grade::findOrFail($request->grade_id);
         $term = Term::findOrFail($request->term_id);
         $subject = Subject::findOrFail($request->subject_id);
 
-
-        $students = \DB::table('students')
-            ->join('grades', 'grades.id', '=', 'students.grade_id')
-            ->select('students.surname', 'students.first_name', 'students.middle_name', 'students.id', 'grades.id as grade')
-            ->where('students.grade_id', $grade->id)
+        // return a listing of enrolled students in a particular grade/class
+        // so that subject score for a term(1st, 2nd, 3rd period) can be  recorded for the current academic year.
+        $enrolled_students = \DB::table('enrollments')
+            ->join('students', 'students.id', '=', 'enrollments.student_id')
+            ->join('grades', 'grades.id', '=', 'enrollments.current_grade')
+            ->join('academics', 'academics.id', '=', 'enrollments.academic_id')
+            ->select(
+                'students.id'
+            )
+            ->where([
+                ['enrollments.current_grade', '=', $grade->id],
+                ['enrollments.academic_id', '=', $current_academic->id],
+                ['enrollments.enrollment_status', '=', 'Enrolled']
+            ])
             ->get();  
 
-        return \View::make('scores.partials.create')->with(array(
-            'students'=>$students, 
-            'grade'=>$grade->name, 
-            'subject'=>$subject, 
-            'term'=>$term
-        ));
+        $students = Student::whereIn('id', $enrolled_students->pluck('id'))->get();
+
+        if (count($students) > 0) {
+            return \View::make('scores.partials.create')->with(
+                [
+                    'students' => $students, 
+                    'grade' => $grade, 
+                    'subject' => $subject, 
+                    'term' => $term,
+                    'academic' => $current_academic
+                ]
+            );
+            
+        } else {
+            return "There is no <u>Enrolled</u> students in <b>".$grade->name."</b> for academic year: <b>".$current_academic->full_year."</b>";
+        }
 
     }
 
@@ -163,11 +186,27 @@ class ScoresController extends Controller
                 // if a duplicate entry error(1062) is caught display custom message
                 if($error_code == 1062){
                     return response()->json ( array (
-                        'duplicate' => "A score already exists for <b>".$student->surname."</b> in <b>".$subject->name."</b> for <b>".$term->name."</b>. If you want to make changes to the score Please go to the <a href='#'>Scores</a> table to do the modification."
+                        'duplicate' => "A score already exists for <b>".$student->surname."</b> in <b>".$subject->name."</b> for <b>".$term->name."</b>."
                     ) );
                 }
             }
             
+        }
+    }
+
+
+    // returns students who have score recorded for in an academic year
+    public function academicGradeStudents(Request $request, ScoresRepository $scores)
+    {
+        $academic = Academic::findOrFail($request->academic_id);
+        $sponsor_grade = Grade::findOrFail($request->grade_id);
+
+        $students = $scores->scores_grade_academic_students($academic->id, $sponsor_grade->id);
+
+        if (count($students) > 0) {
+            return response()->json($students);
+        } else {
+            return response()->json(array('none' => 'No score recorded for students in <b>'.$sponsor_grade->name.'</b> for <u>'.$academic->full_year.'</u>'));
         }
     }
 

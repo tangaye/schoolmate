@@ -26,25 +26,21 @@ class CreateStudentsTable extends Migration
             $table->string('county')->nullable();
             $table->string('country');
             $table->string('religion')->nullable();
-            $table->string('student_type');
             $table->string('last_school')->nullable();
-            $table->integer('last_grade')->unsigned()->nullable();
-            $table->integer('grade_id')->unsigned()->nullable();
+            $table->string('last_school_address')->nullable();
+            $table->string('principal_name')->nullable();
+            $table->string('principal_number')->nullable();
+            $table->string('father_name');
+            $table->string('father_address');
+            $table->string('father_number');
+            $table->string('mother_name');
+            $table->string('mother_address');
+            $table->string('mother_number');
             $table->string('photo')->nullable();
             $table->integer('guardian_id')->unsigned()->nullable();
+            $table->date('admission_date');
             $table->timestamps();
 
-            $table->foreign('grade_id')
-              ->references('id')
-              ->on('grades')
-              ->onDelete('restrict')
-              ->onUpdate('cascade');
-
-            $table->foreign('last_grade')
-              ->references('id')
-              ->on('grades')
-              ->onDelete('restrict')
-              ->onUpdate('cascade');
 
             // when a guardian is deleted this relation should be set to null
             $table->foreign('guardian_id')

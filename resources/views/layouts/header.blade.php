@@ -24,17 +24,11 @@
         <!-- Messages: style can be found in dropdown.less-->
 
         <li style="padding-right: 10px">
-          @foreach($academics as $academic)
-             <b class="label pull-right bg-aqua" style="margin-top: 11%; font-size: 12px; font-family:  Raleway;" > Academic Year: {{$academic->date_start->year}} - {{$academic->date_end->year}}</b> 
-          @endforeach
+          <b class="label pull-right bg-aqua" style="margin-top: 11%; font-size: 12px; font-family:  Raleway;" > Acad. Yr: {{$current_academic->year_start}}/{{$current_academic->year_end}}</b> 
         </li>
 
         <!-- Authentication Links -->
         @yield('user-logout')
-        <!-- Control Sidebar Toggle Button -->
-        <li>
-          <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-        </li>
       </ul>
     </div>
   </nav>

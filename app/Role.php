@@ -36,6 +36,15 @@ class Role extends Model
         return $this->permissions[$permission] ?? false;
     }
 
+    /* 
+    * USERS PERMISSIONS ON STUDENTS
+    * ------------------------------------------------------------------------
+    * create-student = A user can enter/store a new student in the application
+    * view-student = A user can view details of a student in the application
+    * update-student = A user can update a student information in the application
+    * delete-student = A user can delete a student information from the application
+    *
+    */
     public static function permissions()
     {
         return [
@@ -47,6 +56,7 @@ class Role extends Model
             "create-guardian" => "true", 
             "delete-guardian" => "true",
             "update-guardian" => "true",
+            "view-scores" => "true"
         ];
     }
 }

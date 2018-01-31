@@ -13,16 +13,6 @@ class GradesController extends Controller
 {
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -33,7 +23,7 @@ class GradesController extends Controller
         $grades = Grade::with('division')->get();
         $divisions = Division::all();
 
-        return view('grades.home', compact('grades', 'divisions'));
+        return view('admin.grades.home', compact('grades', 'divisions'));
     }
 
 
@@ -83,7 +73,7 @@ class GradesController extends Controller
         $divisions =  Division::all();
 
 
-        return \View::make('grades.partials.grade-division')->with(array('divisions'=>$divisions, 'grade_divisions'=>$grade_divisions->toArray()));
+        return \View::make('admin.grades.partials.grade-division')->with(array('divisions'=>$divisions, 'grade_divisions'=>$grade_divisions->toArray()));
     }
 
     /**
@@ -149,6 +139,9 @@ class GradesController extends Controller
         }
     }
 
+    /*
+    * This function queries out subjects that are assigned to a grade
+    */
     public function gradeSubjects($id)
     {
         $grade = Grade::findOrfail($id);

@@ -7,8 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Teacher;
 use App\Common;
-
-
+use App\Academic;
+use App\Repositories\TeachersRepository;
 
 class TeachersController extends Controller
 {
@@ -31,7 +31,7 @@ class TeachersController extends Controller
     {
         //
         $teachers = Teacher::all();
-        return view('admin-teachers.home', compact('teachers'));
+        return view('admin.teachers.home', compact('teachers'));
     }
 
     /**
@@ -44,7 +44,7 @@ class TeachersController extends Controller
         //
         $genders = Common::genders();
 
-        return view('admin-teachers.create', compact('genders'));
+        return view('admin.teachers.create', compact('genders'));
 
     }
 
@@ -63,7 +63,7 @@ class TeachersController extends Controller
             'gender' => 'required|string',
             'date_of_birth' => 'bail|required',
             'qualification' => 'required|string',
-            'address' => 'required|string|max:255|regex:/^[a-z ,.\'-]+$/i',
+            'address' => 'required|string',
             'phone' => 'required',
             'user_name' => 'required|string|unique:teachers|max:20',
             'email' => 'bail|required|email|unique:teachers',
@@ -95,13 +95,14 @@ class TeachersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, TeachersRepository $teacherRepo)
     {
         //
         $teacher = Teacher::findOrfail($id);
+        $grades = $teacherRepo->teacher_grades($teacher->id); 
         $genders = Common::genders();
 
-        return view('admin-teachers.edit', compact('teacher', 'genders'));
+        return view('admin.teachers.edit', compact('teacher', 'genders', 'grades'));
     }
 
     /**
@@ -120,7 +121,7 @@ class TeachersController extends Controller
             'gender' => 'required|string',
             'date_of_birth' => 'bail|required',
             'qualification' => 'required|string',
-            'address' => 'required|string|max:255|regex:/^[a-z ,.\'-]+$/i',
+            'address' => 'required|string',
             'phone' => 'required',
             'user_name' => 'required|string|max:30|unique:teachers,user_name,'.$id,
             'email' => 'bail|required|email|unique:teachers,email,'.$id
@@ -166,5 +167,24 @@ class TeachersController extends Controller
     public function destroy($id)
     {
         //
+         try {
+            $teacher = Teacher::findOrFail($id);
+            $teacher->delete();
+
+            return response()->json ( array (
+                'message' => "Teacher deleted!"
+            ) );
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            $error_code = $e->errorInfo[1];
+
+            // Integrity constraint violation: 1451
+            if($error_code  == 1451){
+                return response()->json ( array (
+                    'error' => "Sorry! Seems like this teacher is reference in other tables. To continue this please make sure a teacher isn't reference in any other table."
+                ) );
+            }
+            
+        }
     }
 }

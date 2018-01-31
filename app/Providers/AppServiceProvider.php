@@ -16,23 +16,20 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        view()->composer(['students.create', 'user-students.create'], function ($view){
+        view()->composer(['admin.students.create', 'user.students.create'], function ($view){
             $counties = \App\Student::counties();
             $religions = \App\Student::religions();
-            $grades =  \App\Grade::all();
             $guardians = \App\Guardian::all();
-            $view->with(compact('counties', 'religions', 'guardians', 'grades'));
+            $view->with(compact('counties', 'religions', 'guardians'));
 
         });
 
-        view()->composer(['students.edit', 'user-students.edit'], function ($view){
-            $types = \App\Student::types();
+        view()->composer(['admin.students.edit', 'user.students.edit'], function ($view){
             $genders = \App\Common::genders();
             $counties = \App\Student::counties();
             $religions = \App\Student::religions();
-            $grades =  \App\Grade::all();
             $guardians = \App\Guardian::all();
-            $view->with(compact('types', 'counties', 'genders', 'religions', 'grades', 'guardians'));
+            $view->with(compact('types', 'counties', 'genders', 'religions', 'guardians'));
         });
 
         view()->composer('layouts.sidebar', function ($view){
@@ -44,16 +41,16 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('layouts.header', function ($view){
             
-            $academics = \App\Academic::where('status', 1)->get();
-            //dd($academic->status);
-            $view->with(compact('academics'));
+            $academics = new \App\Academic;
+            $current_academic = $academics->current();
+            $view->with(compact('current_academic'));
         });
 
-        view()->composer(['layouts.partials.stats-bar','institution.edit'], function ($view){
+        view()->composer(['layouts.partials.stats-bar','admin.institution.edit'], function ($view){
             
-            $students_total = \App\Student::students_count();
+            $students_total = \App\Repositories\StudentsRepository::students_count();
             $guardians_total = \App\Guardian::guardians_count();
-            $teachers_total = \App\Teacher::teachers_count();
+            $teachers_total = \App\Repositories\TeachersRepository::teachers_count();
             $users_total = \App\User::users_count();
             $view->with(compact('students_total', 'guardians_total', 'teachers_total', 'users_total'));
         });

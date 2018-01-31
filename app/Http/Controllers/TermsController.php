@@ -23,7 +23,7 @@ class TermsController extends Controller
 
         $semesters = Semester::all();
         
-        return view('terms.home', compact('terms', 'semesters'));
+        return view('admin.terms.home', compact('terms', 'semesters'));
     }
 
     /**
@@ -67,13 +67,16 @@ class TermsController extends Controller
     {
         //
         $term = Term::findOrfail($id);
-        //find all divisions assigned to the subject
+        //find all semesters a term is found
         $term_semester = $term->semester()->pluck('id');
         
         $semesters =  Semester::all();
 
 
-        return \View::make('terms.partials.term-semester')->with(array('semesters'=>$semesters, 'term_semester'=>$term_semester->toArray()));
+        return \View::make('admin.terms.partials.term-semester')->with(array(
+            'semesters' => $semesters, 
+            'term_semester' => $term_semester->toArray()
+        ));
     }
 
     /**

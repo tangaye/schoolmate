@@ -28,7 +28,7 @@ class SubjectsController extends Controller
 
         $grades = Grade::all();
         
-        return view('subjects.home', compact('subjects', 'grades'));
+        return view('admin.subjects.home', compact('subjects', 'grades'));
     }
 
     /**
@@ -84,7 +84,7 @@ class SubjectsController extends Controller
         $grades =  Grade::all();
 
 
-        return \View::make('subjects.partials.grade-assigned')->with(array(
+        return \View::make('admin.subjects.partials.grade-assigned')->with(array(
             'grades'=>$grades, 
             'subject_grades'=>$subject_grades->toArray()
         ));

@@ -36,6 +36,12 @@ class GradeSubjectTableSeeder extends Seeder
             ->first()
             ->id;
 
+        grade_eignt = DB::table('grades')
+            ->select('id')
+            ->where('name', '8th Grade')
+            ->first()
+            ->id;
+
         $maths = DB::table('subjects')
             ->select('id')
             ->where('name', 'Mathematics')
@@ -61,37 +67,107 @@ class GradeSubjectTableSeeder extends Seeder
             ->first()
             ->id;
 
+        $english = DB::table('subjects')
+            ->select('id')
+            ->where('name', 'English')
+            ->first()
+            ->id;
+
+        $science = DB::table('subjects')
+            ->select('id')
+            ->where('name', 'Science')
+            ->first()
+            ->id;
+
+        $geography = DB::table('subjects')
+            ->select('id')
+            ->where('name', 'Geography')
+            ->first()
+            ->id;
+
         if(DB::table('grade_subject')->get()->count() == 0){
 
             DB::table('grade_subject')->insert([
 
                 [
-                	'subject_id' => $biology,
-                	'grade_id' => $grade_ten
+                    'subject_id' => $maths,
+                    'grade_id' => $grade_eignt
                 ],
                 [
-                	'subject_id' => $french,
-                	'grade_id' => $grade_ten 
+                    'subject_id' => $english,
+                    'grade_id' => $grade_eignt
                 ],
-        		[
-                	'subject_id' => $biology,
-                	'grade_id' => $grade_twelve
+                [
+                    'subject_id' => $science,
+                    'grade_id' => $grade_eignt
                 ],
-        		[
-                	'subject_id' => $biology,
-                	'grade_id' => $grade_eleven 
+                [
+                    'subject_id' => $geography,
+                    'grade_id' => $grade_eignt
                 ],
         		[
                 	'subject_id' => $maths,
                 	'grade_id' => $grade_nine 
                 ],
-        		[
-                	'subject_id' => $maths,
-                	'grade_id' => $grade_eleven
+                [
+                    'subject_id' => $science,
+                    'grade_id' => $grade_nine 
                 ],
-        		[
-                	'subject_id' => $biology,
-                	'grade_id' => $grade_nine
+                [
+                    'subject_id' => $physics,
+                    'grade_id' => $grade_nine 
+                ],
+                [
+                    'subject_id' => $french,
+                    'grade_id' => $grade_nine 
+                ],
+                [
+                    'subject_id' => $biology,
+                    'grade_id' => $grade_nine
+                ],
+                [
+                    'subject_id' => $geography,
+                    'grade_id' => $grade_nine
+                ],
+                [
+                    'subject_id' => $english,
+                    'grade_id' => $grade_nine
+                ],
+                [
+                    'subject_id' => $biology,
+                    'grade_id' => $grade_ten
+                ],
+                [
+                    'subject_id' => $french,
+                    'grade_id' => $grade_ten 
+                ],
+                [
+                    'subject_id' => $geography,
+                    'grade_id' => $grade_ten
+                ],
+                [
+                    'subject_id' => $physics,
+                    'grade_id' => $grade_ten 
+                ],
+                [
+                    'subject_id' => $maths,
+                    'grade_id' => $grade_ten 
+                ],
+                [
+                    'subject_id' => $physics,
+                    'grade_id' => $grade_eleven
+                ],
+                [
+                    'subject_id' => $biology,
+                    'grade_id' => $grade_eleven 
+                ],
+                [
+                    'subject_id' => $geography,
+                    'grade_id' => $grade_eleven 
+                ],
+                [
+                    'subject_id' => $physics,
+                    'grade_id' => $grade_eleven 
                 ],
         		[
                 	'subject_id' => $maths,
@@ -101,17 +177,9 @@ class GradeSubjectTableSeeder extends Seeder
                 	'subject_id' => $french,
                 	'grade_id' => $grade_twelve 
                 ],
-        		[
-                	'subject_id' => $french,
-                	'grade_id' => $grade_nine 
-                ],
-        		[
-                	'subject_id' => $physics,
-                	'grade_id' => $grade_eleven
-                ],
-        		[
-                	'subject_id' => $physics,
-                	'grade_id' => $grade_nine 
+                [
+                    'subject_id' => $biology,
+                    'grade_id' => $grade_twelve
                 ]
 
             ]);

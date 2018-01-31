@@ -19,7 +19,7 @@ class SemestersController extends Controller
         //
         $semesters = Semester::all();
 
-        return view('semesters.home', compact('semesters'));
+        return view('admin.semesters.home', compact('semesters'));
     }
 
 

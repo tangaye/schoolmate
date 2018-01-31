@@ -11,7 +11,7 @@
 	<link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css") }}" rel="stylesheet" type="text/css" />
 @endsection
 
-@section('page-header', 'View students scores')
+@section('page-header', 'Students Scores')
 
 @section('user-logout')
   @component('components.user-logout')
@@ -42,11 +42,11 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="{{route('guardians.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Guardians</span></a></li>
-      <li><a href="{{route('guardians.form')}}"><i class="fa fa-pencil"></i>New Guardian</a></li>
+      <li><a href="{{route('guardians.form')}}"><i class="glyphicon glyphicon-pencil"></i>New Guardian</a></li>
     </ul>
   </li>
 
-  <!-- teacher -->
+  <!-- teachers -->
   <li class="treeview">
     <a href="#"><i class="glyphicon glyphicon-education"></i> <span>Teachers</span>
       <span class="pull-right-container">
@@ -56,11 +56,12 @@
     <ul class="treeview-menu">
       <li><a href="{{route('teachers.home')}}"><i class="glyphicon glyphicon-th-list"></i> <span>Teachers</span></a></li>
       <li><a href="{{route('teachers.form')}}"><i class="fa fa-pencil"></i>New Teacher</a></li>
-
-      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-asterisk"></i>Teacher Grades</a></li>
-        <li><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
+      <li><a href="{{route('admin-gradesTeacher.home')}}"><i class="glyphicon glyphicon-align-left""></i>Teacher Grades</a></li>
+      <li><a href="{{route('admin-gradesTeacher.form')}}"><i class="fa fa-pencil"></i>New Teacher Grade</a></li>
+      <li><a href="{{route('admin.ponsor.home')}}"><i class="glyphicon glyphicon-knight"></i>Sponsors</a></li>
     </ul>
   </li>
+
 
   <!-- Settings -->
   <li class="treeview">
@@ -89,8 +90,23 @@
       </span>
     </a>
     <ul class="treeview-menu">
-      <li><a href="/students"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
-      <li><a href="/students/create"><i class="fa fa-pencil"></i>Student Admission</a></li>
+      <li><a href="{{route('students.home')}}"><i class="glyphicon glyphicon-list-alt"></i>Student List</a></li>
+      <li><a href="{{route('students.create')}}"><i class="glyphicon glyphicon-pencil"></i>Student Admission</a></li>
+      <li><a href="{{route('enrollments.home')}}"><i class="glyphicon glyphicon-saved"></i>Student Enrollment</a></li>
+    </ul>
+  </li>
+
+  <!-- attendence -->
+  <li class="treeview">
+    <a href="#">
+      <i class="glyphicon glyphicon-stats"></i><span>Attendence</span>
+      <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+    </a>
+    <ul class="treeview-menu">
+      <li><a href="{{route('attendence')}}"><i class="glyphicon glyphicon-list-alt"></i>Manage Attendence</a></li>
+      <li><a href="{{route('attendence.create')}}"><i class="glyphicon glyphicon-pencil"></i>New Attendence</a></li>      
     </ul>
   </li>
 
@@ -104,21 +120,9 @@
     </a>
     <ul class="treeview-menu">
       <li><a href="{{route('users.home')}}"><i class="glyphicon glyphicon-list-alt"></i>User List</a></li>
-      <li><a href="{{route('users.form')}}"><i class="fa fa-pencil"></i>New User</a></li>
-    </ul>
-  </li>
-
-   <!-- users roles-->
-  <li class="treeview">
-    <a href="#">
-      <i class="glyphicon glyphicon-user"></i><span>Users Roles</span>
-      <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-      </span>
-    </a>
-    <ul class="treeview-menu">
-      <li><a href="{{route('roles.home')}}"><i class="glyphicon glyphicon-list-alt"></i>Roles</a></li>
-      <li><a href="{{route('roles.form')}}"><i class="fa fa-pencil"></i>New Role</a></li>
+      <li><a href="{{route('users.form')}}"><i class="glyphicon glyphicon-pencil"></i>New User</a></li>
+      <li><a href="{{route('roles.home')}}"><i class="glyphicon glyphicon-tasks"></i>Roles</a></li>
+      <li><a href="{{route('roles.form')}}"><i class="glyphicon glyphicon-pencil"></i>New Role</a></li>
     </ul>
   </li>
 
@@ -132,7 +136,7 @@
     </a>
     <ul class="treeview-menu">
       <li class="active"><a href="/scores"><i class="glyphicon glyphicon-list-alt"></i>Score Tables</a></li>
-      <li><a href="/scores/master"><i class="fa fa-pencil"></i>Enter Score</a></li>
+      <li><a href="/scores/master"><i class="glyphicon glyphicon-pencil"></i>Enter Score</a></li>
     </ul>
   </li>
 
@@ -151,6 +155,11 @@
       <li><a href="/scores/report/annual"><i class="fa fa-file-text-o"></i>Annual Report</a></li>
     </ul>
   </li>
+  <!-- transcript -->
+  <li>
+    <a href="{{route('transcripts.home')}}"><i class="fa fa-file-text-o"></i> <span>Student Transcript</span>
+    </a>
+  </li>
 </ul>
 @endsection
 
@@ -166,35 +175,43 @@
 		<div class="col-md-12">
 
          	<div class="panel">
+            
          		@component('components.loader')
-          		@endcomponent
+          	@endcomponent
           		
          		<div class="panel-body">
-         			<div class="form-group">
+              <div class="row">
 
-         				<div class="input-group">
-         					<span class="input-group-addon">Grades/Class</span>
-         					<select name="grade_id" class="form-control" id="grade">
-			                    <option value="">Select Grade/Class</option>
-			                    @foreach($grades as $grade)
-			                      <option value="{{$grade->id}}">{{$grade->name}}</option>
-			                    @endforeach
-			                </select>
+                <div class="form-group col-md-3">
+                  <label class="control-label">Academic Years</label>
+                  <select name="academic_id" class="form-control" id="academic">
+                    <option value="">Select Academic Year</option>
+                      @foreach($academics as $academic)
+                      <option value="{{$academic->id}}">{{$academic->full_year}}</option>
+                    @endforeach
+                  </select>
+                </div>
 
-                 			 <span class="input-group-addon">Subject</span>
-            				<select disabled="true" name="subject_id" id="subject" class="form-control subjects-terms">
-            				</select>
+                <div class="form-group col-md-3">
+                  <label class="control-label">Grade</label>
+                  <select name="grade_id" disabled="" class="form-control" id="grade">
+                  </select>
+                </div>
 
-	                  		<span class="input-group-addon">Term</span>
-	                  		<select disabled="" name="term_id" class="form-control subjects-terms" id="term">
-	                  			<option value="">Select term</option>
-                      			@foreach($terms as $term)
-		                  			<option value="{{$term->id}}">{{$term->name}}</option>
-		                  		@endforeach
-	         				</select>
-	         			</div>
-	         		</div>
-	         		
+                <div class="form-group col-md-3">
+                  <label class="control-label">Subject</label>
+                  <select disabled="true" name="subject_id" id="subject" class="form-control search_fields"></select>
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label class="control-label">Term</label>
+                  <select disabled="" name="term_id" class="form-control search_fields" id="term">
+                    @foreach($terms as $term)
+                      <option value="{{$term->id}}">{{$term->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
 	         		<div id="result">
 	         		</div>
 	         	</div>
@@ -210,294 +227,18 @@
 
 
 	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jquery.dataTables.min.js") }}"></script>
-	<script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
+  <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
 
-	<script type="text/javascript">
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.buttons.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.bootstrap.min.js") }}"></script>
 
-		$.ajaxSetup({
-		    headers: {
-		        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		    }
-		});
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jszip.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/pdfmake.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/vfs_fonts.js") }}"></script>
 
-		// on change of the grades select list the subject select list should be load up 
-	   // with subjects that are taught in the selected grade/class
-	   	$(document).on('change', '#grade', function(event) {
-	      event.preventDefault();
-	      /* Act on the event */
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.print.min.js") }}"></script>
 
-	      // hide all errors
-	      $('.errors').addClass('hidden');
-	    
-	      var subject = $('#subject').val();
-	      var grade = $('#grade').val();
-	      var term = $('#term').val();
+   <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/buttons.html5.min.js") }}"></script>
 
-	      if (grade != "") {
-
-	        $(document).ajaxStart(function() {
-	          $(".overlay").css("display", "block");
-	        });
-
-	        $(document).ajaxStop(function() {
-	          $(".overlay").css("display", "none");
-	        });
-
-	        $("#subject").removeAttr('disabled');
-
-	       	$.get('/grades/grade-subjects/'+grade)
-	        .done(function (data) {
-
-	        	if (data.none) {
-	        		$("#result").html(data.none);
-	        		$("#subject").val('');
-	        		$("#subject").attr('disabled','disabled');
-
-	        	} else {
-	        		$('select[name="subject_id"]').empty();
-		         	$('select[name="subject_id"]').append('<option value="">Select Subjects</option>');
-		          	$.each(data, function(key, value) {
-		            	$('select[name="subject_id"]').append('<option value="'+ key +'">'+ value +'</option>');
-		          	});
-	        	}
-	          
-	        })
-	        .fail(function (data) {
-	          // body...
-	          $("#result").html('There was an error please contact administrator');
-	        });
-
-
-	        $("#result").html('');
-	      } else {
-	        $("#term").val("");
-	        $("#grade").val("");
-	        $("#term").attr('disabled','disabled');
-	        $("#subject").attr('disabled','disabled');
-	        $("#result").html('');
-	      }
-	   	});
-
-	   // a subject should be selected before the term select list field is enable
-	   // for selection
-	   	$(document).on('change', '#subject', function(event) {
-	      event.preventDefault();
-	      /* Act on the event */
-
-	      // hide all errors
-	      $('.errors').addClass('hidden');
-	    
-	      var subject = $('#subject').val();
-	      var grade = $('#grade').val();
-	      var term = $('#term').val();
-
-
-	      if (subject != '') {
-	        $("#term").removeAttr('disabled');
-	      } else {
-	        $("#term").val("");
-	        $("#term").attr('disabled',true);
-	        $("#result").html('');
-	      }
-	    });
-
-	   // when grades, subjects and terms have been then an ajax call
-	   // is made that displays students in relation to the options selected
-	   	$(document).on('change', '.subjects-terms', function(event) {
-	      event.preventDefault();
-	      /* Act on the event */
-
-	      $('.errors').addClass('hidden');
-	    
-	      var subject = $('#subject').val();
-	      var grade = $('#grade').val();
-	      var term = $('#term').val();
-
-	      if (subject != "" && term != "" && subject != "") {
-
-	        $(document).ajaxStart(function() {
-	          $(".overlay").css("display", "block");
-	        });
-
-	        $(document).ajaxStop(function() {
-	          $(".overlay").css("display", "none");
-	        });
-
-	        $.ajax({
-	          url:"/scores/students-scores",
-	          method:"GET",
-	          data:{"subject_id":subject, "grade_id":grade, "term_id":term},
-	          dataType:"text",
-	          success:function(data){
-	            $("#result").html(data);
-	            $("#scores-table").DataTable({
-	            	"aoColumnDefs" : [
-			       {
-			         'bSortable' : false,
-			         'aTargets' : ['actions', 'text-holder' ]
-			       }]
-	            });
-	          },
-	          error:function(){
-	            $("#result").html('There was an error please contact administrator');
-	          }
-	        });
-	      } else {
-	        $("#result").html('');
-	      }
-	   });
-
-	    /*
-	    ************************************************************************************
-	    * 							AFTER SCORES HAVE BEEN LOADED
-	    *************************************************************************************
-	    */
-
-	    // prepare edit modal
-		$(document).on('click', '.edit-score', function(event) {
-			event.preventDefault();
-			/* Act on the event */
-			// hide all errors
-
-			// set the hidden score id
-			$('#score-id').val($(this).data('id'));
-
-			// set the hidden student id
-			$('#student-id').val($(this).data('studentid'));
-
-			// set the hidden subject id
-			$('#subject-id').val($(this).data('subjectid'));
-
-			// set the hidden grade/class id
-			$('#grade-id').val($(this).data('gradeid'));
-
-			// set the hidden student id
-			$('#term-id').val($(this).data('termid'));
-
-			//setting the student name
-			$('#edit-name').val($(this).data('name'));
-
-			// setting the subject name
-			$('#edit-subject').val($(this).data('subject'));
-
-			// setting the grade/class name
-			$('#edit-grade').val($(this).data('grade'));
-
-			// setting the student score
-			$('#edit-score').val($(this).data('score'));
-
-			// subject to be edited id
-			var id = $(this).attr('data-id');
-
-			$('.name-error').addClass('hidden');
-			$('.errors').addClass('hidden');
-
-
-			// display the add modal
-			$('#edit-modal').modal({
-				show: true,
-				backdrop:'static',
-				keyboard:false
-			});
-		});
-
-		// update student score
-		$(document).on('click', '#update-score', function(event) {
-			event.preventDefault();
-			/* Act on the event */
-
-			// getting the score id to be updated
-			var id = $('#score-id').val();
-			var score = $("#edit-score").val();
-
-			if (score >= 59 && score <= 100){
-				$.ajax({
-					url: '/scores/terms/update/'+id,
-					type: 'PUT',
-					data: $("#score-form").serialize(),
-				})
-				.done(function(data) {
-
-					// if the validator bag returns error display error in modal
-					if (data.errors) {
-		        		$('.errors').removeClass('hidden');
-		    			var errors = '';
-		                for(datum in data.errors){
-		                    errors += data.errors[datum] + '<br>';
-		                }
-		                $('.errors').show().html(errors); 
-
-		            } else if (data.success){
-		            	// reset the form
-		            	$("#edit-modal").modal('hide');
-
-		            	var score_id = data.score[0].id;
-		            	var student_id = data.score[0].student_id;
-		            	var subject_id = data.score[0].subject_id;
-		            	var grade_id = data.score[0].grade_id;
-		            	var term_id = data.score[0].term_id;
-
-		            	var name  = data.score[0].student.first_name+" "+data.score[0].student.surname;
-		            	var subject = data.score[0].subject.name;
-		            	var grade = data.score[0].grade.name;
-		            	var score = data.score[0].score;
-		            	var term = data.score[0].term.name;
-
-		            	// prepare row of grade details to append to table
-		            	var row = '<tr class="score'+score_id+'">';
-
-		            		row += '<td>'+name+'</td>';
-		            		row += '<td>'+grade+'</td>';
-		            		row += '<td>'+subject+'</td>';
-		            		row += '<td>'+term+'</td>';
-		            		if (score <= 69) {
-		            			row += '<td style="color:red;">'+score+'</td>';
-		            		} else {
-		            			row += '<td>'+score+'</td>';
-		            		}
-
-		            		row += '<td><a class="edit-score" data-id="'+score_id+'" data-name="'+name+'" data-grade="'+grade+'" data-subject="'+subject+'" data-score="'+score+'" data-studentid="'+student_id+'" data-gradeid="'+grade_id+'" data-subjectid="'+subject_id+'" data-termid="'+term_id+'" data-toggle="tooltip" title="Edit" href="#" role="button"><i class="glyphicon glyphicon-edit text-info"></i></a>  &nbsp;';
-
-		            		row += '<a class="delete-score" data-id="'+score_id+'" data-toggle="tooltip" title="Delete" href="#" role="button"><i class="glyphicon glyphicon-trash text-danger"></i></a></td>';
-
-		            	row += '</tr>';
-				
-						// replace subject row with updated details of subject
-				        $(".score" + score_id).replaceWith(row);
-
-		            	// notify user
-		            	big_notify(data.success);
-		            } 
-		        
-				})
-				.fail(function(data) {
-					console.log("error");
-					$('.errors').removeClass('hidden');
-		    		$('.errors').text('There was an error. Please try again, and if error persits contact administrator');
-				});
-			} else {
-				$('.errors').removeClass('hidden');
-		       	$('.errors').addClass('alert-warning');
-		       	$('.errors').show().html('The score should be between 59 - 100.'); 
-			}
-		});
-
-		$(document).on('click', '.delete-score', function(event) {
-			event.preventDefault();
-			/* Act on the event */
-
-			// id of the row to be deleted
-			var id = $(this).attr('data-id');
-
-		    // row to be deleted
-		    var row = $(this).parent("td").parent("tr");
-
-			var message = "You won't be able to retrieve this score if you continue!";
-
-			var route = "/scores/terms/delete/"+id;
-
-			swal_delete(message, route, row);
-		});
-
-	</script>
+	<script src="{{asset("/js/scores/home.js")}}" type="text/javascript"></script>
 @endsection

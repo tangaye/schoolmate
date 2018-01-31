@@ -18,10 +18,9 @@ class InstitutionController extends Controller
         //
         $institution = Institution::find(1);
         if ($institution === null) {
-            return view('institution.create');  
+            return view('admin.institution.create');  
         } elseif ($institution->exists()) {
-            //dd($institution->address);
-            return view('institution.edit', compact('institution'));
+            return view('admin.institution.edit', compact('institution'));
         } 
     }
 
@@ -77,16 +76,7 @@ class InstitutionController extends Controller
     }
 
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    
 
     /**
      * Update the specified resource in storage.

@@ -5,7 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use Carbon\Carbon;
+
 use App\Score;
+use App\Repositories\StudentsRepository;
 
 class Student extends Model
 {
@@ -23,22 +25,22 @@ class Student extends Model
     	'county',
     	'country',
     	'religion',
-    	'student_type',
     	'last_school',
-    	'last_grade',
-    	'grade_id',
+        'last_school_address',
+        'principal_name',
+        'principal_number',
+        'father_name',
+        'father_address',
+        'father_number',
+        'mother_name',
+        'mother_address',
+        'mother_number',
         'photo',
-        'guardian_id'
+        'guardian_id',
+        'admission_date'
     ];
 
 
-    public static function types()
-    {
-        return [
-            "Old Student", 
-            "New Student"
-        ];
-    }
 
     public static function religions()
     {
@@ -75,11 +77,16 @@ class Student extends Model
 
 
     // this helps get a readable format for the date of birth field
-    protected $dates = ['date_of_birth'];
+    protected $dates = ['date_of_birth', 'admission_date'];
 
     public function setDateOfBirthAttribute($value)
     {
        return $this->attributes['date_of_birth'] = Carbon::createFromFormat('d/m/Y', $value);
+    }
+
+    public function setAdmissionDateAttribute($value)
+    {
+       return $this->attributes['admission_date'] = Carbon::createFromFormat('d/m/Y', $value);
     }
 
     // this returns the student current age,
@@ -87,13 +94,6 @@ class Student extends Model
         return $this->date_of_birth->diffInYears(Carbon::now());
     }
 
-
-    // relationship between student and grade/class
-    // each student has a single grade
-    public function grade()
-    {
-    	return $this->belongsTo(Grade::class);
-    }
 
     // relationship between student and guardian
     // a student belongs to a single guardian
@@ -103,21 +103,38 @@ class Student extends Model
     }
     
 
+    // relationship between student and scores
+    // a student has many scores
     public function score()
     {
         return $this->hasMany(Score::class);
     }
 
-    // gets the total number of students
-    public static function students_count()
+    // relationship between student and enrollments
+    public function enrollments()
     {
-        return Student::count();
+        return $this->hasMany(Enrollment::class);
     }
 
-    public static function students_gender_count()
+
+    // student attendence relation
+    // a student has many attendence records
+    public function attendence()
     {
-        return \DB::select('SELECT gender, count(gender) as total FROM students group by gender');
+        return $this->hasMany(Attendence::class);
     }
 
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->middle_name} {$this->surname}";
+
+    }
+
+    public function getAttendencePeriodAttribute()  
+    {
+        $studentRepo = new StudentsRepository();
+        return $studentRepo->period_of_attendence($this->id);
+    }
     
+
 }

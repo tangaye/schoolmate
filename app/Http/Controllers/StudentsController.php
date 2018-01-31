@@ -6,8 +6,10 @@ use App\Student;
 use App\Grade;
 use App\User;
 use App\Guardian;
-use Image;
+use App\Academic;
+use App\Enrollment;
 
+use Image;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -23,10 +25,9 @@ class StudentsController extends Controller
      */
     public function index()
     {
-        //
-        $students = Student::with('grade')->get();
+        $students = Student::all();
 
-       return view('students.home', compact('students'));
+       return view('admin.students.home', compact('students'));
     }
 
     /**
@@ -37,8 +38,7 @@ class StudentsController extends Controller
     public function create()
     {
 
-        return view('students.create');
-    
+        return view('admin.students.create');
     }
 
     /**
@@ -57,17 +57,24 @@ class StudentsController extends Controller
             'surname' => 'bail|required|max:50|min:1|regex:/^[a-z ,.\'-]+$/i',
             'date_of_birth' => 'required',
             'gender' => 'required',
-            'address' => 'bail|required|regex:/^[a-z ,.\'-]+$/i',
+            'address' => 'required',
             'phone' => 'nullable',
             'county' => 'nullable',
             'country' => 'required|regex:/^[a-z ,.\'-]+$/i',
-            'last_grade' => 'nullable',
             'last_school' => 'nullable',
+            'last_school_address' => 'nullable',
+            'principal_name' => 'nullable',
+            'principal_number' => 'nullable',
             'religion' => 'nullable',
-            'student_type' => 'required',
-            'grade_id' => 'required|numeric',
+            'father_name' => 'bail|required|max:255|min:1|regex:/^[a-z ,.\'-]+$/i',
+            'father_address' => 'required',
+            'father_number' => 'required',
+            'mother_name' => 'bail|required|max:255|min:1|regex:/^[a-z ,.\'-]+$/i',
+            'mother_address' => 'required',
+            'mother_number' => 'required',
             'photo' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:500000',
-            'guardian_id' => 'required|numeric'
+            'guardian_id' => 'required',
+            'admission_date' => 'required'
         ];
 
         //validate and return errors
@@ -85,11 +92,18 @@ class StudentsController extends Controller
         $student->county = $request->county;
         $student->country = $request->country;
         $student->religion = $request->religion;
-        $student->student_type = $request->student_type;
         $student->last_school = $request->last_school;
-        $student->last_grade = $request->last_grade;
-        $student->grade_id = $request->grade_id;
+        $student->last_school_address = $request->last_school_address;
+        $student->principal_name = $request->principal_name;
+        $student->principal_number = $request->principal_number;
+        $student->father_name = $request->father_name;
+        $student->father_address = $request->father_address;
+        $student->father_number = $request->father_number;
+        $student->mother_name = $request->mother_name;
+        $student->mother_address = $request->mother_address;
+        $student->mother_number = $request->mother_number;
         $student->guardian_id = $request->guardian_id;
+        $student->admission_date = $request->admission_date;
 
         // if student photo is being uploaded
         if ($request->hasFile('photo')) {
@@ -127,8 +141,11 @@ class StudentsController extends Controller
     {
         //
         $student = Student::findOrfail($id);
+        
+        $academic = new Academic();
+        $current_academic = $academic->current();
 
-        return view('students.edit', compact('student'));
+        return view('admin.students.edit', compact('student', 'current_academic'));
     }
 
     /**
@@ -148,17 +165,25 @@ class StudentsController extends Controller
             'surname' => 'bail|required|max:50|min:1|regex:/^[a-z ,.\'-]+$/i',
             'date_of_birth' => 'required',
             'gender' => 'required',
-            'address' => 'bail|required|regex:/^[a-z ,.\'-]+$/i',
+            'address' => 'bail|required',
             'phone' => 'nullable',
             'county' => 'nullable',
             'country' => 'required|regex:/^[a-z ,.\'-]+$/i',
-            'last_grade' => 'nullable',
             'last_school' => 'nullable',
+            'last_school_address' => 'nullable',
+            'principal_name' => 'nullable',
+            'principal_number' => 'nullable',
             'religion' => 'nullable',
-            'student_type' => 'required',
-            'grade_id' => 'required|numeric',
+            'father_name' => 'bail|required|max:255|min:1|regex:/^[a-z ,.\'-]+$/i',
+            'father_address' => 'required',
+            'father_number' => 'required',
+            'mother_name' => 'bail|required|max:255|min:1|regex:/^[a-z ,.\'-]+$/i',
+            'mother_address' => 'required',
+            'mother_number' => 'required',
             'photo' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2000000',
-            'guardian_id' => 'required||numeric'
+            'guardian_id' => 'required',
+            'admission_date' => 'required'
+
         ];
 
         //validate and return errors
@@ -177,11 +202,19 @@ class StudentsController extends Controller
         $student->county = $request->county;
         $student->country = $request->country;
         $student->religion = $request->religion;
-        $student->student_type = $request->student_type;
         $student->last_school = $request->last_school;
-        $student->last_grade = $request->last_grade;
-        $student->grade_id = $request->grade_id;
+        $student->last_school_address = $request->last_school_address;
+        $student->principal_name = $request->principal_name;
+        $student->principal_number = $request->principal_number;
+        $student->father_name = $request->father_name;
+        $student->father_address = $request->father_address;
+        $student->father_number = $request->father_number;
+        $student->mother_name = $request->mother_name;
+        $student->mother_address = $request->mother_address;
+        $student->mother_number = $request->mother_number;
         $student->guardian_id = $request->guardian_id;
+        $student->admission_date = $request->admission_date;
+
 
         // if student photo is being uploaded
         if ($request->hasFile('photo')) {
@@ -206,7 +239,7 @@ class StudentsController extends Controller
         $student->update();
 
 
-        // send a message to the session that greets/ thank user
+        // send a message to the session 
         session()->flash('message', $student->first_name." ".$student->surname);
 
         return redirect('/students');

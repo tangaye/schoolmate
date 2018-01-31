@@ -11,6 +11,10 @@ use App\Subject;
 use App\Term;
 use App\Grade;
 use App\Semester;
+use App\Academic;
+
+use App\Repositories\ScoresRepository;
+
 
 class ScoresController extends Controller
 {
@@ -24,41 +28,9 @@ class ScoresController extends Controller
     {
         $terms = Term::all();
         $grades = Grade::all();
+        $academics = Academic::all();
 
-        return view('scores.home', compact('terms', 'grades'));
-    }
-
-    /**
-     * Display a form to retrieve terms/period tables.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function studentScores(Request $request, Score $score)
-    {
-       $term = Term::findOrFail($request->term_id);
-       $grade = Grade::findOrFail($request->grade_id);
-       $subject = Subject::findOrFail($request->subject_id);
-
-       $students = $score->findScores($grade->id, $subject->id, $term->id);
-       //dd($students);
-
-        return \View::make('scores.partials.students-scores')->with(array(
-                'students'=>$students
-            ));
-    }
-
-    /**
-     * Show the form to generate master grade sheet.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function master()
-    {
-        $subjects = Subject::all();
-        $terms = Term::all();
-        $grades = Grade::all();
-
-        return view('scores.master-scores-form', compact('subjects', 'grades', 'terms'));
+        return view('scores.home', compact('terms', 'grades', 'academics'));
     }
 
 
@@ -67,26 +39,51 @@ class ScoresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(Request $request, Academic $academic)
     {
         //
+        $current_academic = $academic->current();
         $grade = Grade::findOrFail($request->grade_id);
         $term = Term::findOrFail($request->term_id);
         $subject = Subject::findOrFail($request->subject_id);
 
 
-        $students = \DB::table('students')
-            ->join('grades', 'grades.id', '=', 'students.grade_id')
-            ->select('students.surname', 'students.first_name', 'students.middle_name', 'students.id', 'grades.id as grade')
-            ->where('students.grade_id', $grade->id)
+        // return a listing of enrolled students in a particular grade/class
+        // so that subject score for a term(1st, 2nd, 3rd period) can be  recorded for the current academic year.
+        $enrolled_students = \DB::table('enrollments')
+            ->join('students', 'students.id', '=', 'enrollments.student_id')
+            ->join('grades', 'grades.id', '=', 'enrollments.current_grade')
+            ->join('academics', 'academics.id', '=', 'enrollments.academic_id')
+            ->select(
+                'students.surname', 
+                'students.first_name', 
+                'students.middle_name', 
+                'students.id', 
+                'grades.id as grade'
+            )
+            ->where([
+                ['enrollments.current_grade', '=', $grade->id],
+                ['enrollments.academic_id', '=', $current_academic->id],
+                ['enrollments.enrollment_status', '=', 'Enrolled']
+            ])
             ->get();  
 
-        return \View::make('scores.partials.create')->with(array(
-            'students'=>$students, 
-            'grade'=>$grade->name, 
-            'subject'=>$subject, 
-            'term'=>$term
-        ));
+        $students = Student::whereIn('id', $enrolled_students->pluck('id'))->get();
+
+        if (count($students) > 0) {
+            return \View::make('scores.partials.create')->with(
+                [
+                    'students' => $students, 
+                    'grade' => $grade, 
+                    'subject' => $subject, 
+                    'term' => $term,
+                    'academic' => $current_academic
+                ]
+            );
+            
+        } else {
+            return response()->json(["none" => "There is no <u>Enrolled</u> students in <b>".$grade->name."</b> for academic year: <b>".$current_academic->full_year."</b>"]);
+        }
 
     }
 
@@ -104,7 +101,8 @@ class ScoresController extends Controller
             'subject_id' => 'required',
             'grade_id' => 'required',
             'term_id' => 'required',
-            'score' => 'bail|required|min:2|max:3'
+            'score' => 'bail|required|min:2|max:3',
+            'academic_id' => 'required'
         ] );
         // if validation fails return error
         if ($validator->fails ()) {
@@ -119,14 +117,20 @@ class ScoresController extends Controller
             $student = Student::findOrFail($request->student_id);
             $subject = Subject::findOrFail($request->subject_id);
             $term = Term::findOrFail($request->term_id);
+            $academic = Academic::findOrFail($request->academic_id);
+
+
 
             try {
+
+
                 $score = Score::create(request([
                     'student_id', 
                     'subject_id', 
                     'grade_id', 
                     'term_id', 
-                    'score'
+                    'score',
+                    'academic_id'
                 ]));
 
                 return response ()->json ( array( "success" => "<b>".$student->surname."</b>". " score of "."<b>".$score->score."</b> in <b>".$subject->name."</b> for <b>".$term->name."</b> save") );
@@ -137,73 +141,16 @@ class ScoresController extends Controller
 
                 // if a duplicate entry error(1062) is caught display custom message
                 if($error_code == 1062){
+
+                    
+
                     return response()->json ( array (
-                        'duplicate' => "A score already exists for <b>".$student->surname."</b> in <b>".$subject->name."</b> for <b>".$term->name."</b>. If you want to make changes to the score Please go to the <a href='#'>Scores</a> table to do the modification."
+                        'duplicate' => "A score already exists for <b>".$student->first_name." ".$student->surname."</b> in <b>".$subject->name."</b> for <b>".$term->name."</b>."
                     ) );
                 }
             }
             
         }
-    }
-
-    /**
-     * Show the form to search for a specific.
-     * student term(periodic) report
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function term(Request $request)
-    {
-        //
-        $terms = Term::all();
-
-        return view('scores.student-term-scores', compact('terms'));
-    }
-
-    /**
-     * Show the form to search for a specific.
-     * student term(periodic) report
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function findTerm(Request $request, Score $score)
-    {
-        //
-        return $score->termReport($request->term_id, $request->student_code);
-    }
-
-    /**
-     * Show the form to search for a specific.
-     * student semester report
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function semester(Request $request)
-    {
-        //
-        $semesters = Semester::all();
-        return view('scores.student-semester-scores', compact('semesters'));
-    }
-
-    public function findSemester(Request $request, Score $score)
-    {
-        return $score->semesterReport($request->student_code, $request->semester_id);
-    }
-
-    /**
-     * Show the form to search for a specific.
-     * student semester report
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function annual(Request $request)
-    {
-        return  view('scores.student-annual-scores');
-    }
-
-    public function findAnnual(Request $request, Score $score)
-    {
-        return $score->annualReport($request->student_code, $request->semester_id);
     }
 
 
@@ -219,10 +166,6 @@ class ScoresController extends Controller
     {
         //
         $validator = Validator::make ( $request->all(), [
-            'student_id' => 'required',
-            'subject_id' => 'required',
-            'grade_id' => 'required',
-            'term_id' => 'required',
             'score' => 'bail|required|min:2|max:3'
         ] );
         // if validation fails return error
@@ -242,13 +185,7 @@ class ScoresController extends Controller
         $subject = Subject::findOrFail($score->subject_id);
         $term = Term::findOrFail($score->term_id);
 
-        $score->update(request([
-            'student_id', 
-            'subject_id', 
-            'grade_id', 
-            'term_id', 
-            'score'
-        ]));
+        $score->update(request(['score']));
 
         return response ()->json ( array( 
 
@@ -284,5 +221,80 @@ class ScoresController extends Controller
 
             "message" => $student->surname. " score of ".$score->score." in ".$subject->name." for ".$term->name." deleted!"
         ) );
+    }
+
+    /**
+     * Display a form to retrieve terms/period tables for an 
+     * academic year.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function studentScores(Request $request, ScoresRepository $scores)
+    {
+       $term = Term::findOrFail($request->term_id);
+       $grade = Grade::findOrFail($request->grade_id);
+       $subject = Subject::findOrFail($request->subject_id);
+       $academic = Academic::findOrFail($request->academic_id);
+
+       $students_score = $scores->findScores($grade->id, $subject->id, $term->id, $academic->id);
+
+       if (count($students_score) > 0) {
+            return \View::make('scores.partials.students-scores')->with(
+                [
+                    'students' => $students_score,
+                    'grade' => $grade->name,
+                    'term' => $term->name,
+                    'subject' => $subject->name,
+                    'academic' => $academic->full_year
+                ]
+            );
+       } else {
+           return  response()->json(['none' => 'No score found for students in <b>'.$grade->name.'</b> for academic year <u>'.$academic->full_year.'</u>']);
+       }
+    
+    }
+
+    /**
+     * Show the form to generate master grade sheet.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function master()
+    {
+        $subjects = Subject::all();
+        $terms = Term::all();
+        $grades = Grade::all();
+        $academics = Academic::all();
+
+
+        return view('scores.master-scores-form', compact('subjects', 'grades', 'terms', 'academics'));
+    }
+
+    // returns students who have score recorded for in an academic year
+    public function academicStudents($id, ScoresRepository $scores)
+    {
+        $academic = Academic::findOrFail($id);
+        $students = $scores->scores_academic_students($academic->id);
+        if (count($students) > 0) {
+            return response()->json($students);
+        } else {
+            return response()->json(array('none' => 'No score recorded for students in the specify academic year!'));
+        }
+    }
+
+    /*
+    * This function returns grades that have scores recorded for them in an
+    * academic year.
+    */
+    public function academicScoresGrades($academic_year, ScoresRepository $scores)
+    {
+        $academic = Academic::findOrFail($academic_year);
+        $grades = $scores->scores_academic_grades($academic->id);
+
+        if (count($grades) > 0) {
+            return response()->json($grades);
+        } else {
+            return response()->json(array('none' => 'There are no grades that scores have been recorded for!'));
+        }
     }
 }

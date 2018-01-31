@@ -19,7 +19,7 @@ class DivisionsController extends Controller
         //
         $divisions = Division::all();
 
-        return view('divisions.home', compact('divisions'));
+        return view('admin.divisions.home', compact('divisions'));
     }
 
     /**

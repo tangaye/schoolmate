@@ -5,7 +5,7 @@
       <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
 
       <div class="info-box-content">
-        <span class="info-box-text">Students</span>
+        <span class="info-box-text">Enrolled Students</span>
         <span class="info-box-number">{{$students_total}}</span>
       </div>
       <!-- /.info-box-content -->

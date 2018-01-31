@@ -18,9 +18,10 @@ class CreateGradeTeachersTable extends Migration
             $table->unsignedInteger('grade_id');
             $table->unsignedInteger('subject_id');
             $table->unsignedInteger('teacher_id');
+            $table->unsignedInteger('academic_id');
             $table->timestamps();
 
-            $table->unique(array('grade_id', 'subject_id'));
+            $table->unique(array('grade_id', 'subject_id', 'academic_id'));
 
             $table->foreign('subject_id')
                 ->references('id')
@@ -37,6 +38,12 @@ class CreateGradeTeachersTable extends Migration
             $table->foreign('teacher_id')
                 ->references('id')
                 ->on('teachers')
+                ->onDelete('restrict')
+                ->onUpdate('cascade');
+
+            $table->foreign('academic_id')
+                ->references('id')
+                ->on('academics')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
         });

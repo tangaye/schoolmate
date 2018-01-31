@@ -25,34 +25,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
   @yield('page-css')
 
   <!-- Theme style -->
-  <link href="{{ asset("/bower_components/AdminLTE/dist/css/AdminLTE.min.css")}}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset("/bower_components/AdminLTE/dist/css/AdminLTE.css")}}" rel="stylesheet" type="text/css" />
 
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect.
   -->
-  <link href="{{ asset("/bower_components/AdminLTE/dist/css/skins/_all-skins.min.css")}}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset("/bower_components/AdminLTE/dist/css/skins/skin-black.css")}}" rel="stylesheet" type="text/css" />
 </head>
-<!--
-BODY TAG OPTIONS:
-=================
-Apply one or more of the following classes to get the
-desired effect
-|---------------------------------------------------------|
-| SKINS         | skin-blue                               |
-|               | skin-black                              |
-|               | skin-purple                             |
-|               | skin-yellow                             |
-|               | skin-red                                |
-|               | skin-green                              |
-|---------------------------------------------------------|
-|LAYOUT OPTIONS | fixed                                   |
-|               | layout-boxed                            |
-|               | layout-top-nav                          |
-|               | sidebar-collapse                        |
-|               | sidebar-mini                            |
-|---------------------------------------------------------|
--->
+
 <body class="hold-transition skin-black sidebar-mini">
   <div class="wrapper">
 
@@ -90,9 +71,10 @@ desired effect
     <footer class="main-footer">
     <!-- To the right -->
       <div class="pull-right hidden-xs">
+        <span class="text-danger"><b>This is currently for demo purpose only!</b></span>
       </div>
       <!-- Default to the left -->
-      <strong>Copyright &copy; <a href="#">Company</a>.</strong> All rights reserved.
+      <strong>Copyright &copy; <a href="javascript:"><b>School</b>MATE</a>.</strong> All rights reserved.
     </footer>
 
     @include('layouts.partials.control-sidebar')
