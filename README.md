@@ -1,8 +1,17 @@
-# SchoolMate #
+## About SchoolMate :registered:
 
-A High School Management System for Schools in __Liberia__.
+<p align="center">
+:exclamation: :school: :books: :green_book: :pencil: :pencil2: :computer: :thumbsup: :heart: :blush: :sunglasses: :star2: :star2: :dollar: :dollar: :moneybag: :moneybag: :moneybag:
+</p>
 
-# Features #
+SchoolMate is a web application that makes it easy for High Schools to produce students reports and generate transcripts. Leeneh takes away the painful process High Schools in Liberia go through to produce and generate students performance reports and transcripts. SchoolMate includes various feature such as:
+
+- Simple, elegant and intuitive UI.
+- Reports and transcripts generated in few seconds.
+- Basic statistical analysis on students information.
+- Multiple users account with roles and permissions.
+
+## Features
 
 * Live search on Students grades
 * Guardian/Parent login
@@ -13,13 +22,7 @@ A High School Management System for Schools in __Liberia__.
 * Multi Authentication
 * User Role Authentication
 
-# Built With #
-
-* [Laravel 5.4](https://laravel.com) - Web framework used.
-* [Bootsrap 3](https://getbootstrap.com/docs/3.3/) - CSS framework
-* [JQuery 2] (https://jquery.com/) - Javascript framework
-
-# Installation & Usage #
+## Installation & Setup
 
 ```sh
 $ git clone git@github.com:nathansiafa/SchoolMate.git
@@ -31,13 +34,17 @@ $ php artisan db:seed
 $ php artisan serve
 ```
 
-# Credits #
+## Built With
 
-* [AdminLTE](https://adminlte.io/) - Theme used.
-* [Chart.js](http://www.chartjs.org/) - Charts library used
-* [Bootstrap Notify] (http://bootstrap-notify.remabledesigns.com/) - Notification library used
+- [Laravel](https://laravel.com/)
 
-# Authors #
+## Credits
+
+- [AdminLTE](https://adminlte.io/)
+- [HYN](https://laravel-tenancy.com/)
+
+## Authors
 
 * Nathan Tangaye Siafa [twitter](https://twitter.com/NathanSiafa1)
 * Tamu Boima Fahnbulleh
+
