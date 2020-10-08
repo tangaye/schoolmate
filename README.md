@@ -11,17 +11,6 @@ SchoolMate is a web application that makes it easy for High Schools to produce s
 - Basic statistical analysis on students information.
 - Multiple users account with roles and permissions.
 
-## Features
-
-* Live search on Students grades
-* Guardian/Parent login
-* Student photo upload
-* User login
-* Teacher login
-* Student gender chart and class population chart
-* Multi Authentication
-* User Role Authentication
-
 ## Installation & Setup
 
 ```sh
