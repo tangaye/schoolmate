@@ -14,7 +14,7 @@ SchoolMate is a web application that makes it easy for High Schools to produce s
 ## Installation & Setup
 
 ```sh
-$ git clone git@github.com:nathansiafa/SchoolMate.git
+$ clone repository
 $ cd into <the directory you clone the project>
 $ composer install
 $ create a database on your local server and specify the name and password in .env
